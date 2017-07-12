@@ -1,9 +1,7 @@
 import React, { Component } from 'react';
-import { setPlayerName } from './redux/actions/actionCreators.js'
 import Chatroom from './components/Chatroom.js';
 import Drawingboard from './components/Drawingboard.js';
 import io from 'socket.io-client';
-import { connect } from 'react-redux';
 import './App.css';
 
 //For now, I will handle all server communication and global state from here
@@ -15,9 +13,11 @@ class App extends Component {
     this.state = { 
       socketId: '',
       myId: '', //TEMP until auth and persistent login (necessary for self-identifying in state updates)
+      myName: '',
+      myColor: 'black',
       //If coming from newroom route, no id will be provided, default to empty string
       sessionId: '', //this.props.match.params.id || 
-      clientColor: 'black',
+      score: 0,
       chatMessages: [],
       hasVotedToBegin: false, //Used for conditionally rendering status display after voting
       sessionState: {
@@ -28,6 +28,8 @@ class App extends Component {
         currentPhase: '', //['drawing', 'detecting', 'approving', 'gameover']
         currentTurn: '', //Player color (name is still secret)
         isMyTurn: false,
+        isFake: false,
+        clue: ''
       }
     }
   }
@@ -50,7 +52,7 @@ class App extends Component {
       //Player color and such will be created later when game starts
       this.setState({
         sessionId: packet.payload.id, 
-        clientColor: packet.payload.color,
+        myColor: packet.payload.color,
         chatMessages: packet.payload.chatLog
       });
       console.log('Session:', this.state.sessionId)
@@ -109,7 +111,7 @@ class App extends Component {
     const packet = {
       type: 'chat_message',
       payload: {
-        name: this.props.playerName,
+        name: this.state.myName,
         id: this.state.socketId,
         time: Date.now(),
         content
@@ -149,10 +151,10 @@ class App extends Component {
   renderDrawingboard() {
     return (
       <Drawingboard 
-        playerName={this.props.playerName}
+        playerName={this.state.myName}
         onRef = {ref => (this.drawingboard = ref)}
         emitPath = {this.emitPath}
-        clientColor = {this.state.clientColor}
+        clientColor = {this.state.myColor}
         clientId = {this.state.socketId}
         //TODO Gonna pass session/game state down for preventing drawing. This should be moved to redux store
         sessionStatus = {this.state.sessionState.currentSessionStatus}
@@ -224,16 +226,5 @@ class App extends Component {
   }
 }
 
-const mapStateToProps = (state) => {
-  return {
-    playerName: state.gameReducer.playerName
-  }
-}
 
-const mapDispatchToProps = (dispatch) => {
-  return {
-    playerLogin: (name) => {dispatch(playerLogin(name))}
-  }
-}
-
-export default connect(mapStateToProps)(App);
+export default App;
