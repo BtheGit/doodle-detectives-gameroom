@@ -48,14 +48,14 @@ class App extends Component {
   //Socket Handlers
   handleSocketMessages = packet => {
     if(packet.type === 'setup_client') {
-      //Handle user name/socket id/etc. here
-      //Player color and such will be created later when game starts
+      //The color here is only for the waiting period. In game a new color will be assigned.
       this.setState({
-        sessionId: packet.payload.id, 
+        sessionId: packet.payload.sessionId,
+        myId: packet.payload.clientId,
+        myName: packet.payload.clientName,
         myColor: packet.payload.color,
         chatMessages: packet.payload.chatLog
       });
-      console.log('Session:', this.state.sessionId)
     }
     else if(packet.type === 'temp_get_myid'){
       this.setState({myId: packet.id})
