@@ -1,6 +1,5 @@
 import React, { Component } from 'react';
 import ChatOutput from './ChatOutput';
-import { connect } from 'react-redux';
 
 class Chatroom extends Component {
   constructor(props) {

@@ -1,6 +1,7 @@
 import React, { Component } from 'react';
 import Chatroom from './components/Chatroom.js';
 import Drawingboard from './components/Drawingboard.js';
+import StatusPanel from './components/StatusPanel.js';
 import io from 'socket.io-client';
 import './App.css';
 
@@ -25,11 +26,14 @@ class App extends Component {
         currentSessionStatus: '', //['isWaitingForPlayers', 'isWaitingToStart', 'isGameActive']
       },
       gameState: {
-        currentPhase: '', //['drawing', 'detecting', 'approving', 'gameover']
-        currentTurn: '', //Player color (name is still secret)
+        currentPhase: '', 
+        currentColor: '', //Player color (name is still secret)
         isMyTurn: false,
-        isFake: false,
-        clue: ''
+        fakeIsMe: false,
+        secret: {
+          category: '',
+          secret: ''
+        }
       }
     }
   }
@@ -79,6 +83,28 @@ class App extends Component {
     else if(packet.type === 'display_secret_phase') {
       this.handleDisplaySecretPhase(packet.payload);
     }
+    else if(packet.type === 'next_turn') {
+      // Check if I am active player and toggle if true. (Can change the background color or 
+      // something dramatic later)
+      // Set Timeout (TODO create countdown timer and activate countdown sequence instead)
+      // At the end set active state back to false
+      // Send message back to server socket to trigger next turn action
+    }
+  }
+
+  handleDisplaySecretPhase = secret => {
+    //TODO: Pop up a modal, countdown, etc.
+    this.setState({gameState: {...this.state.gameState, secret}})
+  }
+
+
+  handleGameStateUpdate = gameState => {
+    const newState = {
+      currentPhase: gameState.currentPhase,
+      currentColor: gameState.currentColor === this.state.myColor ? 'Me' : gameState.currentColor,
+      isMyTurn: gameState.currentId === this.state.myId,
+    }
+    this.setState({gameState: {...this.state.gameState, newState}})
   }
 
   //Handle new remote clients joining session or leaving session
@@ -151,14 +177,13 @@ class App extends Component {
   renderDrawingboard() {
     return (
       <Drawingboard 
-        playerName={this.state.myName}
-        onRef = {ref => (this.drawingboard = ref)}
-        emitPath = {this.emitPath}
-        clientColor = {this.state.myColor}
-        clientId = {this.state.socketId}
-        //TODO Gonna pass session/game state down for preventing drawing. This should be moved to redux store
+        playerName =    {this.state.myName}
+        onRef =         {ref => (this.drawingboard = ref)}
+        emitPath =      {this.emitPath}
+        clientColor =   {this.state.myColor}
+        clientId =      {this.state.socketId}
         sessionStatus = {this.state.sessionState.currentSessionStatus}
-        isMyTurn = {this.state.gameState.isMyTurn}
+        isMyTurn =      {this.state.gameState.isMyTurn}
       />
     )
   }
@@ -176,7 +201,12 @@ class App extends Component {
   selectStatusDisplay() {
     const currentState = this.state.sessionState.currentSessionStatus; //for brevity
     if(currentState === 'isGameActive') {
-      return <div>Game Active</div>; //This will not be a message. Showing turns/clues/etc. //GAME STATUS COMPONENT
+      return (
+        <StatusPanel 
+          turnColor = {this.state.gameState.turnColor}
+          secret = {this.state.gameState.secret}
+        />
+      ); //This will not be a message. Showing turns/clues/etc. //GAME STATUS COMPONENT
     }
     else { //SESSION STATUS COMPONENT
       if(currentState === 'isWaitingForPlayers') {
