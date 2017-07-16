@@ -110,7 +110,7 @@ export default class Drawingboard extends Component {
 	}
 
 	componentWillUnmount = () => {
-		//remove event listeners
+		//TODO remove event listeners
 	}
 
 	render() {
