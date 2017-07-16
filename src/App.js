@@ -61,9 +61,6 @@ class App extends Component {
         chatMessages: packet.payload.chatLog
       });
     }
-    else if(packet.type === 'temp_get_myid'){
-      this.setState({myId: packet.id})
-    }
     else if (packet.type === 'broadcast_session') {
       this.handleSessionUpdate(packet.clients)
     }
@@ -84,12 +81,22 @@ class App extends Component {
       this.handleDisplaySecretPhase(packet.payload);
     }
     else if(packet.type === 'next_turn') {
+      this.handleNextTurn(packet.payload)
+    }
+  }
+
+  handleNextTurn = turn => {
+      console.log(turn)
       // Check if I am active player and toggle if true. (Can change the background color or 
       // something dramatic later)
+      const newState = {
+        currentColor: turn.color,
+        isMyTurn: turn.active
+      }
+      this.setState({gameState: {...this.state.gameState, ...newState}})
+      console.log(this.state)
       // Set Timeout (TODO create countdown timer and activate countdown sequence instead)
-      // At the end set active state back to false
-      // Send message back to server socket to trigger next turn action
-    }
+      setTimeout(this.emitEndOfTurn, 5000)
   }
 
   handleDisplaySecretPhase = secret => {
@@ -104,7 +111,8 @@ class App extends Component {
       currentColor: gameState.currentColor === this.state.myColor ? 'Me' : gameState.currentColor,
       isMyTurn: gameState.currentId === this.state.myId,
     }
-    this.setState({gameState: {...this.state.gameState, newState}})
+    this.setState({gameState: {...this.state.gameState, ...newState}})
+    console.log(this.state)
   }
 
   //Handle new remote clients joining session or leaving session
@@ -165,6 +173,21 @@ class App extends Component {
     this.socket.emit('packet', packet);
   }
 
+  emitEndOfTurn = () => {
+    console.log('Turn finished')
+    // At the end set active state back to false
+    const newState = {
+      isMyTurn: false, 
+      currentColor: ''
+    }
+    this.setState({gameState: {...this.state.gameState, ...newState}})
+    // Send message back to server socket to trigger next turn action
+    const packet = {
+      type: 'end_of_turn'
+    }    
+    this.socket.emit('packet', packet)
+  }
+
   //############### LIFECYCLE AND RENDER METHODS ####################
   componentDidMount = () => {
     this.setupSocket();
@@ -203,7 +226,7 @@ class App extends Component {
     if(currentState === 'isGameActive') {
       return (
         <StatusPanel 
-          turnColor = {this.state.gameState.turnColor}
+          currentColor = {this.state.gameState.currentColor}
           secret = {this.state.gameState.secret}
         />
       ); //This will not be a message. Showing turns/clues/etc. //GAME STATUS COMPONENT
