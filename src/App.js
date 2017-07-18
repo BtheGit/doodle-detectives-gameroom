@@ -43,7 +43,7 @@ class App extends Component {
       fakeVote: {
         hasVoted: false,
         options: [],
-      }
+      },
     }
   }
 
@@ -82,10 +82,6 @@ class App extends Component {
     else if(packet.type === 'session_state_update') {
       this.handleSessionStateUpdate(packet.sessionState);
     }
-    // else if(packet.type === 'game_state_update') {
-    //   //set local isGameActive toggle here which will prevent drawing unless activePlayer is me
-    //   this.handleGameStateUpdate(packet.gameState);
-    // }
     else if(packet.type === 'display_secret_phase') {
       this.handleDisplaySecretPhase(packet.payload);
     }
@@ -94,6 +90,13 @@ class App extends Component {
     }
     else if(packet.type === 'initiate_fake_vote') {
       this.handleFakeVoting(packet.players)
+    }
+    else if(packet.type === 'fake_not_found') {
+      //Set game state to done; store fake info; check if I win and give me points if so;
+      //Display modal with final results. (Showing all players and their colors.)
+      //Set status display to showing vote for new game button
+      console.log('Fake Not Found - Game Over')
+      console.log(packet.players)
     }
   }
 
@@ -142,17 +145,6 @@ class App extends Component {
       }
     })
   }
-
-
-  // handleGameStateUpdate = gameState => {
-  //   const newState = {
-  //     currentPhase: gameState.currentPhase,
-  //     currentColor: gameState.currentColor === this.state.myColor ? 'Me' : gameState.currentColor,
-  //     isMyTurn: gameState.currentId === this.state.myId,
-  //   }
-  //   this.setState({gameState: {...this.state.gameState, ...newState}})
-  //   console.log(this.state)
-  // }
 
   //Handle new remote clients joining session or leaving session
   //Create a filtered list of remote peers
