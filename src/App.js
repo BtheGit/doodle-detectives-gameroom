@@ -2,6 +2,7 @@ import React, { Component } from 'react';
 import Chatroom from './components/Chatroom.js';
 import Drawingboard from './components/Drawingboard.js';
 import StatusPanel from './components/StatusPanel.js';
+import FakeGuessForm from './components/FakeGuessForm.js';
 import io from 'socket.io-client';
 import './App.css';
 
@@ -10,8 +11,7 @@ const DISPLAYSECRET = 'DISPLAYSECRET',
       FAKEVOTE      = 'FAKEVOTE',
       GUESSVOTE     = 'GUESSVOTE',
       GAMEOVER      = 'GAMEOVER';
-//For now, I will handle all server communication and global state from here
-//Could potentially be pushed off to redux and middleware later
+
 class App extends Component {
   constructor(props) {
     super(props);
@@ -44,6 +44,9 @@ class App extends Component {
         hasVoted: false,
         options: [],
       },
+      fakeGuess: {
+        hasGuessed: false,
+      }
     }
   }
 
@@ -95,12 +98,39 @@ class App extends Component {
       //Set game state to done; store fake info; check if I win and give me points if so;
       //Display modal with final results. (Showing all players and their colors.)
       //Set status display to showing vote for new game button
-      console.log('Fake Not Found - Game Over')
+      console.log('Fake Not Found - Game Over (Fake Wins)')
       console.log(packet.players)
+    }
+    else if(packet.type === 'prompt_fake_for_guess'){
+      //If I am fake, display guess form
+      //Else display waiting for fake to guess
+      this.handlePromptFakeForGuess();
+    }
+    else if(packet.type === 'get_approval_for_fake_guess'){
+      //If I am fake display waiting for guess to be approved
+      //Else display approval vote form
+    }
+    else if(packet.type === 'final_results'){
+      //Set local results to players. 
+      //Display results modal. 
+      //Accord points.
     }
   }
 
   //############### SOCKET HANDLERS #################
+  handlePromptFakeForGuess = () => {
+    console.log('Prompting Fake For Guess')
+    this.setState({
+      gameState: {
+        ...this.state.gameState,
+        currentPhase: GUESSVOTE
+      }
+    });
+    //(Set timeout for 15 seconds (later display counter), if no guess, send NOGUESS to server)
+    //If I am fake, prompt me by showing form to guess
+    //If I am not fake, display status message Waiting for Fake to Guess
+  }
+
   handleFakeVoting = players => {
     console.log('Fake Voting Phase')
     this.setState({
@@ -135,12 +165,13 @@ class App extends Component {
       setTimeout(this.emitEndOfTurn, 1000)
   }
 
-  handleDisplaySecretPhase = secret => {
+  handleDisplaySecretPhase = payload => {
     //TODO: Pop up a modal, countdown, etc.
     this.setState({
       gameState: {
         ...this.state.gameState, 
-        secret,
+        secret: payload.secret,
+        fakeIsMe: payload.fakeIsMe,
         currentPhase: DISPLAYSECRET
       }
     })
@@ -231,6 +262,17 @@ class App extends Component {
     })
   }
 
+  emitGuess = guess => {
+    console.log('Emitting guess', guess)
+    this.setState({fakeGuess: {
+      hasGuessed: true
+    }})
+  }
+
+  emitVoteForGuessApproval = vote => {
+
+  }
+
   //############### LIFECYCLE AND RENDER METHODS ####################
   componentDidMount = () => {
     this.setupSocket();
@@ -277,7 +319,21 @@ class App extends Component {
         ); //This will not be a message. Showing turns/clues/etc. //GAME STATUS COMPONENT       
       }
       else if (phase === FAKEVOTE) {
-        return this.renderVoteForFake()
+        return this.renderVoteForFake();
+      }
+      else if (phase === GUESSVOTE) {
+        if(this.state.gameState.fakeIsMe) {
+          if(!this.state.fakeGuess.hasGuessed) {
+            //Show Form component to receive guess
+            return this.renderFormForFakeGuess();
+          }
+          else {
+            return this.renderStatusMessage('Guess submitted. Waiting for approval...');
+          }
+        }
+        else {
+          return this.renderStatusMessage('Waiting for fake to guess...');
+        }
       }
     }
     else { //SESSION STATUS COMPONENT
@@ -286,7 +342,7 @@ class App extends Component {
       } 
       else if (currentState === 'isWaitingToStart') {
         return !this.state.hasVotedToBegin ? this.renderVoteToBegin() 
-                                     : this.renderStatusMessage('Waiting for other players to vote...')
+                                     : this.renderStatusMessage('Waiting for other players to vote...');
       }
       else {
         return this.renderStatusMessage('Waiting for Server...');
@@ -330,6 +386,14 @@ class App extends Component {
     else {
       return this.renderStatusMessage('Waiting for other players to vote...')
     }
+  }
+
+  renderFormForFakeGuess() {
+    return(
+      <FakeGuessForm 
+        submitFakeGuess={this.emitGuess}
+      />
+    )
   }
 
   render() {
