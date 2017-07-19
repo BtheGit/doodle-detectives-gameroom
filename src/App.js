@@ -3,14 +3,22 @@ import Chatroom from './components/Chatroom.js';
 import Drawingboard from './components/Drawingboard.js';
 import StatusPanel from './components/StatusPanel.js';
 import FakeGuessForm from './components/FakeGuessForm.js';
+import GuessApprovalForm from './components/GuessApprovalForm.js';
 import io from 'socket.io-client';
 import './App.css';
 
+//Game State Toggles
 const DISPLAYSECRET = 'DISPLAYSECRET',
       DRAWING       = 'DRAWING',
       FAKEVOTE      = 'FAKEVOTE',
       GUESSVOTE     = 'GUESSVOTE',
+      GUESSAPPROVAL = 'GUESSAPPROVAL',
       GAMEOVER      = 'GAMEOVER';
+
+//Session State Toggles
+const GAMEACTIVE        = 'GAMEACTIVE',
+      WAITINGTOSTART    = 'WAITINGTOSTART',
+      WAITINGFORPLAYERS = 'WAITINGFORPLAYERS';
 
 class App extends Component {
   constructor(props) {
@@ -28,7 +36,7 @@ class App extends Component {
       hasVotedToBegin: false, //Used for conditionally rendering status display after voting
       sessionState: {
         players: [],
-        currentSessionStatus: '', //['isWaitingForPlayers', 'isWaitingToStart', 'isGameActive']
+        currentSessionStatus: '', //[WAITINGFORPLAYERS, WAITINGTOSTART, GAMEACTIVE]
       },
       gameState: {
         currentPhase: '', 
@@ -46,6 +54,15 @@ class App extends Component {
       },
       fakeGuess: {
         hasGuessed: false,
+      },
+      guessApproval: {
+        hasVoted: false,
+        guess: ''
+      },
+      finalResults: {
+        players: [],
+        isFakeFound: false,
+        isFakeWinner: false
       }
     }
   }
@@ -109,15 +126,42 @@ class App extends Component {
     else if(packet.type === 'get_approval_for_fake_guess'){
       //If I am fake display waiting for guess to be approved
       //Else display approval vote form
+      this.handleFakeGuessApprovalRequest(packet.guess);
     }
-    else if(packet.type === 'final_results'){
+    else if(packet.type === 'game_over'){
       //Set local results to players. 
       //Display results modal. 
       //Accord points.
+      this.handleGameOver(packet.payload);
     }
   }
 
   //############### SOCKET HANDLERS #################
+  handleGameOver = payload => {
+    console.log('Game Over. Receiving final results', payload)
+    this.setState({
+      gameState: {
+        ...this.state.gameState,
+        currentPhase: GAMEOVER
+      },
+      finalResults: payload
+    });
+  }
+
+  handleFakeGuessApprovalRequest = guess => {
+    console.log("Requesting approval of Fake's guess");
+    this.setState({
+      gameState: {
+        ...this.state.gameState,
+        currentPhase: GUESSAPPROVAL
+      },
+      guessApproval: {
+        ...this.state.guessApproval,
+        guess
+      }
+    })
+  }
+
   handlePromptFakeForGuess = () => {
     console.log('Prompting Fake For Guess')
     this.setState({
@@ -263,14 +307,30 @@ class App extends Component {
   }
 
   emitGuess = guess => {
-    console.log('Emitting guess', guess)
+    console.log('Emitting guess', guess);
     this.setState({fakeGuess: {
       hasGuessed: true
-    }})
+    }});
+    const packet = {
+      type: 'fake_guess',
+      guess
+    };
+    this.socket.emit('packet', packet);
   }
 
   emitVoteForGuessApproval = vote => {
-
+    console.log('Emitting guess approval vote of', vote)
+    this.setState({
+      guessApproval: {
+        ...this.state.guessApproval,
+        hasVoted: true
+      }
+    });
+    const packet = {
+      type: 'guess_approval_vote',
+      vote
+    };
+    this.socket.emit('packet', packet);
   }
 
   //############### LIFECYCLE AND RENDER METHODS ####################
@@ -308,7 +368,7 @@ class App extends Component {
   //COMPONENTIZE THE STATUS DISPLAY POST HASTE
   selectStatusDisplay() {
     const currentState = this.state.sessionState.currentSessionStatus; //for brevity
-    if (currentState === 'isGameActive') {
+    if (currentState === GAMEACTIVE) {
       const phase = this.state.gameState.currentPhase;
       if (phase === DRAWING || phase === DISPLAYSECRET) {
         return (
@@ -335,12 +395,37 @@ class App extends Component {
           return this.renderStatusMessage('Waiting for fake to guess...');
         }
       }
+      else if (phase === GUESSAPPROVAL) {
+        if(!this.state.gameState.fakeIsMe) {
+          if(!this.state.guessApproval.hasVoted) {
+            return this.renderGuessApprovalForm();
+          }
+          else {
+            return this.renderStatusMessage('Approval vote sent. Waiting for other players to vote...')
+          }
+        }
+        else {
+          //temp for testing:
+          if(!this.state.guessApproval.hasVoted) {
+            return this.renderGuessApprovalForm();
+          }
+          else {
+            return this.renderStatusMessage('Approval vote sent. Waiting for other players to vote...')
+          }         
+
+          // return this.renderStatusMessage('Guess submitted. Waiting for approval...');
+        }
+      }
+      else if (phase === GAMEOVER) {
+        //render vote to start new game ()
+        return this.renderStatusMessage('Game Over')
+      }
     }
     else { //SESSION STATUS COMPONENT
-      if (currentState === 'isWaitingForPlayers') {
+      if (currentState === WAITINGFORPLAYERS) {
         return this.renderStatusMessage('Waiting for Players');
       } 
-      else if (currentState === 'isWaitingToStart') {
+      else if (currentState === WAITINGTOSTART) {
         return !this.state.hasVotedToBegin ? this.renderVoteToBegin() 
                                      : this.renderStatusMessage('Waiting for other players to vote...');
       }
@@ -390,9 +475,25 @@ class App extends Component {
 
   renderFormForFakeGuess() {
     return(
-      <FakeGuessForm 
-        submitFakeGuess={this.emitGuess}
-      />
+      <div className="statusdisplay-fakeguess">
+        <h2>You were Found!</h2>
+        <p>You have one chance to steal the win if you can guess the secret clue correctly</p>
+        <FakeGuessForm 
+          submitFakeGuess={this.emitGuess}
+        />
+      </div>
+    )
+  }
+
+  renderGuessApprovalForm() {
+    return(
+      <div className="statusdisplay-guessapprovalform">
+        <GuessApprovalForm
+          secret={this.state.gameState.secret.secret}
+          guess={this.state.guessApproval.guess}
+          submitGuessApproval={this.emitVoteForGuessApproval}
+        />
+      </div>
     )
   }
 

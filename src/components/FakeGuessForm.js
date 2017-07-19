@@ -19,15 +19,13 @@ class FakeGuessForm extends Component {
 
 	render() {
 		return(
-			<div className="statusdisplay-fakeguess">
-				<form onSubmit={this.onSubmit}>
-	        <input 
-	          type="text" 
-	          value={this.state.inputText}
-	          onChange={this.onChange}
-	        />
-	      </form>
-      </div>
+			<form onSubmit={this.onSubmit}>
+        <input 
+          type="text" 
+          value={this.state.inputText}
+          onChange={this.onChange}
+        />
+      </form>
 		)
 	}
 }
