@@ -1,4 +1,5 @@
 import React, { Component } from 'react';
+import Modal from 'react-modal';
 import Chatroom from './components/Chatroom.js';
 import Drawingboard from './components/Drawingboard.js';
 import StatusPanel from './components/StatusPanel.js';
@@ -24,7 +25,9 @@ class App extends Component {
   constructor(props) {
     super(props);
     this.socket = null;
-    this.state = { 
+    this.state = {
+      isModalActive: false,
+      modalContent: '',
       socketId: '',
       myId: '', //TEMP until auth and persistent login (necessary for self-identifying in state updates)
       myName: '',
@@ -146,6 +149,55 @@ class App extends Component {
       },
       finalResults: payload
     });
+    //Trigger Modal
+    const modalContent = this.styleModal(payload.isFakeWinner, payload.isFakeFound, payload.players);
+    this.setState({
+      isModalActive: true,
+      modalContent
+    })
+  }
+
+  styleModal(fakeWins, fakeFound, players) {
+    function resultMessage(fakeWins, fakeFound) {
+      if(fakeWins) {
+        if(fakeFound) {
+          return 'The fake artist was uncovered but guessed the secret correctly to steal the win.'
+        }
+        else {
+          return 'The fake artist was never found. A sound defeat for the art of deduction.'
+        }
+      }
+      else {
+        return 'The fake artist was found and failed to discover the secret. A great victory for the forces of deduction.'
+      }
+    }
+
+    function displayPlayers(players) {
+      //Dynamically show players in their respective color, with fake bolded
+      return players.map((player, idx) => {
+        //available properties: {color, name, isFake}
+        const divStyle = {
+          color: player.color,
+        };
+        const classNameCon = `modal-result-players player ${player.isFake ? 'fake-player' : ''}`;
+
+        return (
+          <div className={classNameCon}>
+            <div style={divStyle} key={idx}>{player.name}</div>
+          </div>
+        )
+      })
+    }
+
+    const modalContent = (
+      <div className="modal-content">
+        <div className="modal-header">Game Over</div>
+        <div className="modal-result-text">{resultMessage(fakeWins, fakeFound)}</div>
+        <div className="modal-result-players">{displayPlayers(players)}</div>
+      </div>
+    )
+
+    return modalContent;
   }
 
   handleFakeGuessApprovalRequest = guess => {
@@ -333,6 +385,10 @@ class App extends Component {
     this.socket.emit('packet', packet);
   }
 
+  closeModal = () => {
+    this.setState({isModalActive: false})
+  }
+
   //############### LIFECYCLE AND RENDER METHODS ####################
   componentDidMount = () => {
     this.setupSocket();
@@ -362,6 +418,19 @@ class App extends Component {
         messages = {this.state.chatMessages}
         emitChatMessage = {this.emitChatMessage}
       />     
+    )
+  }
+
+  renderModal() {
+    return (
+      <Modal 
+        isOpen={this.state.isModalActive}
+        onRequestClose={this.closeModal}
+        className='modal'
+        overlayClassName='modal-overlay'
+      >
+        {this.state.modalContent}
+      </Modal>
     )
   }
 
@@ -505,6 +574,7 @@ class App extends Component {
           {this.renderChatroom()}
           {this.renderStatusDisplay()}
         </div>        
+        {this.renderModal()}
       </div>
     );
   }

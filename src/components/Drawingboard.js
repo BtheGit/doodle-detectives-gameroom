@@ -60,11 +60,11 @@ export default class Drawingboard extends Component {
 }
 
 	setupCanvas = () => {
-		const defaultSize = 800;
+		// const defaultSize = 800;
 		// window.devicePixelRatio = 2;
 		this.canvas = this.ref; 
 		this.ctx = this.canvas.getContext('2d');
-		const boundingRect = this.canvas.getBoundingClientRect();
+		// const boundingRect = this.canvas.getBoundingClientRect();
 		this.canvas.width = 800;
 		this.canvas.height = 800;
 		this.changeResolution(this.canvas, this.ctx, 2);
