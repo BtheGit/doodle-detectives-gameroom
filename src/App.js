@@ -114,13 +114,13 @@ class App extends Component {
     else if(packet.type === 'initiate_fake_vote') {
       this.handleFakeVoting(packet.players)
     }
-    else if(packet.type === 'fake_not_found') {
-      //Set game state to done; store fake info; check if I win and give me points if so;
-      //Display modal with final results. (Showing all players and their colors.)
-      //Set status display to showing vote for new game button
-      console.log('Fake Not Found - Game Over (Fake Wins)')
-      console.log(packet.players)
-    }
+    // else if(packet.type === 'fake_not_found') {
+    //   //Set game state to done; store fake info; check if I win and give me points if so;
+    //   //Display modal with final results. (Showing all players and their colors.)
+    //   //Set status display to showing vote for new game button
+    //   console.log('Fake Not Found - Game Over (Fake Wins)')
+    //   console.log(packet.players)
+    // }
     else if(packet.type === 'prompt_fake_for_guess'){
       //If I am fake, display guess form
       //Else display waiting for fake to guess
@@ -474,15 +474,8 @@ class App extends Component {
           }
         }
         else {
-          //temp for testing:
-          if(!this.state.guessApproval.hasVoted) {
-            return this.renderGuessApprovalForm();
-          }
-          else {
-            return this.renderStatusMessage('Approval vote sent. Waiting for other players to vote...')
-          }         
-
-          // return this.renderStatusMessage('Guess submitted. Waiting for approval...');
+          //I am the fake. Don't let me vote to approve my own guess!
+          return this.renderStatusMessage('Guess submitted. Waiting for approval...');
         }
       }
       else if (phase === GAMEOVER) {
