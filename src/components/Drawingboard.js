@@ -52,6 +52,10 @@ export default class Drawingboard extends Component {
 		});
 	}
 
+	cls = () => {
+		this.ctx.clearRect(0,0, this.canvas.width, this.canvas.height)
+	}
+
 	refresh = () => {
 		this.cls();
 		this.drawPaths(this.props.paths);

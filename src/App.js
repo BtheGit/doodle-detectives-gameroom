@@ -93,7 +93,8 @@ class App extends Component {
         myColor: packet.payload.color,
         chatMessages: packet.payload.chatLog,
         paths: packet.payload.paths
-      });
+      }, 
+      this.drawingboard.refresh);
     }
     else if (packet.type === 'broadcast_session') {
       this.handleSessionUpdate(packet.clients)
@@ -294,14 +295,9 @@ class App extends Component {
     })
   }
 
-  //TODO: For now I will use this hack to access the child component method
-  // handlePath = path => {
-  //   this.drawingboard.drawPath(path)
-  // }
-
   handlePath = path => {
     this.savePath(path)
-    this.drawingboard.drawPath(path)
+    this.drawingboard.drawPath(path) //Allows us to reach into the child component's functions. Dirty-boy!
   }
 
   savePath = path => {
