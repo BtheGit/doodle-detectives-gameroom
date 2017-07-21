@@ -36,13 +36,25 @@ export default class Drawingboard extends Component {
 		this.ctx.moveTo(path.startX, path.startY);
 		this.ctx.lineTo(path.endX, path.endY);
 		this.ctx.stroke();
-		//TODO: Do I need this?
+
+		//This keeps the cursor in the right place when the local client is drawing
 		if(path.id === this.props.clientId) {
 			this.setState({
 				startX: path.endX,
 				startY: path.endY
 			});
 		}
+	}
+
+	drawPaths = paths => {
+		paths.forEach(path => {
+			this.drawPath(path)
+		});
+	}
+
+	refresh = () => {
+		this.cls();
+		this.drawPaths(this.props.paths);
 	}
 
 	//############## LIFECYCLE & RENDER METHODS ###########
@@ -106,7 +118,12 @@ export default class Drawingboard extends Component {
 
 	componentDidMount = () => {
 		this.props.onRef(this) //To allow Parent to access child methods
-		this.setupCanvas();	
+		this.setupCanvas();
+		this.drawPaths(this.props.paths)
+	}
+
+	componentWillReceiveProps = () => {
+		// this.drawPaths(this.props.paths)
 	}
 
 	componentWillUnmount = () => {

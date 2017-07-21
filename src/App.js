@@ -36,6 +36,7 @@ class App extends Component {
       sessionId: '', //this.props.match.params.id || 
       score: 0,
       chatMessages: [],
+      paths: [],
       hasVotedToBegin: false, //Used for conditionally rendering status display after voting
       sessionState: {
         players: [],
@@ -90,7 +91,8 @@ class App extends Component {
         myId: packet.payload.clientId,
         myName: packet.payload.clientName,
         myColor: packet.payload.color,
-        chatMessages: packet.payload.chatLog
+        chatMessages: packet.payload.chatLog,
+        paths: packet.payload.paths
       });
     }
     else if (packet.type === 'broadcast_session') {
@@ -293,8 +295,17 @@ class App extends Component {
   }
 
   //TODO: For now I will use this hack to access the child component method
+  // handlePath = path => {
+  //   this.drawingboard.drawPath(path)
+  // }
+
   handlePath = path => {
+    this.savePath(path)
     this.drawingboard.drawPath(path)
+  }
+
+  savePath = path => {
+    this.setState({paths: [...this.state.paths, path]})
   }
 
   //########### SOCKET EMITTERS ##############
@@ -312,6 +323,7 @@ class App extends Component {
   }
 
   emitPath = path => {
+    this.savePath(path);
     const packet = {
       type: 'path',
       payload: path
@@ -401,13 +413,14 @@ class App extends Component {
   renderDrawingboard() {
     return (
       <Drawingboard 
-        playerName =    {this.state.myName}
-        onRef =         {ref => (this.drawingboard = ref)}
-        emitPath =      {this.emitPath}
-        clientColor =   {this.state.myColor}
-        clientId =      {this.state.socketId}
+        playerName    = {this.state.myName}
+        onRef         = {ref => (this.drawingboard = ref)}
+        emitPath      = {this.emitPath}
+        clientColor   = {this.state.myColor}
+        clientId      = {this.state.socketId}
         sessionStatus = {this.state.sessionState.currentSessionStatus}
-        isMyTurn =      {this.state.gameState.isMyTurn}
+        isMyTurn      = {this.state.gameState.isMyTurn}
+        paths         = {this.state.paths}
       />
     )
   }
