@@ -36,7 +36,7 @@
 }
 
 #chat-container {
-  height: 70%;
+  height: 60%;
   width: 100%;
   background-color: purple;
 }
@@ -45,6 +45,12 @@
   height: 90%;
   width: 100%;
   background-color: #E9C9F9;
+}
+
+#activeplayer-container {
+  height: 10%;
+  width: 100%;
+  background-color: #FEA9E1;
 }
 
 

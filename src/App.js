@@ -1,12 +1,13 @@
 import React, { Component } from 'react';
+import './App.css';
+import io from 'socket.io-client';
 import Modal from 'react-modal';
 import Chatroom from './components/Chatroom.js';
-import Drawingboard from './components/Drawingboard.js';
 import StatusPanel from './components/StatusPanel.js';
+import Drawingboard from './components/Drawingboard.js';
 import FakeGuessForm from './components/FakeGuessForm.js';
 import GuessApprovalForm from './components/GuessApprovalForm.js';
-import io from 'socket.io-client';
-import './App.css';
+import ActivePlayerScreen from './components/ActivePlayerScreen.js';
 
 //Game State Toggles
 const DISPLAYSECRET = 'DISPLAYSECRET',
@@ -429,6 +430,14 @@ class App extends Component {
     )
   }
 
+  renderActivePlayerScreen() {
+    return (
+      <ActivePlayerScreen
+        players={this.state.sessionState.players}
+      />
+    )
+  }
+
   renderModal() {
     return (
       <Modal 
@@ -573,6 +582,7 @@ class App extends Component {
         {this.renderDrawingboard()}
         <div id="sidebar-container">
           {this.renderChatroom()}
+          {this.renderActivePlayerScreen()}
           {this.renderStatusDisplay()}
         </div>        
         {this.renderModal()}
