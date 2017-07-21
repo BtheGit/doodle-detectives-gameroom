@@ -96,6 +96,9 @@ class App extends Component {
       }, 
       this.drawingboard.refresh);
     }
+    else if (packet.type === 'game_will_start') {
+      this.handleGameWillStart();
+    }
     else if (packet.type === 'broadcast_session') {
       this.handleSessionUpdate(packet.clients)
     }
@@ -143,6 +146,11 @@ class App extends Component {
   }
 
   //############### SOCKET HANDLERS #################
+  handleGameWillStart = () => {
+    this.clearPaths();
+    this.drawingboard.refresh();
+  }
+  
   handleGameOver = payload => {
     console.log('Game Over. Receiving final results', payload)
     this.setState({
@@ -302,6 +310,10 @@ class App extends Component {
 
   savePath = path => {
     this.setState({paths: [...this.state.paths, path]})
+  }
+
+  clearPaths = () => {
+    this.setState({paths: []})
   }
 
   //########### SOCKET EMITTERS ##############
