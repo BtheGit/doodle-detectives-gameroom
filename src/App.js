@@ -120,27 +120,13 @@ class App extends Component {
     else if(packet.type === 'initiate_fake_vote') {
       this.handleFakeVoting(packet.players)
     }
-    // else if(packet.type === 'fake_not_found') {
-    //   //Set game state to done; store fake info; check if I win and give me points if so;
-    //   //Display modal with final results. (Showing all players and their colors.)
-    //   //Set status display to showing vote for new game button
-    //   console.log('Fake Not Found - Game Over (Fake Wins)')
-    //   console.log(packet.players)
-    // }
     else if(packet.type === 'prompt_fake_for_guess'){
-      //If I am fake, display guess form
-      //Else display waiting for fake to guess
       this.handlePromptFakeForGuess();
     }
     else if(packet.type === 'get_approval_for_fake_guess'){
-      //If I am fake display waiting for guess to be approved
-      //Else display approval vote form
       this.handleFakeGuessApprovalRequest(packet.guess);
     }
     else if(packet.type === 'game_over'){
-      //Set local results to players. 
-      //Display results modal. 
-      //Accord points.
       this.handleGameOver(packet.payload);
     }
   }
@@ -158,7 +144,8 @@ class App extends Component {
         ...this.state.gameState,
         currentPhase: GAMEOVER
       },
-      finalResults: payload
+      finalResults: payload,
+      hasVotedToBegin: false
     });
     //Trigger Modal
     const modalContent = this.styleModal(payload.isFakeWinner, payload.isFakeFound, payload.players);
