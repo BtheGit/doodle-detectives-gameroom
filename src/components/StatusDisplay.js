@@ -83,7 +83,7 @@ const StatusDisplay = (props) => {
             currentColor = {props.currentColor}
             secret = {props.secret}
           />
-        ); //This will not be a message. Showing turns/clues/etc. //GAME STATUS COMPONENT       
+        );       
       }
       else if (phase === FAKEVOTE) {
         return renderVoteForFake();
@@ -121,7 +121,8 @@ const StatusDisplay = (props) => {
         return renderStatusMessage('Game Over')
       }
     }
-    else { //SESSION STATUS COMPONENT
+    //GAME NOT ACTIVE PHASES
+    else { 
       if (currentState === WAITINGFORPLAYERS) {
         return renderStatusMessage('Waiting for Players');
       } 

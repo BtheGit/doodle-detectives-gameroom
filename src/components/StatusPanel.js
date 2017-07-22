@@ -13,4 +13,3 @@ const StatusPanel = (props) => {
 
 export default StatusPanel;
 
-      // <div id="statuspanel-turncount">Turn: TODO</div>
