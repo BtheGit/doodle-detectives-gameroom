@@ -3,10 +3,11 @@ import './App.css';
 import io from 'socket.io-client';
 import Modal from 'react-modal';
 import Chatroom from './components/Chatroom.js';
-import StatusPanel from './components/StatusPanel.js';
+// import StatusPanel from './components/StatusPanel.js';
+import StatusDisplay from './components/StatusDisplay.js';
 import Drawingboard from './components/Drawingboard.js';
-import FakeGuessForm from './components/FakeGuessForm.js';
-import GuessApprovalForm from './components/GuessApprovalForm.js';
+// import FakeGuessForm from './components/FakeGuessForm.js';
+// import GuessApprovalForm from './components/GuessApprovalForm.js';
 import ActivePlayerScreen from './components/ActivePlayerScreen.js';
 
 //Game State Toggles
@@ -18,9 +19,9 @@ const DISPLAYSECRET = 'DISPLAYSECRET',
       GAMEOVER      = 'GAMEOVER';
 
 //Session State Toggles
-const GAMEACTIVE        = 'GAMEACTIVE',
-      WAITINGTOSTART    = 'WAITINGTOSTART',
-      WAITINGFORPLAYERS = 'WAITINGFORPLAYERS';
+// const GAMEACTIVE        = 'GAMEACTIVE',
+//       WAITINGTOSTART    = 'WAITINGTOSTART',
+//       WAITINGFORPLAYERS = 'WAITINGFORPLAYERS';
 
 class App extends Component {
   constructor(props) {
@@ -452,129 +453,148 @@ class App extends Component {
   }
 
   //COMPONENTIZE THE STATUS DISPLAY POST HASTE
-  selectStatusDisplay() {
-    const currentState = this.state.sessionState.currentSessionStatus; //for brevity
-    if (currentState === GAMEACTIVE) {
-      const phase = this.state.gameState.currentPhase;
-      if (phase === DRAWING || phase === DISPLAYSECRET) {
-        return (
-          <StatusPanel 
-            currentColor = {this.state.gameState.currentColor}
-            secret = {this.state.gameState.secret}
-          />
-        ); //This will not be a message. Showing turns/clues/etc. //GAME STATUS COMPONENT       
-      }
-      else if (phase === FAKEVOTE) {
-        return this.renderVoteForFake();
-      }
-      else if (phase === GUESSVOTE) {
-        if(this.state.gameState.fakeIsMe) {
-          if(!this.state.fakeGuess.hasGuessed) {
-            //Show Form component to receive guess
-            return this.renderFormForFakeGuess();
-          }
-          else {
-            return this.renderStatusMessage('Guess submitted. Waiting for approval...');
-          }
-        }
-        else {
-          return this.renderStatusMessage('Waiting for fake to guess...');
-        }
-      }
-      else if (phase === GUESSAPPROVAL) {
-        if(!this.state.gameState.fakeIsMe) {
-          if(!this.state.guessApproval.hasVoted) {
-            return this.renderGuessApprovalForm();
-          }
-          else {
-            return this.renderStatusMessage('Approval vote sent. Waiting for other players to vote...')
-          }
-        }
-        else {
-          //I am the fake. Don't let me vote to approve my own guess!
-          return this.renderStatusMessage('Guess submitted. Waiting for approval...');
-        }
-      }
-      else if (phase === GAMEOVER) {
-        //render vote to start new game ()
-        return this.renderStatusMessage('Game Over')
-      }
-    }
-    else { //SESSION STATUS COMPONENT
-      if (currentState === WAITINGFORPLAYERS) {
-        return this.renderStatusMessage('Waiting for Players');
-      } 
-      else if (currentState === WAITINGTOSTART) {
-        return !this.state.hasVotedToBegin ? this.renderVoteToBegin() 
-                                     : this.renderStatusMessage('Waiting for other players to vote...');
-      }
-      else {
-        return this.renderStatusMessage('Waiting for Server...');
-      }
-    }
-  }
+  // selectStatusDisplay() {
+  //   const currentState = this.state.sessionState.currentSessionStatus; //for brevity
+  //   if (currentState === GAMEACTIVE) {
+  //     const phase = this.state.gameState.currentPhase;
+  //     if (phase === DRAWING || phase === DISPLAYSECRET) {
+  //       return (
+  //         <StatusPanel 
+  //           currentColor = {this.state.gameState.currentColor}
+  //           secret = {this.state.gameState.secret}
+  //         />
+  //       ); //This will not be a message. Showing turns/clues/etc. //GAME STATUS COMPONENT       
+  //     }
+  //     else if (phase === FAKEVOTE) {
+  //       return this.renderVoteForFake();
+  //     }
+  //     else if (phase === GUESSVOTE) {
+  //       if(this.state.gameState.fakeIsMe) {
+  //         if(!this.state.fakeGuess.hasGuessed) {
+  //           //Show Form component to receive guess
+  //           return this.renderFormForFakeGuess();
+  //         }
+  //         else {
+  //           return this.renderStatusMessage('Guess submitted. Waiting for approval...');
+  //         }
+  //       }
+  //       else {
+  //         return this.renderStatusMessage('Waiting for fake to guess...');
+  //       }
+  //     }
+  //     else if (phase === GUESSAPPROVAL) {
+  //       if(!this.state.gameState.fakeIsMe) {
+  //         if(!this.state.guessApproval.hasVoted) {
+  //           return this.renderGuessApprovalForm();
+  //         }
+  //         else {
+  //           return this.renderStatusMessage('Approval vote sent. Waiting for other players to vote...')
+  //         }
+  //       }
+  //       else {
+  //         //I am the fake. Don't let me vote to approve my own guess!
+  //         return this.renderStatusMessage('Guess submitted. Waiting for approval...');
+  //       }
+  //     }
+  //     else if (phase === GAMEOVER) {
+  //       //render vote to start new game ()
+  //       return this.renderStatusMessage('Game Over')
+  //     }
+  //   }
+  //   else { //SESSION STATUS COMPONENT
+  //     if (currentState === WAITINGFORPLAYERS) {
+  //       return this.renderStatusMessage('Waiting for Players');
+  //     } 
+  //     else if (currentState === WAITINGTOSTART) {
+  //       return !this.state.hasVotedToBegin ? this.renderVoteToBegin() 
+  //                                    : this.renderStatusMessage('Waiting for other players to vote...');
+  //     }
+  //     else {
+  //       return this.renderStatusMessage('Waiting for Server...');
+  //     }
+  //   }
+  // }
 
+  // renderStatusDisplay() {
+  //   return (
+  //     <div className='statusdisplay-container'>
+  //       {this.selectStatusDisplay()}
+  //     </div>
+  //   )
+  // }
   renderStatusDisplay() {
     return (
-      <div className='statusdisplay-container'>
-        {this.selectStatusDisplay()}
-      </div>
+      <StatusDisplay
+        currentState={this.state.sessionState.currentSessionStatus}
+        currentPhase={this.state.gameState.currentPhase}
+        currentColor = {this.state.gameState.currentColor}
+        secret = {this.state.gameState.secret}
+        fakeIsMe={this.state.gameState.fakeIsMe}
+        hasVotedToBegin={this.state.hasVotedToBegin}
+        emitVoteToBegin={this.emitVoteToBegin}
+        fakeVote={this.state.fakeVote}
+        emitVoteForFake={this.emitVoteForFake}
+        emitVoteForGuessApproval={this.emitVoteForGuessApproval}
+        emitGuess={this.emitGuess}
+        hasGuessed={this.state.fakeGuess.hasGuessed}
+        guessApproval={this.state.guessApproval}
+      />
     )
   }
 
-  renderStatusMessage(message) {
-    return <div className="statusdisplay-message">{message}</div>
-  }
+  // renderStatusMessage(message) {
+  //   return <div className="statusdisplay-message">{message}</div>
+  // }
 
-  renderVoteToBegin() {
-    return(
-      <div className='statusdisplay-votetobegin'>
-        <button onClick={this.emitVoteToBegin}>Begin</button>
-        <div>Vote 'Begin' to get this party started! Game will commence when all players vote.</div>
-      </div>
-    )
-  }
+  // renderVoteToBegin() {
+  //   return(
+  //     <div className='statusdisplay-votetobegin'>
+  //       <button onClick={this.emitVoteToBegin}>Begin</button>
+  //       <div>Vote 'Begin' to get this party started! Game will commence when all players vote.</div>
+  //     </div>
+  //   )
+  // }
 
-  renderVoteForFake() {
-    if (!this.state.fakeVote.hasVoted) {
-      const opts = this.state.fakeVote.options.map(opt => {
-        return <button onClick={this.emitVoteForFake}>{opt}</button>
-      })
-      return (
-        <div className='statusdisplay-voteforfake'>
-          <h2>Who was faking?</h2>
-          {opts}
-        </div>
-      )     
-    }
-    else {
-      return this.renderStatusMessage('Waiting for other players to vote...')
-    }
-  }
+  // renderVoteForFake() {
+  //   if (!this.state.fakeVote.hasVoted) {
+  //     const opts = this.state.fakeVote.options.map(opt => {
+  //       return <button onClick={this.emitVoteForFake}>{opt}</button>
+  //     })
+  //     return (
+  //       <div className='statusdisplay-voteforfake'>
+  //         <h2>Who was faking?</h2>
+  //         {opts}
+  //       </div>
+  //     )     
+  //   }
+  //   else {
+  //     return this.renderStatusMessage('Waiting for other players to vote...')
+  //   }
+  // }
 
-  renderFormForFakeGuess() {
-    return(
-      <div className="statusdisplay-fakeguess">
-        <h2>You were Found!</h2>
-        <p>You have one chance to steal the win if you can guess the secret clue correctly</p>
-        <FakeGuessForm 
-          submitFakeGuess={this.emitGuess}
-        />
-      </div>
-    )
-  }
+  // renderFormForFakeGuess() {
+  //   return(
+  //     <div className="statusdisplay-fakeguess">
+  //       <h2>You were Found!</h2>
+  //       <p>You have one chance to steal the win if you can guess the secret clue correctly</p>
+  //       <FakeGuessForm 
+  //         submitFakeGuess={this.emitGuess}
+  //       />
+  //     </div>
+  //   )
+  // }
 
-  renderGuessApprovalForm() {
-    return(
-      <div className="statusdisplay-guessapprovalform">
-        <GuessApprovalForm
-          secret={this.state.gameState.secret.secret}
-          guess={this.state.guessApproval.guess}
-          submitGuessApproval={this.emitVoteForGuessApproval}
-        />
-      </div>
-    )
-  }
+  // renderGuessApprovalForm() {
+  //   return(
+  //     <div className="statusdisplay-guessapprovalform">
+  //       <GuessApprovalForm
+  //         secret={this.state.gameState.secret.secret}
+  //         guess={this.state.guessApproval.guess}
+  //         submitGuessApproval={this.emitVoteForGuessApproval}
+  //       />
+  //     </div>
+  //   )
+  // }
 
   render() {
     return (

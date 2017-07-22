@@ -103,5 +103,5 @@
 }
 
 .fake-player::after{
-  content: " (FAKE)";
+  content: "(FAKE)";
 }
