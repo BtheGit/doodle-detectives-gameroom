@@ -11,7 +11,7 @@
     "whatwg-fetch": "^2.0.3"
   },
   "homepage": "./",
-  "proxy": "http://localhost:8080",
+  "proxy": "http://localhost:8040",
   "scripts": {
     "start": "react-scripts start",
     "build": "react-scripts build",

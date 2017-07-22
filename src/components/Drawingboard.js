@@ -1,5 +1,11 @@
 import React, { Component } from 'react';
 
+
+//Background phase toggles
+const BG_GAME_NOTMYTURN = 'bg-gameactive',
+      BG_GAME_MYTURN    = 'bg-gameactive-myturn',
+      BG_NOGAME 				= 'bg-nogame'
+
 export default class Drawingboard extends Component {
 	constructor(props) {
 		super(props);
@@ -106,8 +112,7 @@ export default class Drawingboard extends Component {
 		this.canvas.addEventListener('mouseout', () => this.setState({isDrawing: false}))
 		this.canvas.addEventListener('mousemove', (event) => {
 			//Only Draw and Emit paths if a) the game is not in session or b) it's in the drawing phase and it's your turn
-			const gameActive = this.props.sessionStatus === 'isGameActive' ? true : false;
-			if(gameActive && !this.props.isMyTurn) {
+			if(this.props.isGameActive && !this.props.isMyTurn) {
 				return;
 			} else {
 				if(this.state.isDrawing) {
@@ -134,9 +139,23 @@ export default class Drawingboard extends Component {
 		//TODO remove event listeners
 	}
 
+	getClassNames() {
+		if(this.props.isGameActive) {
+			if(this.props.isMyTurn) {
+				return BG_GAME_MYTURN;
+			}
+			else {
+				return BG_GAME_NOTMYTURN;
+			}
+		}
+		else {
+			return BG_NOGAME;
+		}
+	}
+
 	render() {
 		return (
-			<div id="canvas-container">
+			<div id="canvas-container" className={this.getClassNames()}>
 				<canvas ref={(ref) => {this.ref = ref}} id="drawingCanvas" />
 			</div>
 		)

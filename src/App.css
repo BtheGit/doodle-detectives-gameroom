@@ -9,10 +9,21 @@
 #canvas-container {
   height: 100%;
   width: 80%;
-  background: radial-gradient(#3DAE9F 30%,#3F99FF);
   display: flex;
   justify-content: center;
   align-items: center;
+}
+
+.bg-nogame {
+  background: radial-gradient(#3DAE9F 30%,#3F99FF);
+}
+
+.bg-gameactive {
+  background: radial-gradient(#AE3D3D 30%,#FF3F3F);
+}
+
+.bg-gameactive-myturn {
+  background: radial-gradient(#4AAE3D 30%,#3FFF4D);
 }
 
 #drawingCanvas {

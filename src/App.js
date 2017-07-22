@@ -19,14 +19,15 @@ const DISPLAYSECRET = 'DISPLAYSECRET',
       GAMEOVER      = 'GAMEOVER';
 
 //Session State Toggles
-// const GAMEACTIVE        = 'GAMEACTIVE',
-//       WAITINGTOSTART    = 'WAITINGTOSTART',
-//       WAITINGFORPLAYERS = 'WAITINGFORPLAYERS';
+const GAMEACTIVE        = 'GAMEACTIVE',
+      WAITINGTOSTART    = 'WAITINGTOSTART',
+      WAITINGFORPLAYERS = 'WAITINGFORPLAYERS';
 
 class App extends Component {
   constructor(props) {
     super(props);
     this.socket = null;
+    this.background = document.getElementById('canvas-container');
     this.state = {
       isModalActive: false,
       modalContent: '',
@@ -258,7 +259,11 @@ class App extends Component {
         }
       })
       // Set Timeout (TODO create countdown timer and activate countdown sequence instead)
-      setTimeout(this.emitEndOfTurn, 1000)
+      setTimeout(this.handleEndOfTurn, 20000)
+  }
+
+  handleEndOfTurn = () => {
+    this.emitEndOfTurn();
   }
 
   handleDisplaySecretPhase = payload => {
@@ -394,6 +399,8 @@ class App extends Component {
     this.socket.emit('packet', packet);
   }
 
+  //######## DISPLAY HELPERS
+
   closeModal = () => {
     this.setState({isModalActive: false})
   }
@@ -415,7 +422,7 @@ class App extends Component {
         emitPath      = {this.emitPath}
         clientColor   = {this.state.myColor}
         clientId      = {this.state.socketId}
-        sessionStatus = {this.state.sessionState.currentSessionStatus}
+        isGameActive  = {this.state.sessionState.currentSessionStatus === GAMEACTIVE}
         isMyTurn      = {this.state.gameState.isMyTurn}
         paths         = {this.state.paths}
       />
