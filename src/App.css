@@ -111,8 +111,9 @@
 
 .fake-player{
   font-weight: bolder;
+  display: flex;
 }
 
 .fake-player::after{
-  content: "(FAKE)";
+  content: " (FAKE)";
 }

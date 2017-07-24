@@ -1,4 +1,5 @@
 import React, { Component } from 'react';
+import PropTypes from 'prop-types';
 import ChatOutput from './ChatOutput';
 
 class Chatroom extends Component {
@@ -51,5 +52,10 @@ class Chatroom extends Component {
     );
   };
 };
+
+Chatroom.propTypes = {
+  messages: PropTypes.array,
+  emitChatMessage: PropTypes.func.isRequired
+}
 
 export default Chatroom;

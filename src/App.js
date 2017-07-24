@@ -2,12 +2,10 @@ import React, { Component } from 'react';
 import './App.css';
 import io from 'socket.io-client';
 import Modal from 'react-modal';
+import Timer from './components/Timer.js'
 import Chatroom from './components/Chatroom.js';
-// import StatusPanel from './components/StatusPanel.js';
 import StatusDisplay from './components/StatusDisplay.js';
 import Drawingboard from './components/Drawingboard.js';
-// import FakeGuessForm from './components/FakeGuessForm.js';
-// import GuessApprovalForm from './components/GuessApprovalForm.js';
 import ActivePlayerScreen from './components/ActivePlayerScreen.js';
 
 //Game State Toggles
@@ -28,6 +26,7 @@ class App extends Component {
     super(props);
     this.socket = null;
     this.background = document.getElementById('canvas-container');
+    this.timeoutId = null;
     this.state = {
       isModalActive: false,
       modalContent: '',
@@ -70,6 +69,12 @@ class App extends Component {
         players: [],
         isFakeFound: false,
         isFakeWinner: false
+      },
+      timer: {
+        isActive: false,
+        length: 0,
+        tickCB: null,
+        endCB: null
       }
     }
   }
@@ -245,6 +250,7 @@ class App extends Component {
   }
 
   handleNextTurn = turn => {
+    console.log('Starting Turn')
       // Check if I am active player and toggle if true. (Can change the background color or 
       // something dramatic later)
       const newState = {
@@ -259,10 +265,14 @@ class App extends Component {
         }
       })
       // Set Timeout (TODO create countdown timer and activate countdown sequence instead)
-      setTimeout(this.handleEndOfTurn, 20000)
+      this.timeoutId = setTimeout(this.handleEndOfTurn, 5000)
+      this.startCountdown(5, null, null)
   }
 
   handleEndOfTurn = () => {
+    console.log('Ending Turn')
+    clearTimeout(this.timeoutId)
+    this.setState({timer: {...this.state.timer, isActive: false}})
     this.emitEndOfTurn();
   }
 
@@ -334,7 +344,6 @@ class App extends Component {
   }
 
   emitVoteToBegin = () => {
-    //TODO Toggle Display (need to reset this when game initializes!)
     this.setState({hasVotedToBegin: true});
     const packet = {
       type: 'vote_to_begin',
@@ -399,10 +408,21 @@ class App extends Component {
     this.socket.emit('packet', packet);
   }
 
-  //######## DISPLAY HELPERS
+  //######## HELPERS
 
   closeModal = () => {
     this.setState({isModalActive: false})
+  }
+
+  startCountdown = (length, tickCB, endCB) => {
+    this.setState({
+      timer: {
+        isActive: true,
+        length,
+        tickCB,
+        endCB
+      }
+    });
   }
 
   //############### LIFECYCLE AND RENDER METHODS ####################
@@ -479,6 +499,26 @@ class App extends Component {
     )
   }
 
+  renderTimer() {
+    if(this.state.timer.isActive) {
+      return (
+        <div className="timer-container">
+          <div>Remaining Time: </div>
+          <Timer
+            length= {this.state.timer.length}
+            tickCB= {this.state.timer.tickCB}
+            endCB= {this.state.timer.endCB}
+          />
+        </div>
+      )
+    }
+    else {
+      return (
+        <div className="timer-container" />
+      )
+    }
+  }
+
   render() {
     return (
       <div id="room-container">
@@ -486,6 +526,7 @@ class App extends Component {
         <div id="sidebar-container">
           {this.renderChatroom()}
           {this.renderActivePlayerScreen()}
+          {this.renderTimer()}
           {this.renderStatusDisplay()}
         </div>        
         {this.renderModal()}
@@ -493,6 +534,5 @@ class App extends Component {
     );
   }
 }
-
 
 export default App;
