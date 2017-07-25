@@ -44,8 +44,10 @@ class App extends Component {
         currentSessionStatus: '', //[WAITINGFORPLAYERS, WAITINGTOSTART, GAMEACTIVE]
       },
       gameState: {
+        playerColors: {},
         currentPhase: '', 
-        currentColor: '', //Player color (name is still secret)
+        currentColor: '',
+        currentPlayer: '',
         isMyTurn: false,
         fakeIsMe: false,
         secret: {
@@ -106,8 +108,8 @@ class App extends Component {
     else if (packet.type === 'game_will_start') {
       this.handleGameWillStart();
     }
-    else if (packet.type === 'broadcast_session') {
-      this.handleSessionUpdate(packet.clients)
+    else if(packet.type === 'update_player_colors') {
+      this.handleUpdatePlayerColors(packet.playerColors);
     }
     else if(packet.type ==='chat_message') {
       this.handleChatMessage(packet.payload);
@@ -122,10 +124,10 @@ class App extends Component {
       this.handleDisplaySecretPhase(packet.payload);
     }
     else if(packet.type === 'next_turn') {
-      this.handleNextTurn(packet.payload)
+      this.handleNextTurn(packet.payload);
     }
     else if(packet.type === 'initiate_fake_vote') {
-      this.handleFakeVoting(packet.players)
+      this.handleFakeVoting(packet.players);
     }
     else if(packet.type === 'prompt_fake_for_guess'){
       this.handlePromptFakeForGuess();
@@ -254,6 +256,7 @@ class App extends Component {
       // something dramatic later)
       const newState = {
         currentColor: turn.color,
+        currentPlayer: turn.name,
         isMyTurn: turn.active,
         currentPhase: DRAWING
       }
@@ -293,16 +296,19 @@ class App extends Component {
     })
   }
 
-  //Handle new remote clients joining session or leaving session
-  //Create a filtered list of remote peers
-  //TODO? Can add more player state info through this function if needed later
-  handleSessionUpdate = clients => {
-    const myId = clients.self;
-    const peers = clients.players.filter(player => player.id !== myId)
-    this.setState({playerList: peers})
+  handleUpdatePlayerColors = playerColors => {
+    console.log('Updating Player Colors')
+    this.setState({myColor: playerColors[this.state.myId]})
+    this.setState({
+      gameState: {
+        ...this.state.gameState,
+        playerColors
+      }
+    });
   }
 
   handleSessionStateUpdate = sessionState => {
+    console.log('Session state updated')
     this.setState({sessionState})
   }
 
@@ -468,6 +474,7 @@ class App extends Component {
     return (
       <ActivePlayerScreen
         players={this.state.sessionState.players}
+        playerColors={this.state.gameState.playerColors || {}}
       />
     )
   }
@@ -491,6 +498,7 @@ class App extends Component {
         currentState              ={this.state.sessionState.currentSessionStatus}
         currentPhase              ={this.state.gameState.currentPhase}
         currentColor              ={this.state.gameState.currentColor}
+        currentPlayer             ={this.state.gameState.currentPlayer}
         secret                    ={this.state.gameState.secret}
         fakeIsMe                  ={this.state.gameState.fakeIsMe}
         hasVotedToBegin           ={this.state.hasVotedToBegin}

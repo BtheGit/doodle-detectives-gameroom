@@ -81,6 +81,7 @@ const StatusDisplay = (props) => {
         return (
           <StatusPanel 
             currentColor = {props.currentColor}
+            currentPlayer = {props.currentPlayer}
             secret = {props.secret}
           />
         );       
