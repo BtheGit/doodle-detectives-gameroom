@@ -26,7 +26,6 @@ class App extends Component {
     super(props);
     this.socket = null;
     this.background = document.getElementById('canvas-container');
-    this.timeoutId = null;
     this.state = {
       isModalActive: false,
       modalContent: '',
@@ -264,15 +263,21 @@ class App extends Component {
           ...newState
         }
       })
-      // Set Timeout (TODO create countdown timer and activate countdown sequence instead)
-      this.timeoutId = setTimeout(this.handleEndOfTurn, 5000)
-      this.startCountdown(5, null, null)
+      if(turn.active) {
+        this.startCountdown(5, null, this.handleEndOfTurn)       
+      }
   }
 
   handleEndOfTurn = () => {
     console.log('Ending Turn')
-    clearTimeout(this.timeoutId)
-    this.setState({timer: {...this.state.timer, isActive: false}})
+    this.setState({
+      timer: {
+        isActive: false,
+        length: 0,
+        tickCB: null,
+        endCB: null,
+      }
+    });
     this.emitEndOfTurn();
   }
 
@@ -434,6 +439,7 @@ class App extends Component {
     this.socket.disconnect();
   }
 
+  ///Note: onRef is a hack to allow the parent to access the child methods
   renderDrawingboard() {
     return (
       <Drawingboard 

@@ -38,12 +38,10 @@ class Timer extends Component {
 
   tick = () => {
     if(this.props.tickCB) this.props.tickCB();
-    console.log('tick')
   }
 
   timerFinished = () => {
     if(this.props.endCB) this.props.endCB();
-    console.log('Timer Finished')
   }
 
   render() {

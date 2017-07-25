@@ -1,12 +1,12 @@
 import React, { Component } from 'react';
-
+import PropTypes from 'prop-types';
 
 //Background phase toggles
 const BG_GAME_NOTMYTURN = 'bg-gameactive',
       BG_GAME_MYTURN    = 'bg-gameactive-myturn',
       BG_NOGAME 				= 'bg-nogame'
 
-export default class Drawingboard extends Component {
+class Drawingboard extends Component {
 	constructor(props) {
 		super(props);
 		this.ref = null;
@@ -131,10 +131,6 @@ export default class Drawingboard extends Component {
 		this.drawPaths(this.props.paths)
 	}
 
-	componentWillReceiveProps = () => {
-		// this.drawPaths(this.props.paths)
-	}
-
 	componentWillUnmount = () => {
 		//TODO remove event listeners
 	}
@@ -161,3 +157,16 @@ export default class Drawingboard extends Component {
 		)
 	}
 }
+
+Drawingboard.propTypes = {
+  playerName:PropTypes.string.isRequired,
+  onRef: PropTypes.func.isRequired,
+  emitPath: PropTypes.func.isRequired,
+  clientColor: PropTypes.string.isRequired,
+  clientId: PropTypes.string.isRequired,
+  isGameActive: PropTypes.bool.isRequired,
+  isMyTurn: PropTypes.bool.isRequired,
+  paths: PropTypes.array.isRequired,	
+};
+
+export default Drawingboard;
