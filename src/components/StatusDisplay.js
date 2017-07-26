@@ -34,7 +34,11 @@ const StatusDisplay = (props) => {
   function renderVoteForFake() {
     if (!props.fakeVote.hasVoted) {
       const opts = props.fakeVote.options.map(opt => {
-        return <button onClick={props.emitVoteForFake}>{opt}</button>
+        const divStyle = {
+          color: 'white',
+          backgroundColor: opt
+        }
+        return <div className="player-button" style={divStyle} onClick={props.emitVoteForFake}>{opt}</div>
       })
       return (
         <div className='statusdisplay-voteforfake'>

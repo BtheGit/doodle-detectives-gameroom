@@ -157,14 +157,15 @@ class App extends Component {
       hasVotedToBegin: false
     });
     //Trigger Modal
-    const modalContent = this.styleModal(payload.isFakeWinner, payload.isFakeFound, payload.players);
+    const modalContent = this.styleResultsModal(payload.isFakeWinner, payload.isFakeFound, payload.players);
     this.setState({
       isModalActive: true,
       modalContent
     })
   }
 
-  styleModal(fakeWins, fakeFound, players) {
+
+  styleResultsModal(fakeWins, fakeFound, players) {
     function resultMessage(fakeWins, fakeFound) {
       if(fakeWins) {
         if(fakeFound) {
@@ -197,10 +198,22 @@ class App extends Component {
     }
 
     const modalContent = (
-      <div className="modal-content">
+      <div className="modal-content modal-results">
         <div className="modal-header">Game Over</div>
         <div className="modal-result-text">{resultMessage(fakeWins, fakeFound)}</div>
         <div className="modal-result-players">{displayPlayers(players)}</div>
+      </div>
+    )
+
+    return modalContent;
+  }
+
+  styleBeginModal({secret, category}) {
+    const modalContent = (
+      <div className="modal-content modal-begin">
+        <div className="modal-header">Get Ready to Doodle!</div>
+        <div className="modal-category">Category: {category}</div>
+        <div className="modal-secret">Secret: {secret}</div>
       </div>
     )
 
@@ -235,7 +248,6 @@ class App extends Component {
   }
 
   handleFakeVoting = players => {
-    console.log('Fake Voting Phase')
     this.setState({
       gameState: {
         ...this.state.gameState,
@@ -251,7 +263,6 @@ class App extends Component {
   }
 
   handleNextTurn = turn => {
-    console.log('Starting Turn')
       // Check if I am active player and toggle if true. (Can change the background color or 
       // something dramatic later)
       const newState = {
@@ -267,12 +278,11 @@ class App extends Component {
         }
       })
       if(turn.active) {
-        this.startCountdown(5, null, this.handleEndOfTurn)       
+        this.startCountdown(15, null, this.handleEndOfTurn)       
       }
   }
 
   handleEndOfTurn = () => {
-    console.log('Ending Turn')
     this.setState({
       timer: {
         isActive: false,
@@ -294,10 +304,15 @@ class App extends Component {
         currentPhase: DISPLAYSECRET
       }
     })
+    this.startCountdown(payload.displayLength, null, this.startFirstTurn)
+    const modalContent = this.styleBeginModal(payload.secret);
+    this.setState({
+      isModalActive: true,
+      modalContent
+    })
   }
 
   handleUpdatePlayerColors = playerColors => {
-    console.log('Updating Player Colors')
     this.setState({myColor: playerColors[this.state.myId]})
     this.setState({
       gameState: {
@@ -308,7 +323,6 @@ class App extends Component {
   }
 
   handleSessionStateUpdate = sessionState => {
-    console.log('Session state updated')
     this.setState({sessionState})
   }
 
@@ -422,13 +436,28 @@ class App extends Component {
   //######## HELPERS
 
   closeModal = () => {
-    this.setState({isModalActive: false})
+    this.setState({
+      isModalActive: false,
+      modalContent: ''
+    })
   }
 
-  startCountdown = (length, tickCB, endCB) => {
+  startFirstTurn = () => {
+    this.closeModal();
     this.setState({
       timer: {
-        isActive: true,
+        isActive: false,
+        length: 0,
+        tickCB: null,
+        endCB: null,
+      }
+    });
+  }
+
+  startCountdown = (length, tickCB, endCB, isActive = true) => {
+    this.setState({
+      timer: {
+        isActive,
         length,
         tickCB,
         endCB
