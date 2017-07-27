@@ -21,14 +21,22 @@ const GAMEACTIVE        = 'GAMEACTIVE',
       WAITINGTOSTART    = 'WAITINGTOSTART',
       WAITINGFORPLAYERS = 'WAITINGFORPLAYERS';
 
+//Background phase toggles
+const BG_GAME_NOTMYTURN = 'bg-gameactive',
+      BG_GAME_MYTURN    = 'bg-gameactive-myturn',
+      BG_NOGAME         = 'bg-nogame'
+
 class App extends Component {
   constructor(props) {
     super(props);
     this.socket = null;
     this.background = document.getElementById('canvas-container');
     this.state = {
-      isModalActive: false,
-      modalContent: '',
+      modal: {
+        isModalActive: false,
+        isAbleToClose: true,
+        modalContent: ''
+      },
       socketId: '',
       myId: '', //TEMP until auth and persistent login (necessary for self-identifying in state updates)
       myName: '',
@@ -159,8 +167,11 @@ class App extends Component {
     //Trigger Modal
     const modalContent = this.styleResultsModal(payload.isFakeWinner, payload.isFakeFound, payload.players);
     this.setState({
-      isModalActive: true,
-      modalContent
+      modal: {
+        isModalActive: true,
+        isAbleToClose: true,
+        modalContent
+      }
     })
   }
 
@@ -260,6 +271,13 @@ class App extends Component {
         options: players
       }
     })
+    this.setState({
+      modal: {
+        isModalActive: true,
+        isAbleToClose: false,
+        modalContent: this.renderStatusDisplay()
+      }
+    })
   }
 
   handleNextTurn = turn => {
@@ -278,7 +296,7 @@ class App extends Component {
         }
       })
       if(turn.active) {
-        this.startCountdown(15, null, this.handleEndOfTurn)       
+        this.startCountdown(2, null, this.handleEndOfTurn)       
       }
   }
 
@@ -307,8 +325,11 @@ class App extends Component {
     this.startCountdown(payload.displayLength, null, this.startFirstTurn)
     const modalContent = this.styleBeginModal(payload.secret);
     this.setState({
-      isModalActive: true,
-      modalContent
+      modal: {
+        isModalActive: true,
+        isAbleToClose: false,
+        modalContent
+      }
     })
   }
 
@@ -404,6 +425,7 @@ class App extends Component {
         hasVoted: true
       }
     })
+    this.closeModal()
   }
 
   emitGuess = guess => {
@@ -437,8 +459,11 @@ class App extends Component {
 
   closeModal = () => {
     this.setState({
-      isModalActive: false,
-      modalContent: ''
+      modal: {
+        isModalActive: false,
+        isAbleToClose: true,
+        modalContent: ''       
+      }
     })
   }
 
@@ -511,12 +536,13 @@ class App extends Component {
   renderModal() {
     return (
       <Modal 
-        isOpen={this.state.isModalActive}
+        isOpen={this.state.modal.isModalActive}
         onRequestClose={this.closeModal}
         className='modal'
         overlayClassName='modal-overlay'
+        shouldCloseOnOverlayClick={this.state.modal.isAbleToClose}
       >
-        {this.state.modalContent}
+        {this.state.modal.modalContent}
       </Modal>
     )
   }
@@ -546,11 +572,10 @@ class App extends Component {
     if(this.state.timer.isActive) {
       return (
         <div className="timer-container">
-          <div>Remaining Time: </div>
           <Timer
-            length= {this.state.timer.length}
-            tickCB= {this.state.timer.tickCB}
-            endCB= {this.state.timer.endCB}
+            length  = {this.state.timer.length}
+            tickCB  = {this.state.timer.tickCB}
+            endCB   = {this.state.timer.endCB}
           />
         </div>
       )
@@ -563,12 +588,28 @@ class App extends Component {
   }
 
   render() {
+    const setBGColor = () => {
+      if(this.state.sessionState.currentSessionStatus === GAMEACTIVE) {
+        if(this.state.gameState.isMyTurn) {
+          return BG_GAME_MYTURN;
+        }
+        else {
+          return BG_GAME_NOTMYTURN;
+        }
+      }
+      else {
+        return BG_NOGAME;
+      }
+    }
+
     return (
-      <div id="room-container">
+      <div id="room-container" className={setBGColor()}>
+        <div className="left-side">
+          {this.renderActivePlayerScreen()}
+        </div>
         {this.renderDrawingboard()}
         <div id="sidebar-container">
           {this.renderChatroom()}
-          {this.renderActivePlayerScreen()}
           {this.renderTimer()}
           {this.renderStatusDisplay()}
         </div>        

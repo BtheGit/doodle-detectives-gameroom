@@ -14,6 +14,14 @@ class Chatroom extends Component {
     this.setState({chatInputValue: e.target.value});
   };
 
+  keyPress = (e) => {
+    if (e.keyCode === 13) {
+      e.preventDefault()
+      this.props.emitChatMessage(this.state.chatInputValue);
+      this.setState({chatInputValue: ''});      
+    }
+  }
+
   handleSubmit = (e) =>  {
     e.preventDefault();
     this.props.emitChatMessage(this.state.chatInputValue);
@@ -32,22 +40,28 @@ class Chatroom extends Component {
 
   renderChatInput() {
     return(
-      <form id="chat-input" onSubmit={this.handleSubmit}>
-        <input 
-          id="message-box" 
-          autoComplete="off"
-          value={this.state.chatInputValue} 
-          onChange={this.handleChatInput}
-        />
-      </form>        
+      <div className="chat-input">
+        <form onSubmit={this.handleSubmit}>
+          <textarea 
+            id="message-box" 
+            autoComplete="off"
+            maxLength='200'
+            value={this.state.chatInputValue}
+            onKeyDown={this.keyPress}
+            onChange={this.handleChatInput}
+          />
+        </form>
+      </div>  
     );
   };
 
   render() {
     return(
-      <div id="chat-container">
-        {this.renderChatOutput()}
-        {this.renderChatInput()}
+      <div className="chat-container-outer">
+        <div className="chat-container-inner">
+          {this.renderChatOutput()}
+          {this.renderChatInput()}
+        </div>
       </div>    
     );
   };

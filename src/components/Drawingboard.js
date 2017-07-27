@@ -1,11 +1,6 @@
 import React, { Component } from 'react';
 import PropTypes from 'prop-types';
 
-//Background phase toggles
-const BG_GAME_NOTMYTURN = 'bg-gameactive',
-      BG_GAME_MYTURN    = 'bg-gameactive-myturn',
-      BG_NOGAME 				= 'bg-nogame'
-
 class Drawingboard extends Component {
 	constructor(props) {
 		super(props);
@@ -88,8 +83,8 @@ class Drawingboard extends Component {
 		this.ctx = this.canvas.getContext('2d');
 		// const boundingRect = this.canvas.getBoundingClientRect();
 		this.canvas.width = 800;
-		this.canvas.height = 800;
-		this.changeResolution(this.canvas, this.ctx, 2);
+		this.canvas.height = 450;
+		this.changeResolution(this.canvas, this.ctx, 3);
 		// this.canvas.style.width = `${window.innerWidth}px`;
 		// this.canvas.style.height = `${window.innerHeight}px`;
 		// this.ctx.scale((this.canvas.width / this.canvas.style.width), (this.canvas.width / this.canvas.style.width))
@@ -135,23 +130,9 @@ class Drawingboard extends Component {
 		//TODO remove event listeners
 	}
 
-	getClassNames() {
-		if(this.props.isGameActive) {
-			if(this.props.isMyTurn) {
-				return BG_GAME_MYTURN;
-			}
-			else {
-				return BG_GAME_NOTMYTURN;
-			}
-		}
-		else {
-			return BG_NOGAME;
-		}
-	}
-
 	render() {
 		return (
-			<div id="canvas-container" className={this.getClassNames()}>
+			<div id="canvas-container">
 				<canvas ref={(ref) => {this.ref = ref}} id="drawingCanvas" />
 			</div>
 		)

@@ -2,11 +2,12 @@ import React from 'react';
 
 const ChatOutput = (props) => {
   return (
-    <div id="chat-display">
+    <div className="chat-display">
       {props.messages.map((message, index) => {
         return (
           <div className='chat-message' key={index}>
-            <span className='chat-message-name'>{message.name}:</span> {message.content}
+            <div className='chat-message-name'>{message.name}</div> 
+            <div className='chat-message-content'>{message.content}</div>
           </div>
         )
       })}
