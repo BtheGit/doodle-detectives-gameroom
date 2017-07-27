@@ -1,7 +1,6 @@
 import React from 'react';
 import StatusPanel from './StatusPanel.js';
 import FakeGuessForm from './FakeGuessForm.js';
-import GuessApprovalForm from './GuessApprovalForm.js';
 
 //Game State Toggles
 const DISPLAYSECRET = 'DISPLAYSECRET',
@@ -25,8 +24,9 @@ const StatusDisplay = (props) => {
   function renderVoteToBegin() {
     return(
       <div className='statusdisplay-votetobegin'>
-        <button onClick={props.emitVoteToBegin}>Begin</button>
-        <div>Vote 'Begin' to get this party started! Game will commence when all players vote.</div>
+        <button onClick={props.emitVoteToBegin}>BEGIN!</button>
+        <div>Vote 'Begin' to get this party started!</div>
+        <div>Game will commence when all players vote.</div>
       </div>
     )
   }
@@ -43,7 +43,9 @@ const StatusDisplay = (props) => {
       return (
         <div className='statusdisplay-voteforfake'>
           <h2>Who was faking?</h2>
-          {opts}
+          <div className='statusdisplay-voteforfake-opts'>
+            {opts}
+          </div>
         </div>
       )     
     }
@@ -63,19 +65,6 @@ const StatusDisplay = (props) => {
       </div>
     )
   }
-
-  function renderGuessApprovalForm() {
-    return(
-      <div className="statusdisplay-guessapprovalform">
-        <GuessApprovalForm
-          secret={props.secret.secret}
-          guess={props.guessApproval.guess}
-          submitGuessApproval={props.emitVoteForGuessApproval}
-        />
-      </div>
-    )
-  }
-
 
   function selectStatusDisplay() {
     const currentState = props.currentState;
@@ -110,7 +99,7 @@ const StatusDisplay = (props) => {
       else if (phase === GUESSAPPROVAL) {
         if(!props.fakeIsMe) {
           if(!props.guessApproval.hasVoted) {
-            return renderGuessApprovalForm();
+            return null;
           }
           else {
             return renderStatusMessage('Approval vote sent. Waiting for other players to vote...')
@@ -129,7 +118,7 @@ const StatusDisplay = (props) => {
     //GAME NOT ACTIVE PHASES
     else { 
       if (currentState === WAITINGFORPLAYERS) {
-        return renderStatusMessage('Waiting for Players');
+        return renderStatusMessage('Waiting for Players...');
       } 
       else if (currentState === WAITINGTOSTART) {
         return !props.hasVotedToBegin ? renderVoteToBegin() 

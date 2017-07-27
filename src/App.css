@@ -8,36 +8,17 @@
 
 .left-side {
   height: 100%;
-  min-width: 200px;
+  width: 75%;
   display: flex;
+  flex-direction: column;
   justify-content: center;
   align-items: center;
 }
 
-.activeplayer-container {
-  height: 40%;
-  width: 80%;
-  color: #FFFDC0;
-  box-sizing: border-box;
-  padding: 5px;
-  background-color: rgba(0,0,0,0.8);
-  border-radius: 6px;
-  box-shadow: 0px 0px 15px 1px #000;
-}
-
-.activeplayer-header {
-  font-size: 1.3em;
-  height: 2em;
-  line-height: 2em;
-  vertical-align: middle;
-  text-align: center;
-  background-color: rgba(0,0,0,0.5);
-  border-bottom: 1px solid black;
-}
-
 #canvas-container {
-  height: 100%;
-  width: 70%;
+  position: relative;
+  height: 565px;
+  width: 1000px;
   display: flex;
   justify-content: center;
   align-items: center;
@@ -74,7 +55,7 @@ canvas {
 
 #sidebar-container {
   height: 100%;
-  width: 30%;
+  width: 25%;
   display: flex;
   flex-direction: column;
   justify-content: center;
@@ -98,8 +79,6 @@ canvas {
   flex-direction: column;
   align-items: center;
   justify-content: center;
-  /*box-shadow: 0px 0px 25px 1px #000;*/
-  /*box-shadow: 0px 0px 15px -3px #222222;*/
 }
 
 .chat-display {
@@ -108,23 +87,23 @@ canvas {
   color: #FFFB89;
   font-size: 18px;
   background-color: rgba(0,0,0,0.5);  
-  border-top: 5px solid black;
-  border-left: 5px solid black;
-  border-right: 5px solid black;
+  border-top: 3px solid black;
+  border-left: 3px solid black;
+  border-right: 3px solid black;
   border-radius: 10px 10px 0px 0px;
   overflow-y: scroll;
 }
 
 .chat-display::-webkit-scrollbar {
-    width: 1em;
+  width: 1em;
 }
  
 .chat-display::-webkit-scrollbar-track {
-    -webkit-box-shadow: inset 0 0 6px rgba(0,0,0,0.3);
+  -webkit-box-shadow: inset 0 0 6px rgba(0,0,0,0.3);
 }
  
 .chat-display::-webkit-scrollbar-thumb {
-  background-color: #F0BB18;
+  background-color: #9a8313;
   outline: 1px solid slategrey;
 }
 
@@ -132,6 +111,7 @@ canvas {
   position: relative;
   box-sizing: border-box;
   margin: 5px;
+  margin-left: 10px;
 }
 
 
@@ -151,7 +131,7 @@ canvas {
   bottom: 2px;
   left: 25%;
   width: 50%;
-  background: #877C2F;
+  background: #352f21;
   height: 1px;
 }
 
@@ -160,7 +140,7 @@ canvas {
   width: 100%;
   overflow-x: hidden;
   background-color: rgba(0,0,0,0.5);
-  border: 5px solid black;
+  border: 3px solid black;
   border-radius: 0px 0px 10px 10px;
 }
 
@@ -177,48 +157,208 @@ canvas {
   padding: 10px;
   border: none;
   background-color: transparent;
+  font-size: 18px;
   color: #FDFFD8;
   resize: none;
   outline: none;
 }
 
+
+.activeplayer-container {
+  height: 25%;
+  width: 60%;
+  color: #FFFDC0;
+  box-sizing: border-box;
+  padding: 5px;
+  background-color: rgba(0,0,0,0.5);
+  border-radius: 6px;
+  border: 3px solid black;
+  box-shadow: 0px 2px 5px -2px #000;
+}
+
+.activeplayer-header {
+  font-size: 1.4em;
+  height: 2em;
+  line-height: 2em;
+  vertical-align: middle;
+  text-align: center;
+  background-color: rgba(0,0,0,0.5);
+  border-bottom: 1px solid black;
+}
+
+.activeplayer-players {
+  box-sizing: border-box;
+  padding: 10px;
+  overflow-y: scroll;
+  font-size: 1.2em;
+}
+
+.activeplayer-players::-webkit-scrollbar {
+  width: 1em;
+}
+ 
+.activeplayer-players::-webkit-scrollbar-track {
+  -webkit-box-shadow: inset 0 0 6px rgba(0,0,0,0.3);
+}
+ 
+.activeplayer-players::-webkit-scrollbar-thumb {
+  background-color: #9a8313;
+  outline: 1px solid slategrey;
+}
+
+
 .statusdisplay-container {
-  height: 20%;
-  width: 80%;
-  background-color: rgba(41,101,110,0.3);
   color: #FDFFD8;
-  border-radius: 10px;
-  box-shadow: 0px 0px 15px 1px #000;
-  /*box-shadow: 0px 0px 10px -3px #222222;*/
+  user-select: none;
 }
 
 .statusdisplay-container * {
   margin: 10px;
 }
 
-.timer-display {
+.statusdisplay-message {
   position: absolute;
-  left: 45%;
-  bottom: 75px;
-  width: 2em;
+  bottom: 0;
+  right: 0;
+  width: 20em;
   height: 2em;
   line-height: 2em;
+  padding-left: 15px;
+  vertical-align: middle;
+  background-color: rgba(41,101,110,1);
+  border-radius: 10px;
+  box-shadow: 0px 3px 5px -1px rgba(0,0,0,0.6);
+}
+
+.statusdisplay-votetobegin {
+  position: absolute;
+  bottom: -4em;
+  height: 10em;
+  background-color: #101212;
+  text-align: center;
+  align-self: center;
+  left: calc(50% - 200px);
+  border-radius: 20px;
+  box-shadow: 0 3px 15px -5px black;
+}
+
+.statusdisplay-votetobegin button {
+  background-color: #24ad01;
+  outline: none;
+  border: none;
+  border-radius: 50%;
+  height: 5em;
+  width: 5em;
+  box-shadow: 0px 2px 3px 0px #00d800;
+  font-style: italic;
+  font-weight: bolder;
+}
+
+.statusdisplay-votetobegin button:hover {
+  background-color: #2CDB00;
+}
+
+.statusdisplay-votetobegin button:focus {
+  transform: translateY(3px);
+}
+
+.turndisplay-container {
+  position: absolute;
+}
+
+.statusdisplay-voteforfake {
+  position: absolute;
+  height: 50px;
+  bottom: -55px;
+  left: 0;
+  width: 100%;
+  margin: auto;
+}
+
+.statusdisplay-voteforfake h2 {
+  text-align: center;
+}
+
+.statusdisplay-voteforfake-opts {
+  width: 100%;
+  display: flex;
+  justify-content: center;
+}
+
+
+.player-button {
+  box-sizing: border-box;
+  width: 6em;
+  height: 2.5em;
+  line-height: 2em;
+  vertical-align: middle;
+  padding: 5px 20px;
+  text-align: center;
+  float: left;
+  margin: 0px 5px 5px 0px;
+  border-radius: 6px;
+  box-shadow: 0px 4px 10px -5px rgba(0,0,0,0.6);
+}
+
+.player-button:active {
+  transform: translateY(2px);
+}
+
+.statusdisplay-fakeguess {
+  position: absolute;
+  width: 600px;
+  height: 200px;
+  bottom: -100px;
+  left: calc(50% - 300px);
+  margin: auto;
+  box-sizing: border-box;
+  padding: 15px;
+  text-align: center;
+  z-index: 15;
+  background: red;
+  border-radius: 2px;
+  box-shadow: 0px 2px 10px -2px black;
+}
+
+.statusdisplay-fakeguess input {
+  width: 400px;
+  text-align: center;
+  height: 1.5em;
+  font-size: 25px;
+}
+
+.timer-display {
+  position: absolute;
+  left: calc(50% - 2em);
+  bottom: -2em;
+  width: 4em;
+  height: 4em;
+  line-height: 4em;
   vertical-align: middle;
   text-align: center;
   background-color: #07575A;
   border-radius: 50%;
   font-size: 24px;
   color:#FFFDE5;
-  box-shadow: 0px 0px 15px 1px #000;
+  box-shadow: 0 0 15px -2px #000;
+  animation: timerPop 0.3s linear 1;
+}
+
+@keyframes timerPop {
+  25% {
+    opacity: 0.5;
+    transform: scale(0.8);
+  }
+  75% {
+    transform: scale(1.2);
+  }
+  100% {
+    opacity: 1;
+  }
 }
 
 .modal {
-  position: absolute;
-  top: 30%;
-  left: 30%;
-  width: 40%;
-  height: 40%;
-  background-color: #EFD6FF;
+
 }
 
 .modal-overlay {
@@ -230,21 +370,73 @@ canvas {
   background-color: rgba(0,0,0,0.6);
 }
 
-.player-button {
-  height: 1.5em;
-  width: 2em;
-  border: 1px solid #000;
-  width: 3em;
-  height: 2em;
-  padding: 5px 20px;
+.guessapprovalform {
+  background: mintcream;
+  position: absolute;
+  margin: auto;
+  top: calc(50% - 150px);
+  width: 600px;
+  left: calc(50% - 300px);
+  height: 300px;
   text-align: center;
-  float: left;
-  margin: 0px 5px 5px 0px;
-  box-shadow: 0px 4px 10px -5px rgba(0,0,0,0.6);
+  display: flex;
+  flex-direction: column;
+  border-radius: 10px;
 }
 
-.player-button:active {
-  transform: translateY(2px);
+.guessapprovalform h3 {
+  height: 30px;
+}
+
+.approval-guess-container {
+  height: 190px;
+}
+
+.approval-button-container {
+  height: 80px;
+  width: 100%;
+}
+
+.approval-button {
+  width: 50%;
+  height: 100%;
+  border: none;
+}
+
+.approval-button:nth-child(1) {
+  background-color: #73FF73;
+}
+
+.approval-button:nth-child(2) {
+  background-color: #FF7474;
+}
+
+.modal-begin {
+  position: absolute;
+  width: 700px;
+  height: 550px;
+  background-color: white;
+  top: calc(50% - 275px);
+  left: calc(50% - 350px);
+  text-align: center;
+  box-sizing: border-box;
+  padding: 20px;
+}
+
+.modal-results {
+  position: absolute;
+  width: 700px;
+  height: 550px;
+  background-color: white;
+  top: calc(50% - 275px);
+  left: calc(50% - 350px);
+  text-align: center;
+  box-sizing: border-box;
+  padding: 20px;
+}
+
+.modal-results-header {
+  font-size: 60px;
 }
 
 .fake-player{

@@ -6,6 +6,7 @@ import Timer from './components/Timer.js'
 import Chatroom from './components/Chatroom.js';
 import StatusDisplay from './components/StatusDisplay.js';
 import Drawingboard from './components/Drawingboard.js';
+import GuessApprovalForm from './components/GuessApprovalForm.js';
 import ActivePlayerScreen from './components/ActivePlayerScreen.js';
 
 //Game State Toggles
@@ -24,7 +25,9 @@ const GAMEACTIVE        = 'GAMEACTIVE',
 //Background phase toggles
 const BG_GAME_NOTMYTURN = 'bg-gameactive',
       BG_GAME_MYTURN    = 'bg-gameactive-myturn',
-      BG_NOGAME         = 'bg-nogame'
+      BG_NOGAME         = 'bg-nogame';
+
+const TURNLENGTH = 5;
 
 class App extends Component {
   constructor(props) {
@@ -32,11 +35,6 @@ class App extends Component {
     this.socket = null;
     this.background = document.getElementById('canvas-container');
     this.state = {
-      modal: {
-        isModalActive: false,
-        isAbleToClose: true,
-        modalContent: ''
-      },
       socketId: '',
       myId: '', //TEMP until auth and persistent login (necessary for self-identifying in state updates)
       myName: '',
@@ -47,6 +45,11 @@ class App extends Component {
       chatMessages: [],
       paths: [],
       hasVotedToBegin: false, //Used for conditionally rendering status display after voting
+      modal: {
+        isModalActive: false,
+        isAbleToClose: true,
+        modalContent: ''
+      },
       sessionState: {
         players: [],
         currentSessionStatus: '', //[WAITINGFORPLAYERS, WAITINGTOSTART, GAMEACTIVE]
@@ -191,6 +194,17 @@ class App extends Component {
       }
     }
 
+    function fakeReveal(players) {
+      players = players.filter(player => player.isFake);
+      const fake = players[0];
+      const divStyle = {
+          color: fake.color,
+      };
+      return(
+        <div style={divStyle}>{fake.name}</div>
+      )
+    }
+
     function displayPlayers(players) {
       //Dynamically show players in their respective color, with fake bolded
       return players.map((player, idx) => {
@@ -198,7 +212,7 @@ class App extends Component {
         const divStyle = {
           color: player.color,
         };
-        const classNameCon = `modal-result-players player ${player.isFake ? 'fake-player' : ''}`;
+        const classNameCon = `modal-result-players player`;
 
         return (
           <div className={classNameCon}>
@@ -210,9 +224,11 @@ class App extends Component {
 
     const modalContent = (
       <div className="modal-content modal-results">
-        <div className="modal-header">Game Over</div>
-        <div className="modal-result-text">{resultMessage(fakeWins, fakeFound)}</div>
-        <div className="modal-result-players">{displayPlayers(players)}</div>
+        <div className="modal-results-header">Game Over</div>
+        <div>INSERT CUSTOM PICTURE HERE</div>
+        <div className="modal-results-fake">{fakeReveal(players)}</div>
+        <div className="modal-results-text">{resultMessage(fakeWins, fakeFound)}</div>
+        <div className="modal-results-players">{displayPlayers(players)}</div>
       </div>
     )
 
@@ -223,6 +239,7 @@ class App extends Component {
     const modalContent = (
       <div className="modal-content modal-begin">
         <div className="modal-header">Get Ready to Doodle!</div>
+        <div>INSERT PICTURE HERE</div>
         <div className="modal-category">Category: {category}</div>
         <div className="modal-secret">Secret: {secret}</div>
       </div>
@@ -243,6 +260,24 @@ class App extends Component {
         guess
       }
     })
+
+    if(!this.state.gameState.fakeIsMe) {
+      const modalContent = (
+        <GuessApprovalForm
+          secret={this.state.gameState.secret.secret}
+          guess={guess}
+          submitGuessApproval={this.emitVoteForGuessApproval}
+        />
+      )
+
+      this.setState({
+        modal: {
+          isModalActive: true,
+          isAbleToClose: false,
+          modalContent
+        }
+      })
+    }
   }
 
   handlePromptFakeForGuess = () => {
@@ -271,13 +306,6 @@ class App extends Component {
         options: players
       }
     })
-    this.setState({
-      modal: {
-        isModalActive: true,
-        isAbleToClose: false,
-        modalContent: this.renderStatusDisplay()
-      }
-    })
   }
 
   handleNextTurn = turn => {
@@ -296,7 +324,7 @@ class App extends Component {
         }
       })
       if(turn.active) {
-        this.startCountdown(2, null, this.handleEndOfTurn)       
+        this.startCountdown(TURNLENGTH, null, this.handleEndOfTurn)       
       }
   }
 
@@ -425,7 +453,6 @@ class App extends Component {
         hasVoted: true
       }
     })
-    this.closeModal()
   }
 
   emitGuess = guess => {
@@ -453,6 +480,7 @@ class App extends Component {
       vote
     };
     this.socket.emit('packet', packet);
+    this.closeModal();
   }
 
   //######## HELPERS
@@ -605,13 +633,15 @@ class App extends Component {
     return (
       <div id="room-container" className={setBGColor()}>
         <div className="left-side">
-          {this.renderActivePlayerScreen()}
+          <div id="canvas-container">
+            {this.renderDrawingboard()}
+            {this.renderStatusDisplay()}
+            {this.renderTimer()}
+          </div>
         </div>
-        {this.renderDrawingboard()}
         <div id="sidebar-container">
           {this.renderChatroom()}
-          {this.renderTimer()}
-          {this.renderStatusDisplay()}
+          {this.renderActivePlayerScreen()}
         </div>        
         {this.renderModal()}
       </div>

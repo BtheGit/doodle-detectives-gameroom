@@ -82,8 +82,8 @@ class Drawingboard extends Component {
 		this.canvas = this.ref; 
 		this.ctx = this.canvas.getContext('2d');
 		// const boundingRect = this.canvas.getBoundingClientRect();
-		this.canvas.width = 800;
-		this.canvas.height = 450;
+		this.canvas.width = 1000;
+		this.canvas.height = 565;
 		this.changeResolution(this.canvas, this.ctx, 3);
 		// this.canvas.style.width = `${window.innerWidth}px`;
 		// this.canvas.style.height = `${window.innerHeight}px`;
@@ -132,9 +132,7 @@ class Drawingboard extends Component {
 
 	render() {
 		return (
-			<div id="canvas-container">
 				<canvas ref={(ref) => {this.ref = ref}} id="drawingCanvas" />
-			</div>
 		)
 	}
 }
