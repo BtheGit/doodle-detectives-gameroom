@@ -5,10 +5,12 @@ const StatusPanel = (props) => {
 		color: props.currentColor
 	}
   return (
-    <div id="turndisplay-container">
-      <div id="turndisplay-currentcolor">Drawing: <span style={playerStyle}>{props.currentPlayer}</span></div>
-      <div id="turndisplay-category">Category: {props.secret.category}</div>
-      <div id="turndisplay-secret">Secret: {props.secret.secret}</div>
+    <div className="turndisplay-container">
+      <div className="turndisplay-currentplayer">Drawing: <span style={playerStyle}>{props.currentPlayer}</span></div>
+      <div className="turndisplay-secret">
+        <div>{props.secret.category}</div>
+        <div>{props.secret.secret}</div>
+      </div>
     </div>    
   );
 };

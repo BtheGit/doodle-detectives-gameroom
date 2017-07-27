@@ -240,6 +240,20 @@ canvas {
   left: calc(50% - 200px);
   border-radius: 20px;
   box-shadow: 0 3px 15px -5px black;
+  animation: begin-start 500ms ease-in-out 1;
+}
+
+@keyframes begin-start {
+  0% {
+    opacity: 0.1;
+    transform: translateX(-250px);   
+  }
+  
+  80% {
+    opacity: 1;
+    transform: translateX(10px)
+  }
+
 }
 
 .statusdisplay-votetobegin button {
@@ -264,6 +278,24 @@ canvas {
 
 .turndisplay-container {
   position: absolute;
+  top: 0;
+  left: 0;
+}
+
+.turndisplay-currentplayer {
+  position: absolute;
+  top: -3em;
+  width: 15em;
+  text-shadow: 0px 1px 3px #767575;
+}
+
+.turndisplay-secret {
+  position: absolute;
+  top: -100px;
+  left: 300px;
+  width: 20em;
+  text-align: center;
+  text-shadow: 0px 1px 5px #585656;
 }
 
 .statusdisplay-voteforfake {

@@ -27,7 +27,7 @@ const BG_GAME_NOTMYTURN = 'bg-gameactive',
       BG_GAME_MYTURN    = 'bg-gameactive-myturn',
       BG_NOGAME         = 'bg-nogame';
 
-const TURNLENGTH = 5;
+const TURNLENGTH = 15;
 
 class App extends Component {
   constructor(props) {
