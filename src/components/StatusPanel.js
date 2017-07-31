@@ -8,8 +8,8 @@ const StatusPanel = (props) => {
     <div className="turndisplay-container">
       <div className="turndisplay-currentplayer">Drawing: <span style={playerStyle}>{props.currentPlayer}</span></div>
       <div className="turndisplay-secret">
-        <div>{props.secret.category}</div>
-        <div>{props.secret.secret}</div>
+        <div>CATEGORY: <span>{props.secret.category}</span></div>
+        <div>SECRET: <span>{props.secret.secret}</span></div>
       </div>
     </div>    
   );

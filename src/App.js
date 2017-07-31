@@ -91,6 +91,27 @@ class App extends Component {
     }
   }
 
+  //## TEMP - for design staging
+  
+  testModal() {
+    const modalContent = (
+      <div className="modal-content modal-begin">
+        <div className="modal-header">Get Ready to Doodle!</div>
+        <div>INSERT PICTURE HERE</div>
+        <div className="modal-category">Category: Fluids</div>
+        <div className="modal-secret">Secret: Poop</div>
+      </div>
+    )
+
+    this.setState({
+      modal: {
+        isModalActive: true,
+        isAbleToClose: true,
+        modalContent
+      }
+    })  
+  }
+
   //################ SOCKET HELPERS #####################
 
   //Initiate Socket Connection
@@ -521,6 +542,7 @@ class App extends Component {
   //############### LIFECYCLE AND RENDER METHODS ####################
   componentDidMount = () => {
     this.setupSocket();
+    // this.testModal();
   }
 
   componentWillUnmount = () => {
