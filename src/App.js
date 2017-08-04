@@ -39,6 +39,7 @@ class App extends Component {
       myId: '', //TEMP until auth and persistent login (necessary for self-identifying in state updates)
       myName: '',
       myColor: 'black',
+      // myColor: 'rgba(0,0,0,0)',
       //If coming from newroom route, no id will be provided, default to empty string
       sessionId: '', //this.props.match.params.id || 
       score: 0,
@@ -399,7 +400,7 @@ class App extends Component {
 
   handlePath = path => {
     this.savePath(path)
-    this.drawingboard.drawPath(path) //Allows us to reach into the child component's functions. Dirty-boy!
+    this.drawingboard.drawPath(this.drawingboard.bgCtx, path) //Allows us to reach into the child component's functions. Dirty-boy!
   }
 
   savePath = path => {

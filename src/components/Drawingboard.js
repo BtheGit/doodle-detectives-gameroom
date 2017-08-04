@@ -4,11 +4,15 @@ import PropTypes from 'prop-types';
 class Drawingboard extends Component {
 	constructor(props) {
 		super(props);
+
 		this.ref = null;
 		this.canvas = null;
 		this.ctx = null;
+
+		this.bgRef = null;
 		this.bgCanvas = null;
 		this.bgCtx = null;
+
 		this.state = {
 			isDrawing: false,
 			startX: 0,
@@ -33,12 +37,12 @@ class Drawingboard extends Component {
 		this.props.emitPath(path);
 	}
 
-	drawPath = path => {
-		this.ctx.strokeStyle = path.color;
-		this.ctx.beginPath();
-		this.ctx.moveTo(path.startX, path.startY);
-		this.ctx.lineTo(path.endX, path.endY);
-		this.ctx.stroke();
+	drawPath = (ctx, path) => {
+		ctx.strokeStyle = path.color;
+		ctx.beginPath();
+		ctx.moveTo(path.startX, path.startY);
+		ctx.lineTo(path.endX, path.endY);
+		ctx.stroke();
 
 		//This keeps the cursor in the right place when the local client is drawing
 		if(path.id === this.props.clientId) {
@@ -49,24 +53,27 @@ class Drawingboard extends Component {
 		}
 	}
 
-	drawPaths = paths => {
-		paths.forEach(path => {
-			this.drawPath(path)
+	//Redraw from array to Background canvas
+	drawPaths = () => {
+		this.props.paths.forEach(path => {
+			this.drawPath(this.bgCtx, path)
 		});
 	}
 
-	cls = () => {
-		this.ctx.clearRect(0,0, this.canvas.width, this.canvas.height)
+	cls = (canvas, ctx) => {
+		ctx.clearRect(0,0, canvas.width, canvas.height);
 	}
 
 	refresh = () => {
-		this.cls();
-		this.drawPaths(this.props.paths);
+		this.cls(this.canvas, this.ctx);
+		this.cls(this.bgCanvas, this.bgCtx);
+		this.drawPaths();
 	}
 
 	saveImage = () => {
 		const downloadButton = document.getElementById('save-canvas')
-		const data = this.canvas.toDataURL("image/png");
+		this.refresh();
+		const data = this.bgCanvas.toDataURL("image/png");
 		const downloadData = data.replace('image/png', 'image/octet-stream')
 		downloadButton.href = downloadData;
 	}
@@ -85,37 +92,31 @@ class Drawingboard extends Component {
     context.scale(scaleFactor, scaleFactor);
 	}
 
-	setupCanvas = () => {
-		// const defaultSize = 800;
-		// window.devicePixelRatio = 2;
-		this.canvas = this.ref; 
-		this.ctx = this.canvas.getContext('2d');
-		// const boundingRect = this.canvas.getBoundingClientRect();
-		this.canvas.width = 1000;
-		this.canvas.height = 565;
-		this.changeResolution(this.canvas, this.ctx, 3);
-		// this.canvas.style.width = `${window.innerWidth}px`;
-		// this.canvas.style.height = `${window.innerHeight}px`;
-		// this.ctx.scale((this.canvas.width / this.canvas.style.width), (this.canvas.width / this.canvas.style.width))
-		// this.ctx.scale((this.canvas.width / this.canvas.style.width), (this.canvas.height / this.canvas.style.height))
-		// this.ctx.scale(.5, .5)
-		// this.ctx.imageSmoothingEnabled = true;
-		this.ctx.strokeStyle = '#BADA55';
-		this.ctx.lineJoin = 'round';
-		this.ctx.lineCap = 'round';
-		this.ctx.lineWidth = 2;
+	createCanvas = (ref) => {
+		let newCanvas = ref;
+		let newCtx = newCanvas.getContext('2d');
+		newCanvas.width = 1000;
+		newCanvas.height = 565;
+		this.changeResolution(newCanvas, newCtx, 3);
+		newCtx.strokeStyle = '#BADA55';
+		newCtx.lineJoin = 'round';
+		newCtx.lineCap = 'round';
+		newCtx.lineWidth = 2;
 
-		//##### ATTACH EVENT LISTENERS
-		this.canvas.addEventListener('mousedown', (event) => {
+		return {canvas: newCanvas, ctx: newCtx}
+	}
+
+	setupListeners = canvas => {
+		canvas.addEventListener('mousedown', (event) => {
 			this.setState({
 				isDrawing: true,
 				startX: event.offsetX,
 				startY: event.offsetY
 			});
 		})
-		this.canvas.addEventListener('mouseup', () => this.setState({isDrawing: false}))
-		this.canvas.addEventListener('mouseout', () => this.setState({isDrawing: false}))
-		this.canvas.addEventListener('mousemove', (event) => {
+		canvas.addEventListener('mouseup', () => this.setState({isDrawing: false}))
+		canvas.addEventListener('mouseout', () => this.setState({isDrawing: false}))
+		canvas.addEventListener('mousemove', (event) => {
 			//Only Draw and Emit paths if a) the game is not in session or b) it's in the drawing phase and it's your turn
 			if(this.props.isGameActive && !this.props.isMyTurn) {
 				return;
@@ -123,17 +124,31 @@ class Drawingboard extends Component {
 				if(this.state.isDrawing) {
 					const path = this.buildPath(event.offsetX, event.offsetY)
 					this.sendPath(path)
-					this.drawPath(path);
+					this.drawPath(this.ctx, path);
 				}
 			}
 		})
-		// window.addEventListener("resize", this.handleWindowResize, false);
+		// window.addEventListener("resize", this.handleWindowResize, false);		
 	}
 
 	componentDidMount = () => {
 		this.props.onRef(this) //To allow Parent to access child methods
-		this.setupCanvas();
-		this.drawPaths(this.props.paths)
+
+		//Set up canvas that local client will draw too
+		const fgCanvas = this.createCanvas(this.ref);
+		this.canvas = fgCanvas.canvas;
+		this.ctx = fgCanvas.ctx;
+
+		//Remote paths and redraws will render here
+		const bgCanvas = this.createCanvas(this.bgRef);
+		this.bgCanvas = bgCanvas.canvas;
+		this.bgCtx = bgCanvas.ctx;
+
+		//Listeners are attached to the client canvas natch
+		this.setupListeners(this.canvas);
+
+		//Restore canvas state to match current universal session state;
+		this.drawPaths()
 	}
 
 	componentWillUnmount = () => {
@@ -143,6 +158,7 @@ class Drawingboard extends Component {
 	render() {
 		return (
 			<div style={{height: '100%', width: '100%'}}>
+				<canvas ref={(ref) => {this.bgRef = ref}} id="bgCanvas" />
 				<canvas ref={(ref) => {this.ref = ref}} id="drawingCanvas" />
 				<a id="save-canvas" onClick={this.saveImage} download="doodle.png"></a>
 			</div>
