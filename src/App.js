@@ -310,8 +310,6 @@ class App extends Component {
       }
     });
     //(Set timeout for 15 seconds (later display counter), if no guess, send NOGUESS to server)
-    //If I am fake, prompt me by showing form to guess
-    //If I am not fake, display status message Waiting for Fake to Guess
   }
 
   handleFakeVoting = players => {
@@ -330,8 +328,6 @@ class App extends Component {
   }
 
   handleNextTurn = turn => {
-      // Check if I am active player and toggle if true. (Can change the background color or 
-      // something dramatic later)
       const newState = {
         currentColor: turn.color,
         currentPlayer: turn.name,
@@ -362,7 +358,6 @@ class App extends Component {
   }
 
   handleDisplaySecretPhase = payload => {
-    //TODO: Pop up a modal, countdown, etc.
     this.setState({
       gameState: {
         ...this.state.gameState, 

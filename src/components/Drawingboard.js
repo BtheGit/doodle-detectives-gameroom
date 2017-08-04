@@ -7,6 +7,8 @@ class Drawingboard extends Component {
 		this.ref = null;
 		this.canvas = null;
 		this.ctx = null;
+		this.bgCanvas = null;
+		this.bgCtx = null;
 		this.state = {
 			isDrawing: false,
 			startX: 0,
@@ -62,6 +64,13 @@ class Drawingboard extends Component {
 		this.drawPaths(this.props.paths);
 	}
 
+	saveImage = () => {
+		const downloadButton = document.getElementById('save-canvas')
+		const data = this.canvas.toDataURL("image/png");
+		const downloadData = data.replace('image/png', 'image/octet-stream')
+		downloadButton.href = downloadData;
+	}
+
 	//############## LIFECYCLE & RENDER METHODS ###########
 
 	changeResolution(canvas, context, scaleFactor) {
@@ -74,7 +83,7 @@ class Drawingboard extends Component {
     canvas.width = Math.ceil(canvas.width * scaleFactor);
     canvas.height = Math.ceil(canvas.height * scaleFactor);
     context.scale(scaleFactor, scaleFactor);
-}
+	}
 
 	setupCanvas = () => {
 		// const defaultSize = 800;
@@ -95,7 +104,8 @@ class Drawingboard extends Component {
 		this.ctx.lineJoin = 'round';
 		this.ctx.lineCap = 'round';
 		this.ctx.lineWidth = 2;
-		//attach event listeners
+
+		//##### ATTACH EVENT LISTENERS
 		this.canvas.addEventListener('mousedown', (event) => {
 			this.setState({
 				isDrawing: true,
@@ -132,7 +142,10 @@ class Drawingboard extends Component {
 
 	render() {
 		return (
+			<div style={{height: '100%', width: '100%'}}>
 				<canvas ref={(ref) => {this.ref = ref}} id="drawingCanvas" />
+				<a id="save-canvas" onClick={this.saveImage} download="doodle.png"></a>
+			</div>
 		)
 	}
 }
