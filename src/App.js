@@ -43,7 +43,11 @@ class App extends Component {
       //If coming from newroom route, no id will be provided, default to empty string
       sessionId: '', //this.props.match.params.id || 
       score: 0,
-      chatMessages: [],
+      chatMessages: [
+        {name: "Brendan", content: "Hello"},
+        {name: "Brendan", content: "How are you doing today?"},
+        {name: "Brendan", content: "This fucking game sucks monkey balls. Let's do something else"},
+      ],
       paths: [],
       hasVotedToBegin: false, //Used for conditionally rendering status display after voting
       modal: {
@@ -52,11 +56,22 @@ class App extends Component {
         modalContent: ''
       },
       sessionState: {
-        players: [],
+        players: [
+          // {name: 'Brendan', id: '1'},
+          // {name: 'Cody', id: '2'},
+          // {name: 'MATUMIZURO', id: '3'},
+          // {name: 'Dummy', id: '4'},
+          // {name: 'Brendan', id: '1'},
+          // {name: 'Cody', id: '2'},
+          // {name: 'MATUMIZURO', id: '3'},
+          // {name: 'Dummy', id: '4'},
+        ],
         currentSessionStatus: '', //[WAITINGFORPLAYERS, WAITINGTOSTART, GAMEACTIVE]
       },
       gameState: {
-        playerColors: {},
+        playerColors: {
+          // 1: 'red', 2: 'purple', 3: 'green', 4: 'violet'
+        },
         currentPhase: '', 
         currentColor: '',
         currentPlayer: '',
@@ -65,6 +80,8 @@ class App extends Component {
         secret: {
           category: '',
           secret: ''
+          // category: 'Animals',
+          // secret: 'Orangutan'
         }
       },
       fakeVote: {

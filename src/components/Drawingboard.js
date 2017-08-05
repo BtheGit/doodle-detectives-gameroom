@@ -159,6 +159,10 @@ class Drawingboard extends Component {
 	render() {
 		return (
 			<div style={{height: '100%', width: '100%'}}>
+				<div className="manila-folder"></div>
+				<div className="paper"></div>
+				<div className="paper"></div>
+				<div className="paper"></div>
 				<canvas ref={(ref) => {this.bgRef = ref}} id="bgCanvas" />
 				<canvas ref={(ref) => {this.ref = ref}} id="drawingCanvas" />
 				<a id="save-canvas" onClick={this.saveImage} download="doodle.png"></a>

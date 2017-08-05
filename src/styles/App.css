@@ -13,11 +13,31 @@
 }
 
 #room-container {
+  position: relative;
   height: 100%;
   width: 100%;
   background-color: blue;
   display: flex;
   flex-direction: row;
+  overflow: hidden;
+}
+
+#room-container::after {
+  font-family: 'PT SANS', serif;
+  content: 'DO NOT CROSS POLICE LINE DO NOT CROSS';
+  font-size: 200px;
+  font-weight: bolder;
+  z-index: 1;
+  position: absolute;
+  top: calc(50% - 125px);
+  left: -50%;
+  height: 250px;
+  line-height: 250px;
+  vertical-align: middle;
+  width: 3500px;
+  transform: rotate(-25deg);
+  background-color: #5D6119;
+  overflow: hidden;
 }
 
 .left-side {
@@ -31,16 +51,63 @@
 }
 
 #canvas-container {
+  z-index: 20;
   position: relative;
   height: 565px;
   width: 1000px;
   display: flex;
   justify-content: center;
   align-items: center;
+  margin-top: -90px;
+}
+
+#canvas-container .manila-folder {
+  position:absolute;
+  top: -20px;
+  left: -20px;
+  height: 605px;
+  width: 1040px;
+  background-color: #F8EB60;
+  pointer-events: none;
+  box-shadow: 0px 5px 20px -5px black;
+
+}
+
+#canvas-container .paper {
+  position:absolute;
+  height: 100%;
+  width: 100%;
+  background-color: white;
+  box-shadow: 0px -2px 5px -1px rgba(0,0,0,0.3);
+  transform-origin: top left;
+  pointer-events: none;
+  user-select: none;
+}
+
+#canvas-container .paper:nth-of-type(1) {
+  transform: rotate(-0.5deg) translate(-8px, -6px);
+}
+
+#canvas-container .paper:nth-of-type(2) {
+  transform: rotate(-0.4deg) translate(-6px, -4px);
+}
+
+#canvas-container .paper:nth-of-type(3) {
+  transform: rotate(-0.2deg) translate(-4px, -2px);
+}
+
+#canvas-container .paper:nth-of-type(3)::before {
+  position: absolute;
+  top: -15px;
+  left: -20px;
+  transform: rotate(200deg);
+  font-family: FontAwesome;
+  content: '\f0c6';
+  font-size: 60px;
 }
 
 canvas {
-  z-index: 5;
+  user-select: none;
 }
 
 .bg-nogame {
@@ -56,6 +123,8 @@ canvas {
 }
 
 #bgCanvas {
+  z-index: 5;
+  pointer-events: none;
   position: absolute;
   top: 0;
   left: 0;
@@ -67,6 +136,7 @@ canvas {
 
 #drawingCanvas {
   position: absolute;
+  z-index: 6;
   top: 0;
   left: 0;
   height: 100%;
@@ -82,75 +152,34 @@ canvas {
 #save-canvas {
   position: absolute;
   right: -50px;
-  top: 15px;
+  top: 25px;
   height: 40px;
-  width: 40px;
+  width: 100px;
   font-size: 28px;
-  border-radius: 50%;
-  background-color: #5B5B5B;
+  background-color: #79005E;
   text-decoration: none;
   color: white;
-  text-align: center;
+  text-align: right;
   line-height: 40px;
   vertical-align: middle;
-  transition: all 100ms ease-in-out;
+  box-shadow: 0px 1px 5px rgba(0,0,0,0.3);
+  transition: all 200ms ease-in-out;
 }
 
 #save-canvas:hover {
-  background-color: #B8B7B6;
+  background-color: #A100A3;
+  transform: translateX(15px);
 }
 
 #save-canvas::before {
   font-family: FontAwesome;
   content: '\f0c7';
-}
-
-#save-canvas:hover::after {
-  content: 'Save Snapshot';
-  font-size: 16px;
-  line-height: 30px;
-  vertical-align: middle;
-  text-align: center;
-  position: absolute;
-  height: 30px;
-  width: 160px;
-  top: -30px;
-  left: 100%;
-  background-color: #6E6E71;
-  color: #30F8FF;
-  border-radius: 40px 25px 25px 0px;
-  transform-origin: bottom left;
-  animation: infoPopup 300ms ease-in-out forwards;
-}
-
-@keyframes infoPopup {
-  0% {
-    opacity: 0;
-    transform: scale(0) rotateY(-90deg);
-  }
-
-  40% {
-    opacity: 0;
-  }
-
-
-  90% {
-    transform: scale(1.05) rotateY(5deg);
-  }
-
-  100% {
-    opacity: 1;
-    transform: scale(1) rotateY(0deg));
-  }
+  padding-right: 10px;
 }
 
 #sidebar-container {
   height: 100%;
   width: 30%;
-/*  display: flex;
-  flex-direction: column;
-  justify-content: flex-start;
-  align-items: center;*/
 }
 
 
@@ -229,6 +258,11 @@ canvas {
   position: absolute;
   top: 0;
   left: 0;
+  color: black;
+  font-weight: bold;
+  font-family: 'Special Elite', cursive;
+  user-select: none;
+  cursor: default;
 }
 
 .turndisplay-currentplayer {
@@ -241,7 +275,9 @@ canvas {
   padding-top: 10px;
   padding-left: 10px;
   transform: translateY(-100%);
-  background-color: rgba(0,0,0,0.6);
+  color: black;
+  background-color: #FFFEEF;
+  /*background-color: rgba(0,0,0,0.6);*/
   box-shadow: 2px 5px 10px 1px rgba(0,0,0,0.5);
 }
 
@@ -250,7 +286,6 @@ canvas {
   top: 0;
   left: 400px;
   text-align: center;
-  text-shadow: 0px 1px 5px #585656;
   display: flex;
 }
 
@@ -262,7 +297,8 @@ canvas {
   border-radius: 6px;
   padding-top: 10px;
   transform: translateY(-100%);
-  background-color: rgba(0,0,0,0.6);
+  background-color: #F8EB60;
+  /*background-color: rgba(0,0,0,0.6);*/
   box-shadow: 2px 5px 10px 1px rgba(0,0,0,0.5);
 }
 
@@ -275,7 +311,7 @@ canvas {
 .statusdisplay-voteforfake {
   position: absolute;
   height: 50px;
-  bottom: -55px;
+  bottom: -80px;
   left: 0;
   width: 100%;
   margin: auto;
@@ -335,7 +371,7 @@ canvas {
 
 .timer-display {
   position: absolute;
-  z-index: 10;
+  z-index: 30;
   left: calc(50% - 2em);
   bottom: -2em;
   width: 4em;
@@ -365,7 +401,7 @@ canvas {
 }
 
 .ReactModalPortal * {
-  z-index: 15;
+  z-index: 30;
 }
 
 .modal {
