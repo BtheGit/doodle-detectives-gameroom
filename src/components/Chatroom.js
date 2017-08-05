@@ -1,6 +1,8 @@
 import React, { Component } from 'react';
 import PropTypes from 'prop-types';
 import ChatOutput from './ChatOutput';
+import '../styles/ChatRoom.css';
+
 
 class Chatroom extends Component {
   constructor(props) {

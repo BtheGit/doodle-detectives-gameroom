@@ -1,5 +1,5 @@
 import React, { Component } from 'react';
-import './App.css';
+import './styles/App.css';
 import io from 'socket.io-client';
 import Modal from 'react-modal';
 import Timer from './components/Timer.js'
