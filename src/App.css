@@ -84,6 +84,7 @@ canvas {
   text-align: center;
   line-height: 40px;
   vertical-align: middle;
+  transition: all 100ms ease-in-out;
 }
 
 #save-canvas:hover {
@@ -109,7 +110,29 @@ canvas {
   background-color: #6E6E71;
   color: #30F8FF;
   border-radius: 40px 25px 25px 0px;
-  transform: skewX(-10deg);
+  transform-origin: bottom left;
+  animation: infoPopup 300ms ease-in-out forwards;
+}
+
+@keyframes infoPopup {
+  0% {
+    opacity: 0;
+    transform: scale(0) rotateY(-90deg);
+  }
+
+  40% {
+    opacity: 0;
+  }
+
+
+  90% {
+    transform: scale(1.05) rotateY(5deg);
+  }
+
+  100% {
+    opacity: 1;
+    transform: scale(1) rotateY(0deg));
+  }
 }
 
 #sidebar-container {

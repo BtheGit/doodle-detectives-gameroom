@@ -37,7 +37,7 @@ class Drawingboard extends Component {
 		this.props.emitPath(path);
 	}
 
-	drawPath = (ctx, path) => {
+	drawPath = (ctx, path, local = false) => {
 		ctx.strokeStyle = path.color;
 		ctx.beginPath();
 		ctx.moveTo(path.startX, path.startY);
@@ -45,7 +45,8 @@ class Drawingboard extends Component {
 		ctx.stroke();
 
 		//This keeps the cursor in the right place when the local client is drawing
-		if(path.id === this.props.clientId) {
+		if(local) {
+		// if(path.id === this.props.clientId) {
 			this.setState({
 				startX: path.endX,
 				startY: path.endY
@@ -124,7 +125,7 @@ class Drawingboard extends Component {
 				if(this.state.isDrawing) {
 					const path = this.buildPath(event.offsetX, event.offsetY)
 					this.sendPath(path)
-					this.drawPath(this.ctx, path);
+					this.drawPath(this.ctx, path, true);
 				}
 			}
 		})
