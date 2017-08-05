@@ -48,8 +48,8 @@ class Chatroom extends Component {
             id="message-box" 
             autoComplete="off"
             maxLength='200'
-            placeholder="Type your message here..."
             value={this.state.chatInputValue}
+            placeholder=">>"
             onKeyDown={this.keyPress}
             onChange={this.handleChatInput}
           />

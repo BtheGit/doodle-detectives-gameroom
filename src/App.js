@@ -44,9 +44,18 @@ class App extends Component {
       sessionId: '', //this.props.match.params.id || 
       score: 0,
       chatMessages: [
-        {name: "Brendan", content: "Hello"},
-        {name: "Brendan", content: "How are you doing today?"},
-        {name: "Brendan", content: "This fucking game sucks monkey balls. Let's do something else"},
+        // {name: "Brendan", content: "Hello"},
+        // {name: "Brendan", content: "How are you doing today?"},
+        // {name: "Brendan", content: "This fucking game sucks monkey balls. Let's do something else"},
+        // {name: "Brendan", content: "Hello"},
+        // {name: "Brendan", content: "How are you doing today?"},
+        // {name: "Brendan", content: "This fucking game sucks monkey balls. Let's do something else"},
+        // {name: "Brendan", content: "Hello"},
+        // {name: "Brendan", content: "How are you doing today?"},
+        // {name: "Brendan", content: "This fucking game sucks monkey balls. Let's do something else"},
+        // {name: "Brendan", content: "Hello"},
+        // {name: "Brendan", content: "How are you doing today?"},
+        // {name: "Brendan", content: "This fucking game sucks monkey balls. Let's do something else"},
       ],
       paths: [],
       hasVotedToBegin: false, //Used for conditionally rendering status display after voting
@@ -59,7 +68,7 @@ class App extends Component {
         players: [
           // {name: 'Brendan', id: '1'},
           // {name: 'Cody', id: '2'},
-          // {name: 'MATUMIZURO', id: '3'},
+          // {name: 'MATUMIZURO2343', id: '3'},
           // {name: 'Dummy', id: '4'},
           // {name: 'Brendan', id: '1'},
           // {name: 'Cody', id: '2'},
