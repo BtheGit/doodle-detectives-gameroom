@@ -49,7 +49,7 @@ class Chatroom extends Component {
             autoComplete="off"
             maxLength='200'
             value={this.state.chatInputValue}
-            placeholder=">>"
+            placeholder=">> Input message here..."
             onKeyDown={this.keyPress}
             onChange={this.handleChatInput}
           />
@@ -62,7 +62,17 @@ class Chatroom extends Component {
     return(
       <div className="chat-container-outer">
         <div className="chat-container-inner">
-          {this.renderChatOutput()}
+          <div className="chat-display-container">
+            {this.renderChatOutput()}
+          </div>
+          <div className="chat-container-middle">
+            <div className="mac-diskdrive">
+              <div className="drive-port"></div>
+            </div>
+            <div className="mac-diskdrive">
+              <div className="drive-port"></div>
+            </div>
+          </div>
           {this.renderChatInput()}
         </div>
       </div>    
