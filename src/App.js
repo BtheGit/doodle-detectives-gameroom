@@ -684,8 +684,8 @@ class App extends Component {
           </div>
         </div>
         <div id="sidebar-container">
-          {this.renderChatroom()}
           {this.renderActivePlayerScreen()}
+          {this.renderChatroom()}
         </div>        
         {this.renderModal()}
       </div>

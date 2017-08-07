@@ -1,16 +1,14 @@
 @font-face {
   font-family: "Mugshot";
-  src: url('../fonts/mugshot/mugshot.eot'); /* IE9 Compat Modes */
-  src: url('../fonts/mugshot/mugshot.woff') format('woff'), /* Pretty Modern Browsers */
-       url('../fonts/mugshot/mugshot.ttf')  format('truetype'), /* Safari, Android, iOS */
-       url('../fonts/mugshot/mugshot.svg#svgFontName') format('svg'); /* Legacy iOS */
-}
+  src: url("../fonts/mugshot/mugshot.eot");
+  /* IE9 Compat Modes */
+  src: url("../fonts/mugshot/mugshot.woff") format("woff"), url("../fonts/mugshot/mugshot.ttf") format("truetype"), url("../fonts/mugshot/mugshot.svg#svgFontName") format("svg");
+  /* Legacy iOS */ }
 
 * {
   margin: 0;
   padding: 0;
-  box-sizing: border-box;
-}
+  box-sizing: border-box; }
 
 #room-container {
   position: relative;
@@ -19,8 +17,7 @@
   background-color: blue;
   display: flex;
   flex-direction: row;
-  overflow: hidden;
-}
+  overflow: hidden; }
 
 #room-container::after, #room-container::before {
   font-family: 'PT SANS', serif;
@@ -36,18 +33,15 @@
   width: 3500px;
   background-color: #7C8314;
   overflow: hidden;
-  box-shadow: 0px 0px 1px #333;
-}
+  box-shadow: 0px 0px 1px #333; }
 
 #room-container::after {
   left: -50%;
-  transform: rotate(-25deg);
-}
+  transform: rotate(-25deg); }
 
 #room-container::before {
   right: -50%;
-  transform: rotate(25deg);
-}
+  transform: rotate(25deg); }
 
 .left-side {
   height: 100%;
@@ -56,8 +50,7 @@
   flex-direction: column;
   justify-content: center;
   align-items: center;
-  padding-right: 50px;
-}
+  padding-right: 50px; }
 
 #canvas-container {
   z-index: 20;
@@ -67,43 +60,36 @@
   display: flex;
   justify-content: center;
   align-items: center;
-  margin-top: -90px;
-}
+  margin-top: -90px; }
 
 #canvas-container .manila-folder {
-  position:absolute;
+  position: absolute;
   top: -20px;
   left: -20px;
   height: 605px;
   width: 1040px;
   background-color: #F8EB60;
   pointer-events: none;
-  box-shadow: 0px 5px 20px -5px black;
-
-}
+  box-shadow: 0px 5px 20px -5px black; }
 
 #canvas-container .paper {
-  position:absolute;
+  position: absolute;
   height: 100%;
   width: 100%;
   background-color: white;
-  box-shadow: 0px -2px 5px -1px rgba(0,0,0,0.3);
+  box-shadow: 0px -2px 5px -1px rgba(0, 0, 0, 0.3);
   transform-origin: top left;
   pointer-events: none;
-  user-select: none;
-}
+  user-select: none; }
 
 #canvas-container .paper:nth-of-type(1) {
-  transform: rotate(-0.5deg) translate(-8px, -6px);
-}
+  transform: rotate(-0.5deg) translate(-8px, -6px); }
 
 #canvas-container .paper:nth-of-type(2) {
-  transform: rotate(-0.4deg) translate(-6px, -4px);
-}
+  transform: rotate(-0.4deg) translate(-6px, -4px); }
 
 #canvas-container .paper:nth-of-type(3) {
-  transform: rotate(-0.2deg) translate(-4px, -2px);
-}
+  transform: rotate(-0.2deg) translate(-4px, -2px); }
 
 #canvas-container .paper:nth-of-type(3)::before {
   position: absolute;
@@ -112,24 +98,19 @@
   transform: rotate(200deg);
   font-family: FontAwesome;
   content: '\f0c6';
-  font-size: 60px;
-}
+  font-size: 60px; }
 
 canvas {
-  user-select: none;
-}
+  user-select: none; }
 
 .bg-nogame {
-  background: radial-gradient(#232D2C 30%,#1E1E1F);
-}
+  background: radial-gradient(#232D2C 30%, #1E1E1F); }
 
 .bg-gameactive {
-  background: radial-gradient(#C75252 30%,#DB0000);
-}
+  background: radial-gradient(#C75252 30%, #DB0000); }
 
 .bg-gameactive-myturn {
-  background: radial-gradient(#3D95AE 30%,#3FC7FF);
-}
+  background: radial-gradient(#3D95AE 30%, #3FC7FF); }
 
 #bgCanvas {
   z-index: 5;
@@ -140,8 +121,7 @@ canvas {
   height: 100%;
   width: 100%;
   border-radius: 3px;
-  background-color: white;
-}
+  background-color: white; }
 
 #drawingCanvas {
   position: absolute;
@@ -151,12 +131,10 @@ canvas {
   height: 100%;
   width: 100%;
   border-radius: 3px;
-  box-shadow: 0px 0px 25px -3px #222222;
-}
+  box-shadow: 0px 0px 25px -3px #222222; }
 
 #drawingCanvas:hover, #drawingCanvas:active {
-  cursor: url('data:image/x-icon;base64,AAACAAEAICAAAAEAAQCoEAAAFgAAACgAAAAgAAAAQAAAAAEAIAAAAAAAABAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAGgYDGhoGA70aBgO9GgYDNwAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAABoGAxoaBgO9fnl5/4yHh/8aBgO9GgYDNwAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAaBgMaGgYDvX55ef9XTEr/v7+//62oqP8aBgO9GgYDNwAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAGgYDGhoGA71+eXn/V0xK/7+/v/9pXlz/6enp/8jEw/8aBgO9GgYDNwAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAABoGAxoaBgO9fnl5/6urq/+/v7//aV5c/+np6f+rpKL//////87Jyf8aBgO9AAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAaBgMaGgYDvX55ef+rq6v/v7+//9XV1f/p6en/q6Si//////+vqKf/6Obl/xoGA70AAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAGgYDGhoGA71+eXn/q6ur/7+/v//V1dX/6enp//j4+P//////r6in/+jm5f97b27/GgYDvQAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAABoGAxoaBgO9fnl5/6urq/+/v7//1dXV/+np6f/4+Pj////////////o5uX/e29u/87Jyf8aBgO9AAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAaBgMaGgYDvX55ef+rq6v/v7+//9XV1f/p6en/+Pj4/////////////////3tvbv/Oycn/6Obl/xoGA70AAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAGgYDGhoGA71+eXn/q6ur/7+/v//V1dX/6enp//j4+P////////////////97b27/zsnJ///////o5uX/GgYDvQAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAABoGAxoaBgO9fnl5/6urq/+/v7//1dXV/+np6f/4+Pj/////////////////e29u/87Jyf//////6Obl/xoGA70aBgM3AAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAaBgMaGgYDvX55ef+rq6v/v7+//9XV1f/p6en/+Pj4/////////////////3tvbv/Oycn//////+jm5f8aBgO9GgYDNwAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAGgYDGhoGA71+eXn/q6ur/7+/v//V1dX/6enp//j4+P////////////////97b27/zsnJ///////o5uX/GgYDvRoGAzcAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAABoGAxoaBgO9fnl5/1dMSv+/v7//1dXV/+np6f/4+Pj/////////////////e29u/87Jyf//////6Obl/xoGA70aBgM3AAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAaBgMaGgYDvX55ef+rq6v/v7+//2leXP/p6en/+Pj4/////////////////3tvbv/Oycn//////+jm5f8aBgO9GgYDNwAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAGgYDGhoGA71+eXn/q6ur/7+/v//V1dX/6enp/6ukov////////////////97b27/zsnJ///////o5uX/GgYDvRoGAzcAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAABoGAxoaBgO9fnl5/6urq/+/v7//1dXV/+np6f/4+Pj//////6+op//o5uX/VUZE/87Jyf//////6Obl/xoGA70aBgM3AAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAaBgMaGgYDvX55ef+rq6v/v7+//9XV1f/p6en/+Pj4////////////6Obl/1VGRP9VRkT/zsnJ/+jm5f8aBgO9GgYDNwAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAGgYDGhoGA71+eXn/q6ur/7+/v//V1dX/6enp//j4+P////////////////9VRkT/GgYDNxoGAzcaBgM3GgYDvRoGAzcAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAABoGAxoaBgO9fnl5/6urq/+/v7//1dXV/+np6f/4+Pj/////////////////VUZE/xoGAzcAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAaBgMaGgYDvX55ef+rq6v/v7+//9XV1f/p6en/+Pj4/////////////////1VGRP8aBgM3AAAAAAAA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'), move; 
-}
+  cursor: url("data:image/x-icon;base64,AAACAAEAICAAAAEAAQCoEAAAFgAAACgAAAAgAAAAQAAAAAEAIAAAAAAAABAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAGgYDGhoGA70aBgO9GgYDNwAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAABoGAxoaBgO9fnl5/4yHh/8aBgO9GgYDNwAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAaBgMaGgYDvX55ef9XTEr/v7+//62oqP8aBgO9GgYDNwAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAGgYDGhoGA71+eXn/V0xK/7+/v/9pXlz/6enp/8jEw/8aBgO9GgYDNwAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAABoGAxoaBgO9fnl5/6urq/+/v7//aV5c/+np6f+rpKL//////87Jyf8aBgO9AAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAaBgMaGgYDvX55ef+rq6v/v7+//9XV1f/p6en/q6Si//////+vqKf/6Obl/xoGA70AAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAGgYDGhoGA71+eXn/q6ur/7+/v//V1dX/6enp//j4+P//////r6in/+jm5f97b27/GgYDvQAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAABoGAxoaBgO9fnl5/6urq/+/v7//1dXV/+np6f/4+Pj////////////o5uX/e29u/87Jyf8aBgO9AAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAaBgMaGgYDvX55ef+rq6v/v7+//9XV1f/p6en/+Pj4/////////////////3tvbv/Oycn/6Obl/xoGA70AAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAGgYDGhoGA71+eXn/q6ur/7+/v//V1dX/6enp//j4+P////////////////97b27/zsnJ///////o5uX/GgYDvQAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAABoGAxoaBgO9fnl5/6urq/+/v7//1dXV/+np6f/4+Pj/////////////////e29u/87Jyf//////6Obl/xoGA70aBgM3AAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAaBgMaGgYDvX55ef+rq6v/v7+//9XV1f/p6en/+Pj4/////////////////3tvbv/Oycn//////+jm5f8aBgO9GgYDNwAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAGgYDGhoGA71+eXn/q6ur/7+/v//V1dX/6enp//j4+P////////////////97b27/zsnJ///////o5uX/GgYDvRoGAzcAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAABoGAxoaBgO9fnl5/1dMSv+/v7//1dXV/+np6f/4+Pj/////////////////e29u/87Jyf//////6Obl/xoGA70aBgM3AAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAaBgMaGgYDvX55ef+rq6v/v7+//2leXP/p6en/+Pj4/////////////////3tvbv/Oycn//////+jm5f8aBgO9GgYDNwAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAGgYDGhoGA71+eXn/q6ur/7+/v//V1dX/6enp/6ukov////////////////97b27/zsnJ///////o5uX/GgYDvRoGAzcAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAABoGAxoaBgO9fnl5/6urq/+/v7//1dXV/+np6f/4+Pj//////6+op//o5uX/VUZE/87Jyf//////6Obl/xoGA70aBgM3AAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAaBgMaGgYDvX55ef+rq6v/v7+//9XV1f/p6en/+Pj4////////////6Obl/1VGRP9VRkT/zsnJ/+jm5f8aBgO9GgYDNwAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAGgYDGhoGA71+eXn/q6ur/7+/v//V1dX/6enp//j4+P////////////////9VRkT/GgYDNxoGAzcaBgM3GgYDvRoGAzcAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAABoGAxoaBgO9fnl5/6urq/+/v7//1dXV/+np6f/4+Pj/////////////////VUZE/xoGAzcAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAaBgMaGgYDvX55ef+rq6v/v7+//9XV1f/p6en/+Pj4/////////////////1VGRP8aBgM3AAAAAAAA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"), move; }
 
 #save-canvas {
   position: absolute;
@@ -171,35 +149,28 @@ canvas {
   text-align: right;
   line-height: 40px;
   vertical-align: middle;
-  box-shadow: 0px 1px 5px rgba(0,0,0,0.3);
-  transition: all 200ms ease-in-out;
-}
+  box-shadow: 0px 1px 5px rgba(0, 0, 0, 0.3);
+  transition: all 200ms ease-in-out; }
 
 #save-canvas:hover {
   background-color: #A100A3;
-  transform: translateX(15px);
-}
+  transform: translateX(15px); }
 
 #save-canvas::before {
   font-family: FontAwesome;
   content: '\f0c7';
-  padding-right: 10px;
-}
+  padding-right: 10px; }
 
 #sidebar-container {
   height: 100%;
-  width: 30%;
-}
-
+  width: 30%; }
 
 .statusdisplay-container {
   color: #FDFFD8;
-  user-select: none;
-}
+  user-select: none; }
 
 .statusdisplay-container * {
-  margin: 10px;
-}
+  margin: 10px; }
 
 .statusdisplay-message {
   position: absolute;
@@ -211,10 +182,9 @@ canvas {
   line-height: 2em;
   padding-left: 15px;
   vertical-align: middle;
-  background-color: rgba(41,101,110,1);
+  background-color: #29656e;
   border-radius: 10px;
-  box-shadow: 0px 3px 5px -1px rgba(0,0,0,0.6);
-}
+  box-shadow: 0px 3px 5px -1px rgba(0, 0, 0, 0.6); }
 
 .statusdisplay-votetobegin {
   position: absolute;
@@ -227,21 +197,15 @@ canvas {
   left: calc(50% - 200px);
   border-radius: 20px;
   box-shadow: 0 3px 15px -5px black;
-  animation: begin-start 500ms ease-in-out 1;
-}
+  animation: begin-start 500ms ease-in-out 1; }
 
 @keyframes begin-start {
   0% {
     opacity: 0.1;
-    transform: translateX(-250px);   
-  }
-  
+    transform: translateX(-250px); }
   80% {
     opacity: 1;
-    transform: translateX(10px)
-  }
-
-}
+    transform: translateX(10px); } }
 
 .statusdisplay-votetobegin button {
   background-color: #24ad01;
@@ -252,16 +216,13 @@ canvas {
   width: 5em;
   box-shadow: 0px 2px 3px 0px #00d800;
   font-style: italic;
-  font-weight: bolder;
-}
+  font-weight: bolder; }
 
 .statusdisplay-votetobegin button:hover {
-  background-color: #2CDB00;
-}
+  background-color: #2CDB00; }
 
 .statusdisplay-votetobegin button:focus {
-  transform: translateY(3px);
-}
+  transform: translateY(3px); }
 
 .turndisplay-container {
   position: absolute;
@@ -271,8 +232,7 @@ canvas {
   font-weight: bold;
   font-family: 'Special Elite', cursive;
   user-select: none;
-  cursor: default;
-}
+  cursor: default; }
 
 .turndisplay-currentplayer {
   position: absolute;
@@ -287,16 +247,14 @@ canvas {
   color: black;
   background-color: #FFFEEF;
   /*background-color: rgba(0,0,0,0.6);*/
-  box-shadow: 2px 5px 10px 1px rgba(0,0,0,0.5);
-}
+  box-shadow: 2px 5px 10px 1px rgba(0, 0, 0, 0.5); }
 
 .turndisplay-secret {
   position: absolute;
   top: 0;
   left: 400px;
   text-align: center;
-  display: flex;
-}
+  display: flex; }
 
 .turndisplay-secret div {
   width: 250px;
@@ -308,14 +266,7 @@ canvas {
   transform: translateY(-100%);
   background-color: #F8EB60;
   /*background-color: rgba(0,0,0,0.6);*/
-  box-shadow: 2px 5px 10px 1px rgba(0,0,0,0.5);
-}
-
-.turndisplay-secret div:nth-child(1) {
-}
-
-.turndisplay-secret div:nth-child(2) {
-}
+  box-shadow: 2px 5px 10px 1px rgba(0, 0, 0, 0.5); }
 
 .statusdisplay-voteforfake {
   position: absolute;
@@ -323,19 +274,15 @@ canvas {
   bottom: -80px;
   left: 0;
   width: 100%;
-  margin: auto;
-}
+  margin: auto; }
 
 .statusdisplay-voteforfake h2 {
-  text-align: center;
-}
+  text-align: center; }
 
 .statusdisplay-voteforfake-opts {
   width: 100%;
   display: flex;
-  justify-content: center;
-}
-
+  justify-content: center; }
 
 .player-button {
   box-sizing: border-box;
@@ -348,12 +295,10 @@ canvas {
   float: left;
   margin: 0px 5px 5px 0px;
   border-radius: 6px;
-  box-shadow: 0px 4px 10px -5px rgba(0,0,0,0.6);
-}
+  box-shadow: 0px 4px 10px -5px rgba(0, 0, 0, 0.6); }
 
 .player-button:active {
-  transform: translateY(2px);
-}
+  transform: translateY(2px); }
 
 .statusdisplay-fakeguess {
   position: absolute;
@@ -368,15 +313,13 @@ canvas {
   z-index: 15;
   background: red;
   border-radius: 2px;
-  box-shadow: 0px 2px 10px -2px black;
-}
+  box-shadow: 0px 2px 10px -2px black; }
 
 .statusdisplay-fakeguess input {
   width: 400px;
   text-align: center;
   height: 1.5em;
-  font-size: 25px;
-}
+  font-size: 25px; }
 
 .timer-display {
   position: absolute;
@@ -391,30 +334,21 @@ canvas {
   background-color: #07575A;
   border-radius: 50%;
   font-size: 24px;
-  color:#FFFDE5;
+  color: #FFFDE5;
   box-shadow: 0 0 15px -2px #000;
-  animation: timerPop 0.3s linear 1;
-}
+  animation: timerPop 0.3s linear 1; }
 
 @keyframes timerPop {
   25% {
     opacity: 0.5;
-    transform: scale(0.8);
-  }
+    transform: scale(0.8); }
   75% {
-    transform: scale(1.2);
-  }
+    transform: scale(1.2); }
   100% {
-    opacity: 1;
-  }
-}
+    opacity: 1; } }
 
 .ReactModalPortal * {
-  z-index: 30;
-}
-
-.modal {
-}
+  z-index: 30; }
 
 .modal-overlay {
   position: fixed;
@@ -422,8 +356,7 @@ canvas {
   left: 0;
   right: 0;
   bottom: 0;
-  background-color: rgba(0,0,0,0.6);
-}
+  background-color: rgba(0, 0, 0, 0.6); }
 
 .guessapprovalform {
   background: mintcream;
@@ -436,35 +369,28 @@ canvas {
   text-align: center;
   display: flex;
   flex-direction: column;
-  border-radius: 10px;
-}
+  border-radius: 10px; }
 
 .guessapprovalform h3 {
-  height: 30px;
-}
+  height: 30px; }
 
 .approval-guess-container {
-  height: 190px;
-}
+  height: 190px; }
 
 .approval-button-container {
   height: 80px;
-  width: 100%;
-}
+  width: 100%; }
 
 .approval-button {
   width: 50%;
   height: 100%;
-  border: none;
-}
+  border: none; }
 
 .approval-button:nth-child(1) {
-  background-color: #73FF73;
-}
+  background-color: #73FF73; }
 
 .approval-button:nth-child(2) {
-  background-color: #FF7474;
-}
+  background-color: #FF7474; }
 
 .modal-begin {
   position: absolute;
@@ -475,8 +401,7 @@ canvas {
   left: calc(50% - 350px);
   text-align: center;
   box-sizing: border-box;
-  padding: 20px;
-}
+  padding: 20px; }
 
 .modal-results {
   position: absolute;
@@ -487,18 +412,14 @@ canvas {
   left: calc(50% - 350px);
   text-align: center;
   box-sizing: border-box;
-  padding: 20px;
-}
+  padding: 20px; }
 
 .modal-results-header {
-  font-size: 60px;
-}
+  font-size: 60px; }
 
-.fake-player{
+.fake-player {
   font-weight: bolder;
-  display: flex;
-}
+  display: flex; }
 
-.fake-player::after{
-  content: " (FAKE)";
-}
+.fake-player::after {
+  content: " (FAKE)"; }
