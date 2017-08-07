@@ -8,11 +8,15 @@ class ActivePlayerScreen extends Component {
   }
 
   generateRandomTilts(players) {
-    return this.props.players.map(elem => Math.random() * (5 - -5) + -5)
+    const array = [];
+    for(let i = 0; i < 8; i++) {
+      array.push(Math.random() * (5 - -5) + -5);
+    }
+    return array;
   }
 
   componentWillMount() {
-    this.tilts = this.generateRandomTilts(this.props.players);
+    this.tilts = this.generateRandomTilts();
   }
 
 

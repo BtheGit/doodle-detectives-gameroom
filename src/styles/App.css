@@ -5,6 +5,77 @@
   src: url("../fonts/mugshot/mugshot.woff") format("woff"), url("../fonts/mugshot/mugshot.ttf") format("truetype"), url("../fonts/mugshot/mugshot.svg#svgFontName") format("svg");
   /* Legacy iOS */ }
 
+/*@media only screen and (min-width: 1540px) {
+
+  $manila_tab_width: 250px;
+  $manila_tab_font: 1em;
+  $manila_tab_offset: 400px;
+
+  #room-container::after, #room-container::before {
+    font-family: 'PT SANS', serif;
+    content: 'DO NOT CROSS POLICE LINE DO NOT CROSS';
+    font-size: 200px;
+    font-weight: bolder;
+    z-index: 1;
+    position: absolute;
+    top: calc(50% - 125px);
+    height: 250px;
+    line-height: 250px;
+    vertical-align: middle;
+    width: 3500px;
+    background-color: #7C8314;
+    overflow: hidden;
+    box-shadow: 0px 0px 1px #333;
+  }
+
+  #canvas-container {
+    margin-top: -90px;
+  }
+
+  #canvas-container .manila-folder {
+    top: -20px;
+    left: -20px;
+    height: 605px;
+    width: 1040px;
+    box-shadow: 0px 5px 20px -5px black;
+  }
+
+  .turndisplay-currentplayer {
+    position: absolute;
+    top: 0;
+    width: 250px;
+    height: 60px;
+    box-sizing: border-box;
+    border-radius: 6px;
+    padding-top: 10px;
+    padding-left: 10px;
+    transform: translateY(-100%);
+    color: black;
+    background-color: #FFFEEF;
+    box-shadow: 2px 5px 10px 1px rgba(0,0,0,0.5);
+  }
+
+  .turndisplay-secret {
+    position: absolute;
+    top: 0;
+    left: 400px;
+    text-align: center;
+    display: flex;
+  }
+
+  .turndisplay-secret div {
+    width: 250px;
+    height: 70px;
+    text-align: center;
+    box-sizing: border-box;
+    border-radius: 6px;
+    padding-top: 10px;
+    transform: translateY(-100%);
+    background-color: $color-manila;
+    box-shadow: 2px 5px 10px 1px rgba(0,0,0,0.5);
+  }
+
+}*/
 * {
   margin: 0;
   padding: 0;
@@ -14,7 +85,6 @@
   position: relative;
   height: 100%;
   width: 100%;
-  background-color: blue;
   display: flex;
   flex-direction: row;
   overflow: hidden; }
@@ -22,15 +92,15 @@
 #room-container::after, #room-container::before {
   font-family: 'PT SANS', serif;
   content: 'DO NOT CROSS POLICE LINE DO NOT CROSS';
-  font-size: 200px;
+  font-size: 11em;
   font-weight: bolder;
   z-index: 1;
   position: absolute;
-  top: calc(50% - 125px);
-  height: 250px;
-  line-height: 250px;
+  top: 0;
+  height: 1.3em;
+  line-height: 1.3em;
   vertical-align: middle;
-  width: 3500px;
+  width: 20em;
   background-color: #7C8314;
   overflow: hidden;
   box-shadow: 0px 0px 1px #333; }
@@ -45,29 +115,25 @@
 
 .left-side {
   height: 100%;
-  width: 70%;
-  display: flex;
-  flex-direction: column;
-  justify-content: center;
-  align-items: center;
-  padding-right: 50px; }
+  width: 60%;
+  padding-left: 40px;
+  padding-top: 10%; }
 
 #canvas-container {
   z-index: 20;
   position: relative;
-  height: 565px;
-  width: 1000px;
+  height: 396px;
+  width: 700px;
   display: flex;
   justify-content: center;
-  align-items: center;
-  margin-top: -90px; }
+  align-items: center; }
 
 #canvas-container .manila-folder {
   position: absolute;
   top: -20px;
   left: -20px;
-  height: 605px;
-  width: 1040px;
+  height: 436px;
+  width: 740px;
   background-color: #F8EB60;
   pointer-events: none;
   box-shadow: 0px 5px 20px -5px black; }
@@ -227,45 +293,45 @@ canvas {
 .turndisplay-container {
   position: absolute;
   top: 0;
-  left: 0;
+  left: -15px;
+  /*left: 0;*/
   color: black;
   font-weight: bold;
   font-family: 'Special Elite', cursive;
   user-select: none;
-  cursor: default; }
+  cursor: default;
+  font-size: 0.8em; }
 
 .turndisplay-currentplayer {
   position: absolute;
-  top: 0;
-  width: 250px;
+  width: 230px;
   height: 60px;
   box-sizing: border-box;
   border-radius: 6px;
   padding-top: 10px;
-  padding-left: 10px;
   transform: translateY(-100%);
+  padding-left: 10px;
   color: black;
   background-color: #FFFEEF;
-  /*background-color: rgba(0,0,0,0.6);*/
   box-shadow: 2px 5px 10px 1px rgba(0, 0, 0, 0.5); }
 
 .turndisplay-secret {
   position: absolute;
   top: 0;
-  left: 400px;
-  text-align: center;
-  display: flex; }
+  left: 150px;
+  display: flex;
+  /**/
+  padding-left: 50px;
+  /**/ }
 
 .turndisplay-secret div {
-  width: 250px;
+  width: 230px;
   height: 70px;
   text-align: center;
-  box-sizing: border-box;
   border-radius: 6px;
   padding-top: 10px;
   transform: translateY(-100%);
   background-color: #F8EB60;
-  /*background-color: rgba(0,0,0,0.6);*/
   box-shadow: 2px 5px 10px 1px rgba(0, 0, 0, 0.5); }
 
 .statusdisplay-voteforfake {
@@ -423,3 +489,7 @@ canvas {
 
 .fake-player::after {
   content: " (FAKE)"; }
+
+@media screen and (min-width: 1350px) {
+  .left-side {
+    margin: 0 auto; } }

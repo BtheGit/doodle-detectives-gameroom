@@ -96,8 +96,8 @@ class Drawingboard extends Component {
 	createCanvas = (ref) => {
 		let newCanvas = ref;
 		let newCtx = newCanvas.getContext('2d');
-		newCanvas.width = 1000;
-		newCanvas.height = 565;
+		newCanvas.width = 700 //600; //1000
+		newCanvas.height = 396 //339; //565
 		this.changeResolution(newCanvas, newCtx, 3);
 		newCtx.strokeStyle = '#BADA55';
 		newCtx.lineJoin = 'round';

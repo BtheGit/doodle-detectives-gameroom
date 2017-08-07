@@ -6,86 +6,6 @@
        url('../fonts/mugshot/mugshot.svg#svgFontName') format('svg'); /* Legacy iOS */
 }
 
-$color-manila: #F8EB60;
-$canvas_width: 700px;
-$canvas_height: 396px;
-$manila_tab_width: 230px;
-$manila_tab_font: .8em;
-$manila_tab_offset: 150px;
-
-
-/*@media only screen and (min-width: 1540px) {
-
-  $manila_tab_width: 250px;
-  $manila_tab_font: 1em;
-  $manila_tab_offset: 400px;
-
-  #room-container::after, #room-container::before {
-    font-family: 'PT SANS', serif;
-    content: 'DO NOT CROSS POLICE LINE DO NOT CROSS';
-    font-size: 200px;
-    font-weight: bolder;
-    z-index: 1;
-    position: absolute;
-    top: calc(50% - 125px);
-    height: 250px;
-    line-height: 250px;
-    vertical-align: middle;
-    width: 3500px;
-    background-color: #7C8314;
-    overflow: hidden;
-    box-shadow: 0px 0px 1px #333;
-  }
-
-  #canvas-container {
-    margin-top: -90px;
-  }
-
-  #canvas-container .manila-folder {
-    top: -20px;
-    left: -20px;
-    height: 605px;
-    width: 1040px;
-    box-shadow: 0px 5px 20px -5px black;
-  }
-
-  .turndisplay-currentplayer {
-    position: absolute;
-    top: 0;
-    width: 250px;
-    height: 60px;
-    box-sizing: border-box;
-    border-radius: 6px;
-    padding-top: 10px;
-    padding-left: 10px;
-    transform: translateY(-100%);
-    color: black;
-    background-color: #FFFEEF;
-    box-shadow: 2px 5px 10px 1px rgba(0,0,0,0.5);
-  }
-
-  .turndisplay-secret {
-    position: absolute;
-    top: 0;
-    left: 400px;
-    text-align: center;
-    display: flex;
-  }
-
-  .turndisplay-secret div {
-    width: 250px;
-    height: 70px;
-    text-align: center;
-    box-sizing: border-box;
-    border-radius: 6px;
-    padding-top: 10px;
-    transform: translateY(-100%);
-    background-color: $color-manila;
-    box-shadow: 2px 5px 10px 1px rgba(0,0,0,0.5);
-  }
-
-}*/
-
 * {
   margin: 0;
   padding: 0;
@@ -96,6 +16,7 @@ $manila_tab_offset: 150px;
   position: relative;
   height: 100%;
   width: 100%;
+  background-color: blue;
   display: flex;
   flex-direction: row;
   overflow: hidden;
@@ -104,15 +25,15 @@ $manila_tab_offset: 150px;
 #room-container::after, #room-container::before {
   font-family: 'PT SANS', serif;
   content: 'DO NOT CROSS POLICE LINE DO NOT CROSS';
-  font-size: 11em;
+  font-size: 200px;
   font-weight: bolder;
   z-index: 1;
   position: absolute;
-  top: 0;
-  height: 1.3em;
-  line-height: 1.3em;
+  top: calc(50% - 125px);
+  height: 250px;
+  line-height: 250px;
   vertical-align: middle;
-  width: 20em;
+  width: 3500px;
   background-color: #7C8314;
   overflow: hidden;
   box-shadow: 0px 0px 1px #333;
@@ -130,30 +51,35 @@ $manila_tab_offset: 150px;
 
 .left-side {
   height: 100%;
-  width: 60%;
-  padding-left: 40px;
-  padding-top: 10%;
+  width: 70%;
+  display: flex;
+  flex-direction: column;
+  justify-content: center;
+  align-items: center;
+  padding-right: 50px;
 }
 
 #canvas-container {
   z-index: 20;
   position: relative;
-  height: $canvas_height;
-  width: $canvas_width;
+  height: 565px;
+  width: 1000px;
   display: flex;
   justify-content: center;
   align-items: center;
+  margin-top: -90px;
 }
 
 #canvas-container .manila-folder {
   position:absolute;
   top: -20px;
   left: -20px;
-  height: $canvas_height + 40px;
-  width: $canvas_width + 40px;
-  background-color: $color-manila;
+  height: 605px;
+  width: 1040px;
+  background-color: #F8EB60;
   pointer-events: none;
   box-shadow: 0px 5px 20px -5px black;
+
 }
 
 #canvas-container .paper {
@@ -337,55 +263,58 @@ canvas {
   transform: translateY(3px);
 }
 
-
-
 .turndisplay-container {
   position: absolute;
   top: 0;
-  left: -15px;
-  /*left: 0;*/
+  left: 0;
   color: black;
   font-weight: bold;
   font-family: 'Special Elite', cursive;
   user-select: none;
   cursor: default;
-  font-size: $manila_tab_font;
 }
-
 
 .turndisplay-currentplayer {
   position: absolute;
-  width: $manila_tab_width;
+  top: 0;
+  width: 250px;
   height: 60px;
   box-sizing: border-box;
   border-radius: 6px;
   padding-top: 10px;
-  transform: translateY(-100%);
   padding-left: 10px;
+  transform: translateY(-100%);
   color: black;
   background-color: #FFFEEF;
+  /*background-color: rgba(0,0,0,0.6);*/
   box-shadow: 2px 5px 10px 1px rgba(0,0,0,0.5);
 }
 
 .turndisplay-secret {
   position: absolute;
   top: 0;
-  left: $manila_tab_offset;
+  left: 400px;
+  text-align: center;
   display: flex;
-  /**/
-  padding-left: 50px;
-  /**/
 }
 
 .turndisplay-secret div {
-  width: $manila_tab_width;
+  width: 250px;
   height: 70px;
   text-align: center;
+  box-sizing: border-box;
   border-radius: 6px;
   padding-top: 10px;
   transform: translateY(-100%);
-  background-color: $color-manila;
+  background-color: #F8EB60;
+  /*background-color: rgba(0,0,0,0.6);*/
   box-shadow: 2px 5px 10px 1px rgba(0,0,0,0.5);
+}
+
+.turndisplay-secret div:nth-child(1) {
+}
+
+.turndisplay-secret div:nth-child(2) {
 }
 
 .statusdisplay-voteforfake {
@@ -572,12 +501,4 @@ canvas {
 
 .fake-player::after{
   content: " (FAKE)";
-}
-
-@media screen and(min-width: 1350px) {
-
-  .left-side {
-    margin: 0 auto;
-  }
-
 }

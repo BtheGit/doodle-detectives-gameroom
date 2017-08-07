@@ -44,18 +44,18 @@ class App extends Component {
       sessionId: '', //this.props.match.params.id || 
       score: 0,
       chatMessages: [
-        // {name: "Brendan", content: "Hello"},
-        // {name: "Brendan", content: "How are you doing today?"},
-        // {name: "Brendan", content: "This fucking game sucks monkey balls. Let's do something else"},
-        // {name: "Brendan", content: "Hello"},
-        // {name: "Brendan", content: "How are you doing today?"},
-        // {name: "Brendan", content: "This fucking game sucks monkey balls. Let's do something else"},
-        // {name: "Brendan", content: "Hello"},
-        // {name: "Brendan", content: "How are you doing today?"},
-        // {name: "Brendan", content: "This fucking game sucks monkey balls. Let's do something else"},
-        // {name: "Brendan", content: "Hello"},
-        // {name: "Brendan", content: "How are you doing today?"},
-        // {name: "Brendan", content: "This fucking game sucks monkey balls. Let's do something else"},
+        {name: "Brendan", content: "Hello"},
+        {name: "Brendan", content: "How are you doing today?"},
+        {name: "Brendan", content: "This fucking game sucks monkey balls. Let's do something else"},
+        {name: "Brendan", content: "Hello"},
+        {name: "Brendan", content: "How are you doing today?"},
+        {name: "Brendan", content: "This fucking game sucks monkey balls. Let's do something else"},
+        {name: "Brendan", content: "Hello"},
+        {name: "Brendan", content: "How are you doing today?"},
+        {name: "Brendan", content: "This fucking game sucks monkey balls. Let's do something else"},
+        {name: "Brendan", content: "Hello"},
+        {name: "Brendan", content: "How are you doing today?"},
+        {name: "Brendan", content: "This fucking game sucks monkey balls. Let's do something else"},
       ],
       paths: [],
       hasVotedToBegin: false, //Used for conditionally rendering status display after voting
@@ -66,31 +66,31 @@ class App extends Component {
       },
       sessionState: {
         players: [
-          // {name: 'Brendan', id: '1'},
-          // {name: 'Cody', id: '2'},
-          // {name: 'MATUMIZURO2343', id: '3'},
-          // {name: 'Dummy', id: '4'},
-          // {name: 'Brendan', id: '1'},
-          // {name: 'Cody', id: '2'},
-          // {name: 'MATUMIZURO', id: '3'},
-          // {name: 'Dummy', id: '4'},
+          {name: 'Brendan', id: '1'},
+          {name: 'Cody', id: '2'},
+          {name: 'MATUMIZURO2343', id: '3'},
+          {name: 'Dummy', id: '4'},
+          {name: 'Brendan', id: '1'},
+          {name: 'Cody', id: '2'},
+          {name: 'MATUMIZURO', id: '3'},
+          {name: 'Dummy', id: '4'},
         ],
-        currentSessionStatus: '', //[WAITINGFORPLAYERS, WAITINGTOSTART, GAMEACTIVE]
+        currentSessionStatus: 'GAMEACTIVE', //[WAITINGFORPLAYERS, WAITINGTOSTART, GAMEACTIVE]
       },
       gameState: {
         playerColors: {
-          // 1: 'red', 2: 'purple', 3: 'green', 4: 'violet'
+          1: 'red', 2: 'purple', 3: 'green', 4: 'violet'
         },
-        currentPhase: '', 
+        currentPhase: 'DRAWING', 
         currentColor: '',
         currentPlayer: '',
         isMyTurn: false,
         fakeIsMe: false,
         secret: {
-          category: '',
-          secret: ''
-          // category: 'Animals',
-          // secret: 'Orangutan'
+          // category: '',
+          // secret: ''
+          category: 'Animals',
+          secret: 'Headless Horseman'
         }
       },
       fakeVote: {
