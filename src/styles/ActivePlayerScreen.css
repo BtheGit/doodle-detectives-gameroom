@@ -1,96 +1,114 @@
 .activeplayer-container {
-  z-index: 10;
-  position: absolute;
-  top: 40px;
-  right: 10px;
-  width: 500px;
-  height: 250px;
+  z-index: 30;
+  position: relative;
+  width: 95%;
+  margin: auto;
+  margin-top: 25px;
+  height: 150px;
   background-color: gold;
   border: 4px solid gold;
   box-shadow: 0px 5px 20px -5px black;
   user-select: none;
   cursor: default;
   background-color: #CA7637; }
-
-.activeplayer-header {
-  font-family: 'Special Elite';
-  position: absolute;
-  z-index: 15;
-  top: -20px;
-  left: calc(50% - 75px);
-  background-color: white;
-  width: 150px;
-  height: 35px;
-  font-weight: bolder;
-  font-size: 24px;
-  text-align: center;
-  line-height: 40px;
-  vertical-align: middle;
-  transform: rotate(-5deg);
-  box-shadow: 0px 2px 3px -1px black; }
-  .activeplayer-header::before {
-    content: '';
-    z-index: 16;
+  .activeplayer-container .fakevote-header {
+    font-family: 'Special Elite';
     position: absolute;
-    top: 0;
-    left: -16px;
-    background-color: rgba(3, 3, 3, 0.3);
-    height: 10px;
-    width: 40px;
-    transform: rotate(-45deg); }
-  .activeplayer-header::after {
-    content: '';
-    z-index: 16;
+    z-index: 1000;
+    bottom: -90px;
+    left: calc(50% - 400px);
+    background-color: white;
+    width: 800px;
+    height: 100px;
+    font-weight: bolder;
+    font-size: 80px;
+    text-align: center;
+    line-height: 110px;
+    vertical-align: middle;
+    box-shadow: 0px 2px 3px -1px black;
+    display: none; }
+  .activeplayer-container .activeplayer-header {
+    font-family: 'Special Elite';
     position: absolute;
-    top: 0;
-    right: -16px;
-    background-color: rgba(3, 3, 3, 0.3);
-    height: 10px;
-    width: 40px;
-    transform: rotate(45deg); }
+    z-index: 15;
+    top: -20px;
+    left: calc(50% - 75px);
+    background-color: white;
+    width: 150px;
+    height: 35px;
+    font-weight: bolder;
+    font-size: 24px;
+    text-align: center;
+    line-height: 40px;
+    vertical-align: middle;
+    transform: rotate(-5deg);
+    box-shadow: 0px 2px 3px -1px black; }
+    .activeplayer-container .activeplayer-header::before {
+      content: '';
+      z-index: 16;
+      position: absolute;
+      top: 0;
+      left: -16px;
+      background-color: rgba(3, 3, 3, 0.3);
+      height: 10px;
+      width: 40px;
+      transform: rotate(-45deg); }
+    .activeplayer-container .activeplayer-header::after {
+      content: '';
+      z-index: 16;
+      position: absolute;
+      top: 0;
+      right: -16px;
+      background-color: rgba(3, 3, 3, 0.3);
+      height: 10px;
+      width: 40px;
+      transform: rotate(45deg); }
+  .activeplayer-container .activeplayer-players {
+    display: flex;
+    flex-wrap: wrap;
+    justify-content: space-around;
+    padding: 10px; }
+    .activeplayer-container .activeplayer-players .playercard {
+      z-index: 17;
+      position: relative;
+      display: flex;
+      flex-direction: column;
+      align-items: center;
+      color: black;
+      background-color: white;
+      height: 110px;
+      width: 100px;
+      box-shadow: 0px 5px 15px -10px black, 0px 0px 1px #555 inset; }
+      .activeplayer-container .activeplayer-players .playercard::before {
+        content: '';
+        position: absolute;
+        top: 1px;
+        width: 14px;
+        height: 14px;
+        border-radius: 50%;
+        background-color: #FCFFAC;
+        box-shadow: 0 2px 5px -1px #333, 0 -2px 4px rgba(0, 0, 0, 0.5) inset; }
+      .activeplayer-container .activeplayer-players .playercard .playercard-image {
+        height: 80px;
+        width: 95%;
+        background-color: black;
+        color: white;
+        font-family: 'Mugshot';
+        font-size: 70px;
+        text-align: center;
+        line-height: 90px;
+        margin-top: 5px; }
+      .activeplayer-container .activeplayer-players .playercard .playercard-name {
+        font-family: 'Rock Salt', cursive;
+        font-size: .6em;
+        font-weight: bold;
+        height: 25%;
+        width: 100%;
+        text-align: center; }
 
-.activeplayer-players {
-  display: flex;
-  flex-wrap: wrap;
-  justify-content: space-around;
-  padding: 10px; }
+.activeplayer-container.voting .fakevote-header {
+  display: block; }
 
-.playercard {
-  z-index: 17;
-  position: relative;
-  display: flex;
-  flex-direction: column;
-  align-items: center;
-  color: black;
-  background-color: white;
-  height: 110px;
-  width: 100px;
-  box-shadow: 0px 5px 15px -10px black, 0px 0px 1px #555 inset; }
-  .playercard::before {
-    content: '';
-    position: absolute;
-    top: 1px;
-    width: 14px;
-    height: 14px;
-    border-radius: 50%;
-    background-color: #FCFFAC;
-    box-shadow: 0 2px 5px -1px #333, 0 -2px 4px rgba(0, 0, 0, 0.5) inset; }
-
-.playercard-image {
-  height: 80px;
-  width: 95%;
-  background-color: black;
-  color: white;
-  font-family: 'Mugshot';
-  font-size: 70px;
-  text-align: center;
-  line-height: 90px;
-  margin-top: 5px; }
-
-.playercard-name {
-  font-family: 'Rock Salt', cursive;
-  font-size: .6em;
-  font-weight: bold;
-  height: 25%;
-  width: 100%;
-  text-align: center; }
+.activeplayer-container.voting .activeplayer-players .playercard:hover {
+  border: 2px solid black;
+  box-shadow: 0px 5px 15px -2px black; }

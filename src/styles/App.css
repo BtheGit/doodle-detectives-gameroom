@@ -27,7 +27,7 @@
   height: 100%;
   width: 100%;
   display: flex;
-  flex-direction: row;
+  flex-direction: column;
   overflow: hidden; }
   #room-container.bg-nogame {
     background: radial-gradient(#232D2C 30%, #1E1E1F); }
@@ -35,74 +35,84 @@
     background: radial-gradient(#C75252 30%, #DB0000); }
   #room-container.bg-gameactive-myturn {
     background: radial-gradient(#3D95AE 30%, #3FC7FF); }
-  #room-container::after, #room-container::before {
-    font-family: 'PT SANS', serif;
-    content: 'DO NOT CROSS POLICE LINE DO NOT CROSS';
-    font-size: 11em;
-    font-weight: bolder;
-    z-index: 1;
-    position: absolute;
-    top: 0;
-    height: 1.3em;
-    line-height: 1.3em;
-    vertical-align: middle;
-    width: 20em;
-    background-color: #7C8314;
-    overflow: hidden;
-    box-shadow: 0px 0px 1px #333; }
-  #room-container::after {
-    left: -50%;
-    transform: rotate(-25deg); }
-  #room-container::before {
-    right: -50%;
-    transform: rotate(25deg); }
-
-.left-side {
-  height: 100%;
-  width: 60%;
-  padding-left: 40px;
-  padding-top: 10%; }
-
-#canvas-container {
-  z-index: 20;
-  position: relative;
-  height: 396px;
-  width: 700px;
-  display: flex;
-  justify-content: center;
-  align-items: center; }
-  #canvas-container .manila-folder {
-    position: absolute;
-    top: -20px;
-    left: -20px;
-    height: 436px;
-    width: 740px;
-    background-color: #F8EB60;
-    pointer-events: none;
-    box-shadow: 0px 5px 20px -5px black; }
-  #canvas-container .paper {
-    position: absolute;
-    height: 100%;
+  #room-container .upper-container {
     width: 100%;
-    background-color: white;
-    box-shadow: 0px -2px 5px -1px rgba(0, 0, 0, 0.3);
-    transform-origin: top left;
-    pointer-events: none;
-    user-select: none; }
-  #canvas-container .paper:nth-of-type(1) {
-    transform: rotate(-0.5deg) translate(-8px, -6px); }
-  #canvas-container .paper:nth-of-type(2) {
-    transform: rotate(-0.4deg) translate(-6px, -4px); }
-  #canvas-container .paper:nth-of-type(3) {
-    transform: rotate(-0.2deg) translate(-4px, -2px); }
-  #canvas-container .paper:nth-of-type(3)::before {
-    position: absolute;
-    top: -15px;
-    left: -20px;
-    transform: rotate(200deg);
-    font-family: FontAwesome;
-    content: '\f0c6';
-    font-size: 60px; }
+    height: 25%; }
+  #room-container .lower-container {
+    width: 100%;
+    height: 75%;
+    display: flex; }
+    #room-container .lower-container .lower-left {
+      height: 100%;
+      width: 60%;
+      padding-left: 50px;
+      padding-top: 80px; }
+      #room-container .lower-container .lower-left #canvas-container {
+        z-index: 20;
+        position: relative;
+        height: 396px;
+        width: 700px;
+        display: flex;
+        justify-content: center;
+        align-items: center; }
+        #room-container .lower-container .lower-left #canvas-container .manila-folder {
+          position: absolute;
+          top: -20px;
+          left: -20px;
+          height: 436px;
+          width: 740px;
+          background-color: #F8EB60;
+          pointer-events: none;
+          box-shadow: 0px 5px 20px -5px black; }
+        #room-container .lower-container .lower-left #canvas-container .paper {
+          position: absolute;
+          height: 100%;
+          width: 100%;
+          background-color: white;
+          box-shadow: 0px -2px 5px -1px rgba(0, 0, 0, 0.3);
+          transform-origin: top left;
+          pointer-events: none;
+          user-select: none; }
+        #room-container .lower-container .lower-left #canvas-container .paper:nth-of-type(1) {
+          transform: rotate(-0.5deg) translate(-8px, -6px); }
+        #room-container .lower-container .lower-left #canvas-container .paper:nth-of-type(2) {
+          transform: rotate(-0.4deg) translate(-6px, -4px); }
+        #room-container .lower-container .lower-left #canvas-container .paper:nth-of-type(3) {
+          transform: rotate(-0.2deg) translate(-4px, -2px); }
+        #room-container .lower-container .lower-left #canvas-container .paper:nth-of-type(3)::before {
+          position: absolute;
+          top: -15px;
+          left: -20px;
+          transform: rotate(200deg);
+          font-family: FontAwesome;
+          content: '\f0c6';
+          font-size: 60px; }
+      #room-container .lower-container .lower-left .statusmessage {
+        position: absolute;
+        z-index: 10;
+        bottom: 10px;
+        right: 10px;
+        width: 20em;
+        height: 2em;
+        line-height: 2em;
+        padding-left: 15px;
+        vertical-align: middle;
+        background-color: #29656e;
+        border-radius: 10px;
+        color: white;
+        box-shadow: 0px 3px 5px -1px rgba(0, 0, 0, 0.6); }
+        #room-container .lower-container .lower-left .statusmessage.hidden {
+          display: none; }
+    #room-container .lower-container .lower-right {
+      position: relative;
+      height: 100%;
+      width: 40%; }
+      #room-container .lower-container .lower-right #sidebar-container {
+        height: 100%;
+        width: 100%;
+        display: flex;
+        justify-content: center;
+        align-items: center; }
 
 canvas {
   user-select: none; }
@@ -452,6 +462,7 @@ canvas {
     background-size: 100%;
     background-position: center;
     background-repeat: no-repeat;
+    background-color: black;
     color: white;
     text-shadow: 0px 0px 25px black;
     color: #FFD800; }
@@ -486,17 +497,11 @@ canvas {
     height: 120px;
     border-radius: 50%; }
 
-@media screen and (min-width: 1350px) {
-  .left-side {
-    margin-left: 40px; } }
-
 @media screen and (min-width: 1400px) {
-  .left-side {
-    margin: 0 auto; }
-  #room-container::after, #room-container::before {
-    top: 20%; } }
+  #room-container .lower-container .lower-left {
+    padding-left: 100px; } }
 
 @media screen and (min-width: 1600px) {
-  .left-side {
-    margin: 0 auto;
-    padding-left: 150px; } }
+  #room-container .lower-container .lower-left {
+    padding-left: 130px;
+    padding-top: 100px; } }

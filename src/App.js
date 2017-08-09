@@ -4,10 +4,11 @@ import io from 'socket.io-client';
 import Modal from 'react-modal';
 import Timer from './components/Timer.js'
 import Chatroom from './components/Chatroom.js';
-import StatusDisplay from './components/StatusDisplay.js';
 import Drawingboard from './components/Drawingboard.js';
+import StatusDisplay from './components/StatusDisplay.js';
 import GuessApprovalForm from './components/GuessApprovalForm.js';
 import ActivePlayerScreen from './components/ActivePlayerScreen.js';
+
 
 //Game State Toggles
 const DISPLAYSECRET = 'DISPLAYSECRET',
@@ -43,18 +44,18 @@ class App extends Component {
       sessionId: '', 
       score: 0,
       chatMessages: [
-        {name: "Brendan", content: "Hello"},
-        {name: "Jim", content: "How are you doing today?"},
-        {name: "Brendan", content: "This game is silly. Let's do something else"},
-        {name: "Hypatia", content: "Hello"},
-        {name: "Brendan", content: "How are you doing today?"},
-        {name: "Jim", content: "This game is silly. Let's do something else"},
-        {name: "Hypatia", content: "Hello"},
-        {name: "Brendan", content: "How are you doing today?"},
-        {name: "Jim", content: "This game is silly. Let's do something else"},
-        {name: "Brendan", content: "Hello"},
-        {name: "Hypatia", content: "How are you doing today?"},
-        {name: "Brendan", content: "This game is silly. Let's do something else"},
+        // {name: "Brendan", content: "Hello"},
+        // {name: "Jim", content: "How are you doing today?"},
+        // {name: "Brendan", content: "This game is silly. Let's do something else"},
+        // {name: "Hypatia", content: "Hello"},
+        // {name: "Brendan", content: "How are you doing today?"},
+        // {name: "Jim", content: "This game is silly. Let's do something else"},
+        // {name: "Hypatia", content: "Hello"},
+        // {name: "Brendan", content: "How are you doing today?"},
+        // {name: "Jim", content: "This game is silly. Let's do something else"},
+        // {name: "Brendan", content: "Hello"},
+        // {name: "Hypatia", content: "How are you doing today?"},
+        // {name: "Brendan", content: "This game is silly. Let's do something else"},
       ],
       paths: [],
       hasVotedToBegin: false, //Used for conditionally rendering status display after voting
@@ -69,6 +70,10 @@ class App extends Component {
           {name: 'Cody', id: '2', color: 'yellow', isFake: false},
           {name: 'MATUMIZURO', id: '3', color: 'red', isFake: false},
           {name: 'Dummy', id: '4', color: 'purple', isFake: false},
+          {name: 'Brendan', id: '1', color: 'blue', isFake: true},
+          {name: 'Cody', id: '2', color: 'yellow', isFake: false},
+          {name: 'MATUMIZURO', id: '3', color: 'red', isFake: false},
+          {name: 'Dummy', id: '4', color: 'purple', isFake: false},
         ],
         currentSessionStatus: 'GAMEACTIVE', //[WAITINGFORPLAYERS, WAITINGTOSTART, GAMEACTIVE]
       },
@@ -79,13 +84,13 @@ class App extends Component {
         currentPhase: 'FAKEVOTE', 
         currentColor: '',
         currentPlayer: '',
-        isMyTurn: true,
+        isMyTurn: false,
         fakeIsMe: false,
         secret: {
-          // category: '',
-          // secret: ''
-          category: 'Animals',
-          secret: 'Headless Horseman'
+          category: '',
+          secret: ''
+          // category: 'Animals',
+          // secret: 'Headless Horseman'
         }
       },
       fakeVote: {
@@ -109,7 +114,8 @@ class App extends Component {
         length: 0,
         tickCB: null,
         endCB: null
-      }
+      },
+      statusMessage: ''
     }
   }
 
@@ -459,6 +465,12 @@ class App extends Component {
     this.drawingboard.drawPath(this.drawingboard.bgCtx, path) //Allows us to reach into the child component's functions. Dirty-boy!
   }
 
+  postStatusMessage = statusMessage => {
+    console.log('Status Message:', statusMessage)
+    // this.setState({statusMessage})
+    this.statusMessage = statusMessage;
+  }
+
   savePath = path => {
     this.setState({paths: [...this.state.paths, path]})
   }
@@ -513,8 +525,7 @@ class App extends Component {
     this.socket.emit('packet', packet)
   }
 
-  emitVoteForFake = e => {
-    const vote = e.target.innerHTML;
+  emitVoteForFake = vote => {
     const packet = {
       type: 'vote_for_fake',
       vote
@@ -631,6 +642,9 @@ class App extends Component {
       <ActivePlayerScreen
         players={this.state.sessionState.players}
         playerColors={this.state.gameState.playerColors || {}}
+        isVoting={this.state.gameState.currentPhase === FAKEVOTE}
+        hasVoted={this.state.fakeVote.hasVoted}
+        vote={this.emitVoteForFake}
       />
     )
   }
@@ -666,6 +680,8 @@ class App extends Component {
         emitGuess                 ={this.emitGuess}
         hasGuessed                ={this.state.fakeGuess.hasGuessed}
         guessApproval             ={this.state.guessApproval}
+        postStatusMessage         ={this.postStatusMessage}
+        statusMessage             ={this.statusMessage}
       />
     )
   }
@@ -706,17 +722,23 @@ class App extends Component {
 
     return (
       <div id="room-container" className={setBGColor()}>
-        <div className="left-side">
-          <div id="canvas-container">
-            {this.renderDrawingboard()}
-            {this.renderStatusDisplay()}
-            {this.renderTimer()}
+        <div className="upper-container">
+          {this.renderActivePlayerScreen()}
+        </div>
+        <div className="lower-container">
+          <div className="lower-left">
+            <div id="canvas-container">
+              {this.renderDrawingboard()}
+              {this.renderStatusDisplay()}
+              {this.renderTimer()}
+            </div>
+          </div>
+          <div className="lower-right">
+            <div id="sidebar-container">
+              {this.renderChatroom()}
+            </div>        
           </div>
         </div>
-        <div id="sidebar-container">
-          {this.renderActivePlayerScreen()}
-          {this.renderChatroom()}
-        </div>        
         {this.renderModal()}
       </div>
     );

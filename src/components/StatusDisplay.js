@@ -15,7 +15,7 @@ const GAMEACTIVE        = 'GAMEACTIVE',
       WAITINGTOSTART    = 'WAITINGTOSTART',
       WAITINGFORPLAYERS = 'WAITINGFORPLAYERS';
 
-const StatusDisplay = (props) => {
+const StatusDisplay = props => {
 
 	function renderStatusMessage(message) {
     return <div className="statusdisplay-message">{message}</div>
@@ -32,24 +32,7 @@ const StatusDisplay = (props) => {
   }
 
   function renderVoteForFake() {
-    if (!props.fakeVote.hasVoted) {
-      const opts = props.fakeVote.options.map(opt => {
-        const divStyle = {
-          color: 'white',
-          backgroundColor: opt
-        }
-        return <div className="player-button" style={divStyle} onClick={props.emitVoteForFake}>{opt}</div>
-      })
-      return (
-        <div className='statusdisplay-voteforfake'>
-          <h2>Who was faking?</h2>
-          <div className='statusdisplay-voteforfake-opts'>
-            {opts}
-          </div>
-        </div>
-      )     
-    }
-    else {
+    if (props.fakeVote.hasVoted) {
       return renderStatusMessage('Waiting for other players to vote...')
     }
   }

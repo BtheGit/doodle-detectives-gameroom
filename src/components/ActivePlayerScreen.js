@@ -1,4 +1,6 @@
 import React, { Component } from 'react';
+import PropTypes from 'prop-types';
+import PlayerCard from './PlayerCard';
 import '../styles/ActivePlayerScreen.css';
 
 class ActivePlayerScreen extends Component {
@@ -21,8 +23,11 @@ class ActivePlayerScreen extends Component {
 
 
   render() {
+
+    const isVoting = this.props.isVoting && !this.props.hasVoted;
+
     return (
-      <div className="activeplayer-container">
+      <div className={`activeplayer-container ${isVoting ? 'voting' : ''}`}>
         <div className="activeplayer-header">SUSPECTS</div>
         <div className="activeplayer-players">
           {this.props.players.map((player, idx) => {
@@ -36,17 +41,30 @@ class ActivePlayerScreen extends Component {
               color: this.props.playerColors[player.id] || 'black'
             }
             return (
-              <div key={idx} className="playercard" style={cardStyle}>
-                <div className="playercard-image" style={imageStyle}>&#xe900;</div>
-                <div className="playercard-name" style={nameStyle}>{player.name}</div>           
-              </div>
+              <PlayerCard 
+                cardStyle={cardStyle}
+                imageStyle={imageStyle}
+                nameStyle={nameStyle}
+                color={this.props.playerColors[player.id]}
+                vote={this.props.vote}
+                name={player.name}
+              />
             );
           })}
         </div>
+        <div className="fakevote-header">Who was faking?</div>
       </div>    
     );   
   }
 }
+
+ActivePlayerScreen.propTypes = {
+  players: PropTypes.array,
+  playerColors: PropTypes.object,
+  isVoting: PropTypes.bool.isRequired,
+  hasVoted: PropTypes.bool.isRequired
+}
+
 
 
 export default ActivePlayerScreen;

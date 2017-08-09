@@ -179,7 +179,7 @@ Drawingboard.propTypes = {
   clientId: PropTypes.string.isRequired,
   isGameActive: PropTypes.bool.isRequired,
   isMyTurn: PropTypes.bool.isRequired,
-  paths: PropTypes.array.isRequired,	
+  paths: PropTypes.array.isRequired
 };
 
 export default Drawingboard;
