@@ -39,23 +39,22 @@ class App extends Component {
       myId: '', //TEMP until auth and persistent login (necessary for self-identifying in state updates)
       myName: '',
       myColor: 'black',
-      // myColor: 'rgba(0,0,0,0)',
       //If coming from newroom route, no id will be provided, default to empty string
-      sessionId: '', //this.props.match.params.id || 
+      sessionId: '', 
       score: 0,
       chatMessages: [
-        // {name: "Brendan", content: "Hello"},
-        // {name: "Brendan", content: "How are you doing today?"},
-        // {name: "Brendan", content: "This fucking game sucks monkey balls. Let's do something else"},
-        // {name: "Brendan", content: "Hello"},
-        // {name: "Brendan", content: "How are you doing today?"},
-        // {name: "Brendan", content: "This fucking game sucks monkey balls. Let's do something else"},
-        // {name: "Brendan", content: "Hello"},
-        // {name: "Brendan", content: "How are you doing today?"},
-        // {name: "Brendan", content: "This fucking game sucks monkey balls. Let's do something else"},
-        // {name: "Brendan", content: "Hello"},
-        // {name: "Brendan", content: "How are you doing today?"},
-        // {name: "Brendan", content: "This fucking game sucks monkey balls. Let's do something else"},
+        {name: "Brendan", content: "Hello"},
+        {name: "Jim", content: "How are you doing today?"},
+        {name: "Brendan", content: "This game is silly. Let's do something else"},
+        {name: "Hypatia", content: "Hello"},
+        {name: "Brendan", content: "How are you doing today?"},
+        {name: "Jim", content: "This game is silly. Let's do something else"},
+        {name: "Hypatia", content: "Hello"},
+        {name: "Brendan", content: "How are you doing today?"},
+        {name: "Jim", content: "This game is silly. Let's do something else"},
+        {name: "Brendan", content: "Hello"},
+        {name: "Hypatia", content: "How are you doing today?"},
+        {name: "Brendan", content: "This game is silly. Let's do something else"},
       ],
       paths: [],
       hasVotedToBegin: false, //Used for conditionally rendering status display after voting
@@ -66,31 +65,27 @@ class App extends Component {
       },
       sessionState: {
         players: [
-          // {name: 'Brendan', id: '1'},
-          // {name: 'Cody', id: '2'},
-          // {name: 'MATUMIZURO2343', id: '3'},
-          // {name: 'Dummy', id: '4'},
-          // {name: 'Brendan', id: '1'},
-          // {name: 'Cody', id: '2'},
-          // {name: 'MATUMIZURO', id: '3'},
-          // {name: 'Dummy', id: '4'},
+          {name: 'Brendan', id: '1', color: 'blue', isFake: true},
+          {name: 'Cody', id: '2', color: 'yellow', isFake: false},
+          {name: 'MATUMIZURO', id: '3', color: 'red', isFake: false},
+          {name: 'Dummy', id: '4', color: 'purple', isFake: false},
         ],
-        currentSessionStatus: '', //[WAITINGFORPLAYERS, WAITINGTOSTART, GAMEACTIVE]
+        currentSessionStatus: 'GAMEACTIVE', //[WAITINGFORPLAYERS, WAITINGTOSTART, GAMEACTIVE]
       },
       gameState: {
         playerColors: {
-          // 1: 'red', 2: 'purple', 3: 'green', 4: 'violet'
+          1: 'red', 2: 'purple', 3: 'green', 4: 'violet'
         },
-        currentPhase: '', 
+        currentPhase: 'FAKEVOTE', 
         currentColor: '',
         currentPlayer: '',
-        isMyTurn: false,
+        isMyTurn: true,
         fakeIsMe: false,
         secret: {
-          category: '',
-          secret: ''
-          // category: 'Animals',
-          // secret: 'Headless Horseman'
+          // category: '',
+          // secret: ''
+          category: 'Animals',
+          secret: 'Headless Horseman'
         }
       },
       fakeVote: {
@@ -119,16 +114,32 @@ class App extends Component {
   }
 
   //## TEMP - for design staging
-  
+  // testModal() {
+  //   const isFake = this.state.gameState.fakeIsMe;
+  //   const modalContent = (
+  //     <div className="modal-content modal-begin">
+  //       <div className="modal-header">Get Ready to Doodle!</div>
+  //       <div className={`modal-image ${isFake ? 'fake' : null}`}></div>
+  //       <div className="modal-category"><span>Category:</span> Fluids</div>
+  //       <div className="modal-secret"><span>Secret:</span> Poop</div>
+  //     </div>
+  //   )
+
+  //   this.setState({
+  //     modal: {
+  //       isModalActive: true,
+  //       isAbleToClose: true,
+  //       modalContent
+  //     }
+  //   })  
+  // }
+
   testModal() {
-    const modalContent = (
-      <div className="modal-content modal-begin">
-        <div className="modal-header">Get Ready to Doodle!</div>
-        <div>INSERT PICTURE HERE</div>
-        <div className="modal-category">Category: Fluids</div>
-        <div className="modal-secret">Secret: Poop</div>
-      </div>
-    )
+    const fakeWins = false;
+    const fakeFound = true;
+    const players = this.state.sessionState.players;
+    const modalContent = this.styleResultsModal(fakeWins, fakeFound, players);
+
 
     this.setState({
       modal: {
@@ -136,8 +147,8 @@ class App extends Component {
         isAbleToClose: true,
         modalContent
       }
-    })  
-  }
+    });  
+  };
 
   //################ SOCKET HELPERS #####################
 
@@ -228,17 +239,29 @@ class App extends Component {
 
 
   styleResultsModal(fakeWins, fakeFound, players) {
-    function resultMessage(fakeWins, fakeFound) {
+    function results(fakeWins, fakeFound) {
       if(fakeWins) {
         if(fakeFound) {
-          return 'The fake artist was uncovered but guessed the secret correctly to steal the win.'
+          return {
+            header: 'Fake Wins!',
+            text: 'was uncovered but guessed the secret correctly to steal the win.',
+            class: 'fake-wins-found'
+          }
         }
         else {
-          return 'The fake artist was never found. A sound defeat for the art of deduction.'
+          return {
+            header: 'Fake Wins!',
+            text: 'was never identified. A sound defeat for the art of deduction.',
+            class: 'fake-wins-notfound'
+          }
         }
       }
       else {
-        return 'The fake artist was found and failed to discover the secret. A great victory for the forces of deduction.'
+        return {
+          header: 'Detectives Win!',
+          text: 'was found and failed to discover the secret. A great victory for the forces of deduction!',
+          class: 'detectives-win'
+        }
       }
     }
 
@@ -248,9 +271,8 @@ class App extends Component {
       const divStyle = {
           color: fake.color,
       };
-      return(
-        <div style={divStyle}>{fake.name}</div>
-      )
+      return fake;
+
     }
 
     function displayPlayers(players) {
@@ -270,13 +292,20 @@ class App extends Component {
       })
     }
 
+    const res = results(fakeWins, fakeFound)
+    const fake = fakeReveal(players)
+    const divStyle = {
+        color: fake.color,
+    };
     const modalContent = (
       <div className="modal-content modal-results">
-        <div className="modal-results-header">Game Over</div>
-        <div>INSERT CUSTOM PICTURE HERE</div>
-        <div className="modal-results-fake">{fakeReveal(players)}</div>
-        <div className="modal-results-text">{resultMessage(fakeWins, fakeFound)}</div>
-        <div className="modal-results-players">{displayPlayers(players)}</div>
+        <div className={`top-half ${res.class}`}>
+          <div className="modal-header">{res.header}</div>
+        </div>
+        <div className="bottom-half">
+          <div className="modal-results-text"><span style={divStyle}>{`${fake.name} `}</span>{`${res.text}`}</div>
+        </div>
+        <div className={`center-image ${fakeWins?'mood-sad':'mood-happy'}`}></div>
       </div>
     )
 
@@ -284,12 +313,13 @@ class App extends Component {
   }
 
   styleBeginModal({secret, category}) {
+    const isFake = this.state.gameState.fakeIsMe;
     const modalContent = (
       <div className="modal-content modal-begin">
         <div className="modal-header">Get Ready to Doodle!</div>
-        <div>INSERT PICTURE HERE</div>
-        <div className="modal-category">Category: {category}</div>
-        <div className="modal-secret">Secret: {secret}</div>
+        <div className={`modal-image ${isFake ? 'fake' : null}`}></div>
+        <div className="modal-category"><span>Category:</span> {category}</div>
+        <div className="modal-secret"><span>Secret:</span> {secret}</div>
       </div>
     )
 

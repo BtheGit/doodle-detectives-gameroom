@@ -3,11 +3,23 @@
   position: absolute;
   bottom: 10px;
   right: 15px;
-  height: 420px;
+  height: 300px;
   width: 450px;
   display: flex;
   justify-content: center;
   align-items: flex-end; }
+  @media (min-height: 680px) {
+    .chat-container-outer {
+      height: 420px; } }
+  @media (min-height: 740px) {
+    .chat-container-outer {
+      height: 450px; } }
+  @media (min-height: 780px) {
+    .chat-container-outer {
+      height: 500px; } }
+  @media (min-height: 800px) {
+    .chat-container-outer {
+      height: 550px; } }
 
 .chat-container-inner {
   height: 90%;
@@ -202,7 +214,3 @@
   resize: none;
   outline: none;
   box-shadow: 0px 0px 5px -1px #595959 inset; }
-
-@media (min-height: 800px) {
-  .chat-container-outer {
-    height: 550px; } }
