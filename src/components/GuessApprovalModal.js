@@ -1,7 +1,7 @@
 import React from 'react';
 import '../styles/GuessApprovalModal.css';
 
-const GuessApprovalForm = props => {
+const GuessApprovalModal = props => {
 
 	const clickHandler = event => {
 		event.preventDefault();
@@ -22,4 +22,4 @@ const GuessApprovalForm = props => {
 
 }
 
-export default GuessApprovalForm;
+export default GuessApprovalModal;

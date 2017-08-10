@@ -3,10 +3,13 @@ import './styles/App.css';
 import io from 'socket.io-client';
 import Modal from 'react-modal';
 import Timer from './components/Timer.js'
+import Spinner from './components/Spinner.js'
 import Chatroom from './components/Chatroom.js';
 import Drawingboard from './components/Drawingboard.js';
 import StatusDisplay from './components/StatusDisplay.js';
-import GuessApprovalForm from './components/GuessApprovalForm.js';
+import GuessApprovalModal from './components/GuessApprovalModal.js';
+import BeginModal from './components/BeginModal.js';
+import ResultsModal from './components/ResultsModal.js';
 import ActivePlayerScreen from './components/ActivePlayerScreen.js';
 
 
@@ -123,32 +126,35 @@ class App extends Component {
   //##########  TEMP - for Modal testing
 
 
-  // testModal() {
-  //   const isFake = this.state.gameState.fakeIsMe;
-  //   const modalContent = (
-  //     <div className="modal-content modal-begin">
-  //       <div className="modal-header">Get Ready to Doodle!</div>
-  //       <div className={`modal-image ${isFake ? 'fake' : null}`}></div>
-  //       <div className="modal-category"><span>Category:</span> Fluids</div>
-  //       <div className="modal-secret"><span>Secret:</span> Poop</div>
-  //     </div>
-  //   )
+  testModal() {
+    const modalContent = (
+        <BeginModal 
+          secret={'Monkey'}
+          category={'Animal'}
+          isFake={false}
+        />
+      )
 
-  //   this.setState({
-  //     modal: {
-  //       isModalActive: true,
-  //       isAbleToClose: true,
-  //       modalContent
-  //     }
-  //   })  
-  // }
+    this.setState({
+      modal: {
+        isModalActive: true,
+        isAbleToClose: true,
+        modalContent
+      }
+    })  
+  }
 
   // testModal() {
   //   const fakeWins = false;
   //   const fakeFound = true;
   //   const players = this.state.sessionState.players;
-  //   const modalContent = this.styleResultsModal(fakeWins, fakeFound, players);
-
+  //   const modalContent = (
+  //       <ResultsModal
+  //         fakeWins={fakeWins}
+  //         fakeFound={fakeFound}
+  //         players={players}
+  //       />
+  //     )
 
   //   this.setState({
   //     modal: {
@@ -159,24 +165,23 @@ class App extends Component {
   //   });  
   // };
 
-  testModal() {
-    const modalContent = (
-      <GuessApprovalForm
-        secret={this.state.gameState.secret.secret}
-        guess={'Poop sandwich'}
-        submitGuessApproval={this.emitVoteForGuessApproval}
-      />
-    )
+  // testModal() {
+  //   const modalContent = (
+  //     <GuessApprovalModal
+  //       secret={this.state.gameState.secret.secret}
+  //       guess={'Poop sandwich'}
+  //       submitGuessApproval={this.emitVoteForGuessApproval}
+  //     />
+  //   )
 
-    this.setState({
-      modal: {
-        isModalActive: true,
-        isAbleToClose: false,
-        modalContent
-      }
-    })
- 
-  };
+  //   this.setState({
+  //     modal: {
+  //       isModalActive: true,
+  //       isAbleToClose: false,
+  //       modalContent
+  //     }
+  //   })
+  // };
 
   //################ SOCKET HELPERS #####################
 
@@ -255,7 +260,14 @@ class App extends Component {
       hasVotedToBegin: false
     });
     //Trigger Modal
-    const modalContent = this.styleResultsModal(payload.isFakeWinner, payload.isFakeFound, payload.players);
+    const modalContent = (
+        <ResultsModal
+          fakeWins={payload.isFakeWinner}
+          fakeFound={payload.isFakeFound}
+          players={payload.players}
+        />
+      )
+
     this.setState({
       modal: {
         isModalActive: true,
@@ -263,95 +275,6 @@ class App extends Component {
         modalContent
       }
     })
-  }
-
-
-  styleResultsModal(fakeWins, fakeFound, players) {
-    function results(fakeWins, fakeFound) {
-      if(fakeWins) {
-        if(fakeFound) {
-          return {
-            header: 'Fake Wins!',
-            text: 'was uncovered but guessed the secret correctly to steal the win.',
-            class: 'fake-wins-found'
-          }
-        }
-        else {
-          return {
-            header: 'Fake Wins!',
-            text: 'was never identified. A sound defeat for the art of deduction.',
-            class: 'fake-wins-notfound'
-          }
-        }
-      }
-      else {
-        return {
-          header: 'Detectives Win!',
-          text: 'was found and failed to discover the secret. A great victory for the forces of deduction!',
-          class: 'detectives-win'
-        }
-      }
-    }
-
-    function fakeReveal(players) {
-      players = players.filter(player => player.isFake);
-      const fake = players[0];
-      const divStyle = {
-          color: fake.color,
-      };
-      return fake;
-
-    }
-
-    function displayPlayers(players) {
-      //Dynamically show players in their respective color, with fake bolded
-      return players.map((player, idx) => {
-        //available properties: {color, name, isFake}
-        const divStyle = {
-          color: player.color,
-        };
-        const classNameCon = `modal-result-players player`;
-
-        return (
-          <div className={classNameCon}>
-            <div style={divStyle} key={idx}>{player.name}</div>
-          </div>
-        )
-      })
-    }
-
-    const res = results(fakeWins, fakeFound)
-    const fake = fakeReveal(players)
-    const divStyle = {
-        color: fake.color,
-    };
-    const modalContent = (
-      <div className="modal-content modal-results">
-        <div className={`top-half ${res.class}`}>
-          <div className="modal-header">{res.header}</div>
-        </div>
-        <div className="bottom-half">
-          <div className="modal-results-text"><span style={divStyle}>{`${fake.name} `}</span>{`${res.text}`}</div>
-        </div>
-        <div className={`center-image ${fakeWins?'mood-sad':'mood-happy'}`}></div>
-      </div>
-    )
-
-    return modalContent;
-  }
-
-  styleBeginModal({secret, category}) {
-    const isFake = this.state.gameState.fakeIsMe;
-    const modalContent = (
-      <div className="modal-content modal-begin">
-        <div className="modal-header">Get Ready to Doodle!</div>
-        <div className={`modal-image ${isFake ? 'fake' : null}`}></div>
-        <div className="modal-category"><span>Category:</span> {category}</div>
-        <div className="modal-secret"><span>Secret:</span> {secret}</div>
-      </div>
-    )
-
-    return modalContent;
   }
 
   handleFakeGuessApprovalRequest = guess => {
@@ -369,7 +292,7 @@ class App extends Component {
 
     if(!this.state.gameState.fakeIsMe) {
       const modalContent = (
-        <GuessApprovalForm
+        <GuessApprovalModal
           secret={this.state.gameState.secret.secret}
           guess={guess}
           submitGuessApproval={this.emitVoteForGuessApproval}
@@ -453,7 +376,13 @@ class App extends Component {
       }
     })
     this.startCountdown(payload.displayLength, null, this.startFirstTurn)
-    const modalContent = this.styleBeginModal(payload.secret);
+    const modalContent = (
+        <BeginModal 
+          secret={payload.secret.secret}
+          category={payload.secret.category}
+          isFake={payload.fakeIsMe}
+        />
+      )
     this.setState({
       modal: {
         isModalActive: true,
@@ -488,11 +417,7 @@ class App extends Component {
     this.drawingboard.drawPath(this.drawingboard.bgCtx, path) //Allows us to reach into the child component's functions. Dirty-boy!
   }
 
-  postStatusMessage = statusMessage => {
-    console.log('Status Message:', statusMessage)
-    // this.setState({statusMessage})
-    this.statusMessage = statusMessage;
-  }
+  //########## HELPERS ###################
 
   savePath = path => {
     this.setState({paths: [...this.state.paths, path]})
@@ -500,6 +425,39 @@ class App extends Component {
 
   clearPaths = () => {
     this.setState({paths: []})
+  }
+
+  closeModal = () => {
+    this.setState({
+      modal: {
+        isModalActive: false,
+        isAbleToClose: true,
+        modalContent: ''       
+      }
+    })
+  }
+
+  startFirstTurn = () => {
+    this.closeModal();
+    this.setState({
+      timer: {
+        isActive: false,
+        length: 0,
+        tickCB: null,
+        endCB: null,
+      }
+    });
+  }
+
+  startCountdown = (length, tickCB, endCB, isActive = true) => {
+    this.setState({
+      timer: {
+        isActive,
+        length,
+        tickCB,
+        endCB
+      }
+    });
   }
 
   //########### SOCKET EMITTERS ##############
@@ -590,41 +548,6 @@ class App extends Component {
     this.closeModal();
   }
 
-  //######## HELPERS
-
-  closeModal = () => {
-    this.setState({
-      modal: {
-        isModalActive: false,
-        isAbleToClose: true,
-        modalContent: ''       
-      }
-    })
-  }
-
-  startFirstTurn = () => {
-    this.closeModal();
-    this.setState({
-      timer: {
-        isActive: false,
-        length: 0,
-        tickCB: null,
-        endCB: null,
-      }
-    });
-  }
-
-  startCountdown = (length, tickCB, endCB, isActive = true) => {
-    this.setState({
-      timer: {
-        isActive,
-        length,
-        tickCB,
-        endCB
-      }
-    });
-  }
-
   //############### LIFECYCLE AND RENDER METHODS ####################
   componentDidMount = () => {
     this.setupSocket();
@@ -705,8 +628,6 @@ class App extends Component {
         emitGuess                 ={this.emitGuess}
         hasGuessed                ={this.state.fakeGuess.hasGuessed}
         guessApproval             ={this.state.guessApproval}
-        postStatusMessage         ={this.postStatusMessage}
-        statusMessage             ={this.statusMessage}
       />
     )
   }
@@ -731,31 +652,24 @@ class App extends Component {
   }
 
   render() {
-    const setBGColor = () => {
-      if(this.state.sessionState.currentSessionStatus === GAMEACTIVE) {
-        if(this.state.gameState.isMyTurn) {
-          return BG_GAME_MYTURN;
-        }
-        else {
-          return BG_GAME_NOTMYTURN;
-        }
-      }
-      else {
-        return BG_NOGAME;
-      }
-    }
-
     if(this.state.isLoading) {
-      return (
-        <div className="loading-bg">
-          <div id="loading-spinner">
-            <div className="spin-element spinner1"></div>
-            <div className="spin-element spinner2"></div>
-          </div>
-        </div>
-      )
+      return <Spinner />
     }
     else {
+      const setBGColor = () => {
+        if(this.state.sessionState.currentSessionStatus === GAMEACTIVE) {
+          if(this.state.gameState.isMyTurn) {
+            return BG_GAME_MYTURN;
+          }
+          else {
+            return BG_GAME_NOTMYTURN;
+          }
+        }
+        else {
+          return BG_NOGAME;
+        }
+      }
+
       return (
         <div id="room-container" className={setBGColor()}>
           <div id="preload"></div>
@@ -780,7 +694,6 @@ class App extends Component {
         </div>
       );      
     }
-
   }
 }
 
