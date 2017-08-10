@@ -19,14 +19,19 @@ class Chatroom extends Component {
   keyPress = (e) => {
     if (e.keyCode === 13) {
       e.preventDefault()
-      this.props.emitChatMessage(this.state.chatInputValue);
+      //Don't send if it is empty or all whitespace
+      if(this.state.chatInputValue.length && this.state.trim()) {
+        this.props.emitChatMessage(this.state.chatInputValue);
+      }
       this.setState({chatInputValue: ''});      
     }
   }
 
   handleSubmit = (e) =>  {
     e.preventDefault();
-    this.props.emitChatMessage(this.state.chatInputValue);
+    if(this.state.chatInputValue.length && this.state.trim()) {
+      this.props.emitChatMessage(this.state.chatInputValue);
+    }
     this.setState({chatInputValue: ''});
   };
 

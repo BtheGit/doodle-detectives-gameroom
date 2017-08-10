@@ -22,9 +22,8 @@
 $color-manila: #F8EB60;
 $canvas_width: 700px;
 $canvas_height: 396px;
-$manila_tab_width: 230px;
+$manila_tab_width: 300px;
 $manila_tab_font: .8em;
-$manila_tab_offset: 150px;
 
 * {
   margin: 0;
@@ -46,15 +45,17 @@ $manila_tab_offset: 150px;
   // background-repeat: no-repeat;  
 
   &.bg-nogame {
-    background: radial-gradient(#232D2C 30%,#1E1E1F);
+    background: radial-gradient(#465453 30%,#232D2C);
   }
 
   &.bg-gameactive {
-    background: radial-gradient(#C75252 30%,#DB0000);
+    background: radial-gradient(#627675 30%,#3C4D4B);
+    // background: radial-gradient(#FFC5C5 30%,#F37E7E);
+    // background: radial-gradient(#C75252 30%,#DB0000);
   }
 
   &.bg-gameactive-myturn {
-    background: radial-gradient(#3D95AE 30%,#3FC7FF);
+    background: radial-gradient(#30A6D6 30%,#3D95AE);
   }
 
   // &::after, &::before {
@@ -350,42 +351,31 @@ canvas {
   user-select: none;
   cursor: default;
   font-size: $manila_tab_font;
+
+  .turndisplay-secret {
+    position: absolute;
+    width: $canvas_width;
+    top: 0;
+    left: 0;
+    display: flex;
+    justify-content: center;
+    // padding-left: 50px;
+
+    div {
+      width: $manila_tab_width;
+      height: 70px;
+      text-align: center;
+      border-radius: 6px;
+      padding-top: 10px;
+      transform: translateY(-100%);
+      background-color: $color-manila;
+      box-shadow: 2px 5px 10px 1px rgba(0,0,0,0.5);
+    }
+
+  }  
 }
 
 
-.turndisplay-currentplayer {
-  position: absolute;
-  width: $manila_tab_width;
-  height: 60px;
-  box-sizing: border-box;
-  border-radius: 6px;
-  padding-top: 10px;
-  transform: translateY(-100%);
-  padding-left: 10px;
-  color: black;
-  background-color: #FFFEEF;
-  box-shadow: 2px 5px 10px 1px rgba(0,0,0,0.5);
-}
-
-.turndisplay-secret {
-  position: absolute;
-  top: 0;
-  left: $manila_tab_offset;
-  display: flex;
-  padding-left: 50px;
-
-  div {
-    width: $manila_tab_width;
-    height: 70px;
-    text-align: center;
-    border-radius: 6px;
-    padding-top: 10px;
-    transform: translateY(-100%);
-    background-color: $color-manila;
-    box-shadow: 2px 5px 10px 1px rgba(0,0,0,0.5);
-  }
-
-}
 
 
 .statusdisplay-voteforfake {
@@ -698,7 +688,6 @@ canvas {
     width: 120px;
     height: 120px;
     border-radius: 50%;
-    // background-color: #900202;
   }
 }
 

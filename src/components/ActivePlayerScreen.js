@@ -31,23 +31,26 @@ class ActivePlayerScreen extends Component {
         <div className="activeplayer-header">SUSPECTS</div>
         <div className="activeplayer-players">
           {this.props.players.map((player, idx) => {
+            const active = this.props.active === player.name;
             const cardStyle = {
-              transform:`rotate(${this.tilts[idx]}deg)`
+              transform:`rotate(${this.tilts[idx]}deg) ${active ? 'scale(1.2)' : ''}`
             }
             const imageStyle = {
               color: this.props.playerColors[player.id] || 'white'
             }
             const nameStyle = {
               color: this.props.playerColors[player.id] || 'black'
-            }
+            }           
             return (
               <PlayerCard 
+                key={idx}
                 cardStyle={cardStyle}
                 imageStyle={imageStyle}
                 nameStyle={nameStyle}
                 color={this.props.playerColors[player.id]}
                 vote={this.props.vote}
                 name={player.name}
+                active={active}
               />
             );
           })}

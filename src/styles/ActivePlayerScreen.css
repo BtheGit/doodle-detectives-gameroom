@@ -78,7 +78,8 @@
       background-color: white;
       height: 110px;
       width: 100px;
-      box-shadow: 0px 5px 15px -10px black, 0px 0px 1px #555 inset; }
+      box-shadow: 0px 5px 15px -10px black, 0px 0px 1px #555 inset;
+      transition: all 100ms ease-in-out; }
       .activeplayer-container .activeplayer-players .playercard::before {
         content: '';
         position: absolute;
@@ -88,6 +89,9 @@
         border-radius: 50%;
         background-color: #FCFFAC;
         box-shadow: 0 2px 5px -1px #333, 0 -2px 4px rgba(0, 0, 0, 0.5) inset; }
+      .activeplayer-container .activeplayer-players .playercard.active {
+        transition: all 400ms cubic-bezier(0.68, -0.55, 0.27, 1.55);
+        box-shadow: 0px 0px 10px 4px #111; }
       .activeplayer-container .activeplayer-players .playercard .playercard-image {
         height: 80px;
         width: 95%;

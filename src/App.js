@@ -66,22 +66,22 @@ class App extends Component {
       },
       sessionState: {
         players: [
-          {name: 'Brendan', id: '1', color: 'blue', isFake: true},
-          {name: 'Cody', id: '2', color: 'yellow', isFake: false},
-          {name: 'MATUMIZURO', id: '3', color: 'red', isFake: false},
-          {name: 'Dummy', id: '4', color: 'purple', isFake: false},
-          {name: 'Brendan', id: '1', color: 'blue', isFake: true},
-          {name: 'Cody', id: '2', color: 'yellow', isFake: false},
-          {name: 'MATUMIZURO', id: '3', color: 'red', isFake: false},
-          {name: 'Dummy', id: '4', color: 'purple', isFake: false},
+          // {name: 'Brendan', id: '1', color: 'blue', isFake: true},
+          // {name: 'Cody', id: '2', color: 'yellow', isFake: false},
+          // {name: 'MATUMIZURO', id: '3', color: 'red', isFake: false},
+          // {name: 'Dummy', id: '4', color: 'purple', isFake: false},
+          // {name: 'Brendan', id: '1', color: 'blue', isFake: true},
+          // {name: 'Cody', id: '2', color: 'yellow', isFake: false},
+          // {name: 'MATUMIZURO', id: '3', color: 'red', isFake: false},
+          // {name: 'Dummy', id: '4', color: 'purple', isFake: false},
         ],
-        currentSessionStatus: 'GAMEACTIVE', //[WAITINGFORPLAYERS, WAITINGTOSTART, GAMEACTIVE]
+        currentSessionStatus: '', //[WAITINGFORPLAYERS, WAITINGTOSTART, GAMEACTIVE]
       },
       gameState: {
         playerColors: {
-          1: 'red', 2: 'purple', 3: 'green', 4: 'violet'
+          // 1: 'red', 2: 'purple', 3: 'green', 4: 'violet'
         },
-        currentPhase: 'FAKEVOTE', 
+        currentPhase: '', 
         currentColor: '',
         currentPlayer: '',
         isMyTurn: false,
@@ -379,6 +379,7 @@ class App extends Component {
     this.setState({
       gameState: {
         ...this.state.gameState,
+        currentPlayer: '',
         currentPhase: FAKEVOTE
       }
     })
@@ -645,6 +646,7 @@ class App extends Component {
         isVoting={this.state.gameState.currentPhase === FAKEVOTE}
         hasVoted={this.state.fakeVote.hasVoted}
         vote={this.emitVoteForFake}
+        active={this.state.gameState.currentPlayer}
       />
     )
   }

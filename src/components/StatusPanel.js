@@ -6,7 +6,6 @@ const StatusPanel = (props) => {
 	}
   return (
     <div className="turndisplay-container">
-      <div className="turndisplay-currentplayer">Drawing: <span style={playerStyle}>{props.currentPlayer}</span></div>
       <div className="turndisplay-secret">
         <div>CATEGORY: <span>{props.secret.category}</span></div>
         <div>SECRET: <span>{props.secret.secret}</span></div>

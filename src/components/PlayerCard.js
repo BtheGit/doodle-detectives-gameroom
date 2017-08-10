@@ -7,7 +7,7 @@ const PlayerCard = props => {
 	}
 
 	return (
-    <div className="playercard" style={props.cardStyle} onClick={handleClick}>
+    <div className={`playercard ${props.active ? 'active': ''}`} style={props.cardStyle} onClick={handleClick}>
       <div className="playercard-image" style={props.imageStyle}>&#xe900;</div>
       <div className="playercard-name" style={props.nameStyle}>{props.name}</div>           
     </div>

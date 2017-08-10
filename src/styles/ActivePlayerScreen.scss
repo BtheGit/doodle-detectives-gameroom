@@ -98,6 +98,7 @@
       height: 110px;
       width: 100px;
       box-shadow: 0px 5px 15px -10px black, 0px 0px 1px #555 inset;
+      transition: all 100ms ease-in-out;
 
       &::before {
         content: '';
@@ -109,6 +110,18 @@
         background-color: #FCFFAC;
         box-shadow: 0 2px 5px -1px #333, 0 -2px 4px rgba(0,0,0,0.5) inset;
       } 
+
+      &.active {
+        // z-index: -2;
+        // content: '';
+        // position: absolute;
+        // height: 110%;
+        // width: 110%;
+        // top: -5%;
+        // left: -5%;
+        transition: all 400ms cubic-bezier(0.68, -0.55, 0.27, 1.55);
+        box-shadow: 0px 0px 10px 4px #111;
+      }
 
       .playercard-image {
         height: 80px;

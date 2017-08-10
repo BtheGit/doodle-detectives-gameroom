@@ -71,7 +71,7 @@
             .chat-container-outer .chat-container-inner .chat-display-container .chat-display .chat-message .chat-message-name::before {
               content: '>>'; }
           .chat-container-outer .chat-container-inner .chat-display-container .chat-display .chat-message .chat-message-content {
-            margin-left: 10px;
+            margin-left: 15px;
             padding-bottom: 10px;
             color: #00F000; }
             .chat-container-outer .chat-container-inner .chat-display-container .chat-display .chat-message .chat-message-content::after {
