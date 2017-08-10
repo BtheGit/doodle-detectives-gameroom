@@ -107,8 +107,10 @@
         font-size: .6em;
         font-weight: bold;
         height: 25%;
-        width: 100%;
-        text-align: center; }
+        width: 90%;
+        text-align: center;
+        overflow: hidden;
+        text-overflow: ellipsis; }
 
 .activeplayer-container.voting .fakevote-header {
   display: block; }

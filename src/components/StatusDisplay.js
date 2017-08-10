@@ -85,7 +85,7 @@ const StatusDisplay = props => {
             return null;
           }
           else {
-            return renderStatusMessage('Approval vote sent. Waiting for other players to vote...')
+            return renderStatusMessage('Vote sent. Waiting for others to vote...')
           }
         }
         else {

@@ -1,0 +1,83 @@
+.guessapprovalform {
+  background: white;
+  position: absolute;
+  margin: auto;
+  top: calc(50% - 150px);
+  width: 600px;
+  left: calc(50% - 300px);
+  height: 300px;
+  text-align: center;
+  font-family: 'Special Elite';
+
+  h3 {
+    position: absolute;
+    top: -200px;
+    left: calc(50% - 400px);
+    height: 200px;
+    width: 800px;
+    background-color: #F8EB60;
+    font-size: 50px;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    box-shadow: 0px 0px 25px -5px black;
+  }
+
+}
+
+.approval-guess-container {
+  height: 100%;
+  display: flex;
+  flex-direction: column;
+  justify-content: center;
+  align-items: center;  
+
+  h4 {
+    font-size: 24px;
+
+    span {
+      font-size: 45px;
+    }
+  }
+
+  h4:nth-of-type(2) {
+    span {
+      font-family: 'Rock Salt', cursive;
+    }
+  }
+}
+
+.approval-button {
+  position: absolute;
+  bottom: -100px;
+  width: 200px;
+  height: 200px;
+  border-radius: 50%;
+  border: none;
+  cursor: pointer;
+  font-size: 130px;
+  font-weight: bolder;
+  background-image: url('../images/splatter.png');
+  background-size: contain;
+  background-position: center;
+  background-repeat: no-repeat;
+  color: white;
+  transition: all 150ms linear;
+  box-shadow: 0px -3px 8px 2px #111;
+
+  &:hover {
+    transform: scale(1.1);
+    filter: brightness(1.2);
+    box-shadow: 0px 0px 25px 0px #111;
+  }
+
+  &:nth-of-type(1) {
+    right: -100px;
+    background-color: #03CE03;
+  }
+
+  &:nth-of-type(2) {
+    left: -100px;
+    background-color: #CE1414;
+  }  
+}

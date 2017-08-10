@@ -36,6 +36,7 @@ class App extends Component {
     this.socket = null;
     this.background = document.getElementById('canvas-container');
     this.state = {
+      isLoading: true,
       socketId: '',
       myId: '', //TEMP until auth and persistent login (necessary for self-identifying in state updates)
       myName: '',
@@ -68,7 +69,7 @@ class App extends Component {
         players: [
           // {name: 'Brendan', id: '1', color: 'blue', isFake: true},
           // {name: 'Cody', id: '2', color: 'yellow', isFake: false},
-          // {name: 'MATUMIZURO', id: '3', color: 'red', isFake: false},
+          // {name: 'MATUMIZURO1234', id: '3', color: 'red', isFake: false},
           // {name: 'Dummy', id: '4', color: 'purple', isFake: false},
           // {name: 'Brendan', id: '1', color: 'blue', isFake: true},
           // {name: 'Cody', id: '2', color: 'yellow', isFake: false},
@@ -119,7 +120,9 @@ class App extends Component {
     }
   }
 
-  //## TEMP - for design staging
+  //##########  TEMP - for Modal testing
+
+
   // testModal() {
   //   const isFake = this.state.gameState.fakeIsMe;
   //   const modalContent = (
@@ -140,20 +143,39 @@ class App extends Component {
   //   })  
   // }
 
-  testModal() {
-    const fakeWins = false;
-    const fakeFound = true;
-    const players = this.state.sessionState.players;
-    const modalContent = this.styleResultsModal(fakeWins, fakeFound, players);
+  // testModal() {
+  //   const fakeWins = false;
+  //   const fakeFound = true;
+  //   const players = this.state.sessionState.players;
+  //   const modalContent = this.styleResultsModal(fakeWins, fakeFound, players);
 
+
+  //   this.setState({
+  //     modal: {
+  //       isModalActive: true,
+  //       isAbleToClose: true,
+  //       modalContent
+  //     }
+  //   });  
+  // };
+
+  testModal() {
+    const modalContent = (
+      <GuessApprovalForm
+        secret={this.state.gameState.secret.secret}
+        guess={'Poop sandwich'}
+        submitGuessApproval={this.emitVoteForGuessApproval}
+      />
+    )
 
     this.setState({
       modal: {
         isModalActive: true,
-        isAbleToClose: true,
+        isAbleToClose: false,
         modalContent
       }
-    });  
+    })
+ 
   };
 
   //################ SOCKET HELPERS #####################
@@ -606,7 +628,8 @@ class App extends Component {
   //############### LIFECYCLE AND RENDER METHODS ####################
   componentDidMount = () => {
     this.setupSocket();
-    // this.testModal();
+    this.setState({isLoading: false});
+    // this.testModal();  //For Testing only
   }
 
   componentWillUnmount = () => {
@@ -722,28 +745,42 @@ class App extends Component {
       }
     }
 
-    return (
-      <div id="room-container" className={setBGColor()}>
-        <div className="upper-container">
-          {this.renderActivePlayerScreen()}
+    if(this.state.isLoading) {
+      return (
+        <div className="loading-bg">
+          <div id="loading-spinner">
+            <div className="spin-element spinner1"></div>
+            <div className="spin-element spinner2"></div>
+          </div>
         </div>
-        <div className="lower-container">
-          <div className="lower-left">
-            <div id="canvas-container">
-              {this.renderDrawingboard()}
-              {this.renderStatusDisplay()}
-              {this.renderTimer()}
+      )
+    }
+    else {
+      return (
+        <div id="room-container" className={setBGColor()}>
+          <div id="preload"></div>
+          <div className="upper-container">
+            {this.renderActivePlayerScreen()}
+          </div>
+          <div className="lower-container">
+            <div className="lower-left">
+              <div id="canvas-container">
+                {this.renderDrawingboard()}
+                {this.renderStatusDisplay()}
+                {this.renderTimer()}
+              </div>
+            </div>
+            <div className="lower-right">
+              <div id="sidebar-container">
+                {this.renderChatroom()}
+              </div>        
             </div>
           </div>
-          <div className="lower-right">
-            <div id="sidebar-container">
-              {this.renderChatroom()}
-            </div>        
-          </div>
+          {this.renderModal()}
         </div>
-        {this.renderModal()}
-      </div>
-    );
+      );      
+    }
+
   }
 }
 

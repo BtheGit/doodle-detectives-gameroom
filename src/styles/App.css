@@ -1,7 +1,8 @@
-#canvas-container::before {
+#preload {
   height: 0;
   width: 0;
-  position: absolute;
+  display: inline;
+  transform: translate(-9999px, -9999px);
   background-image: url("../images/splash_frame_color.png");
   background-image: url("../images/detectivei.png");
   background-image: url("../images/fakei.png");
@@ -16,6 +17,46 @@
   /* IE9 Compat Modes */
   src: url("../fonts/mugshot/mugshot.woff") format("woff"), url("../fonts/mugshot/mugshot.ttf") format("truetype"), url("../fonts/mugshot/mugshot.svg#svgFontName") format("svg");
   /* Legacy iOS */ }
+
+.loading-bg {
+  display: inline-block;
+  position: absolute;
+  top: 0;
+  left: 0;
+  height: 100%;
+  width: 100%;
+  background: radial-gradient(#465453 30%, #232D2C); }
+  .loading-bg #loading-spinner {
+    position: absolute;
+    top: calc(50% - 30px);
+    left: calc(50% - 30px);
+    width: 60px;
+    height: 60px;
+    animation: containerRotate 2s infinite linear; }
+    .loading-bg #loading-spinner .spin-element {
+      position: absolute;
+      height: 60%;
+      width: 60%;
+      border-radius: 50%;
+      background-color: #F8EB60;
+      animation: spinnerPulse 2s infinite ease-in-out; }
+      .loading-bg #loading-spinner .spin-element.spinner1 {
+        top: 0; }
+      .loading-bg #loading-spinner .spin-element.spinner2 {
+        bottom: 0;
+        animation-delay: 1s; }
+
+@keyframes containerRotate {
+  100% {
+    transform: rotate(360deg); } }
+
+@keyframes spinnerPulse {
+  0%, 100% {
+    transform: scale(0);
+    opacity: 0; }
+  50% {
+    transform: scale(1);
+    opacity: 1; } }
 
 * {
   margin: 0;
@@ -335,37 +376,6 @@ canvas {
   right: 0;
   bottom: 0;
   background-color: rgba(0, 0, 0, 0.75); }
-
-.guessapprovalform {
-  background: mintcream;
-  position: absolute;
-  margin: auto;
-  top: calc(50% - 150px);
-  width: 600px;
-  left: calc(50% - 300px);
-  height: 300px;
-  text-align: center;
-  display: flex;
-  flex-direction: column;
-  border-radius: 10px; }
-  .guessapprovalform h3 {
-    height: 30px; }
-
-.approval-guess-container {
-  height: 190px; }
-
-.approval-button-container {
-  height: 80px;
-  width: 100%; }
-
-.approval-button {
-  width: 50%;
-  height: 100%;
-  border: none; }
-  .approval-button:nth-child(1) {
-    background-color: #73FF73; }
-  .approval-button:nth-child(2) {
-    background-color: #FF7474; }
 
 .modal-begin {
   position: absolute;

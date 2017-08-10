@@ -1,7 +1,10 @@
-#canvas-container::before {
+
+
+#preload {
   height: 0;
   width: 0;
-  position: absolute;
+  display: inline;
+  transform: translate(-9999px, -9999px);
   background-image: url('../images/splash_frame_color.png');
   background-image: url('../images/detectivei.png');
   background-image: url('../images/fakei.png');
@@ -24,6 +27,63 @@ $canvas_width: 700px;
 $canvas_height: 396px;
 $manila_tab_width: 300px;
 $manila_tab_font: .8em;
+$spinner-duration: 2s;
+
+.loading-bg {
+  display: inline-block;
+  position: absolute;
+  top: 0;
+  left: 0;
+  height: 100%;
+  width: 100%;
+  background: radial-gradient(#465453 30%,#232D2C);
+
+  #loading-spinner {
+    position: absolute;
+    top: calc(50% - 30px);
+    left: calc(50% - 30px);
+    width: 60px;
+    height: 60px;
+    animation: containerRotate $spinner-duration infinite linear;
+
+    .spin-element {
+      position: absolute;
+      height: 60%;
+      width: 60%;
+      border-radius: 50%;
+      background-color: $color-manila;
+      animation: spinnerPulse $spinner-duration infinite ease-in-out;
+
+      &.spinner1 {
+        top: 0;
+      }
+
+      &.spinner2 {
+        bottom: 0;
+        animation-delay: $spinner-duration / 2;
+      }
+    }
+  }
+}
+
+
+@keyframes containerRotate {
+  100%{
+    transform: rotate(360deg);
+  }
+}
+
+@keyframes spinnerPulse {
+  0%, 100% {
+    transform: scale(0);
+    opacity: 0;
+  }
+
+  50% {
+    transform: scale(1);
+    opacity: 1;
+  }
+}
 
 * {
   margin: 0;
@@ -39,11 +99,6 @@ $manila_tab_font: .8em;
   flex-direction: column;
   overflow: hidden;
 
-  // background: url('../images/bg.jpg');
-  // background-size: contain;
-  // background-position: top left;
-  // background-repeat: no-repeat;  
-
   &.bg-nogame {
     background: radial-gradient(#465453 30%,#232D2C);
   }
@@ -57,34 +112,6 @@ $manila_tab_font: .8em;
   &.bg-gameactive-myturn {
     background: radial-gradient(#30A6D6 30%,#3D95AE);
   }
-
-  // &::after, &::before {
-  //   font-family: 'PT SANS', serif;
-  //   content: 'DO NOT CROSS POLICE LINE DO NOT CROSS';
-  //   font-size: 11em;
-  //   font-weight: bolder;
-  //   z-index: 1;
-  //   position: absolute;
-  //   top: 0;
-  //   height: 1.3em;
-  //   line-height: 1.3em;
-  //   vertical-align: middle;
-  //   width: 20em;
-  //   background-color: #7C8314;
-  //   overflow: hidden;
-  //   box-shadow: 0px 0px 1px #333;
-
-  // }
-
-  // &::after {
-  //   left: -50%;
-  //   transform: rotate(-25deg);
-  // }
-
-  // &::before {
-  //   right: -50%;
-  //   transform: rotate(25deg);
-  // }
 
   .upper-container {
     width: 100%;
@@ -191,7 +218,6 @@ $manila_tab_font: .8em;
         align-items: center;
       }
     }
-
   }
 }
 
@@ -228,7 +254,6 @@ canvas {
   &:hover, &:active {
     cursor: url('data:image/x-icon;base64,AAACAAEAICAAAAEAAQCoEAAAFgAAACgAAAAgAAAAQAAAAAEAIAAAAAAAABAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAGgYDGhoGA70aBgO9GgYDNwAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAABoGAxoaBgO9fnl5/4yHh/8aBgO9GgYDNwAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAaBgMaGgYDvX55ef9XTEr/v7+//62oqP8aBgO9GgYDNwAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAGgYDGhoGA71+eXn/V0xK/7+/v/9pXlz/6enp/8jEw/8aBgO9GgYDNwAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAABoGAxoaBgO9fnl5/6urq/+/v7//aV5c/+np6f+rpKL//////87Jyf8aBgO9AAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAaBgMaGgYDvX55ef+rq6v/v7+//9XV1f/p6en/q6Si//////+vqKf/6Obl/xoGA70AAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAGgYDGhoGA71+eXn/q6ur/7+/v//V1dX/6enp//j4+P//////r6in/+jm5f97b27/GgYDvQAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAABoGAxoaBgO9fnl5/6urq/+/v7//1dXV/+np6f/4+Pj////////////o5uX/e29u/87Jyf8aBgO9AAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAaBgMaGgYDvX55ef+rq6v/v7+//9XV1f/p6en/+Pj4/////////////////3tvbv/Oycn/6Obl/xoGA70AAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAGgYDGhoGA71+eXn/q6ur/7+/v//V1dX/6enp//j4+P////////////////97b27/zsnJ///////o5uX/GgYDvQAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAABoGAxoaBgO9fnl5/6urq/+/v7//1dXV/+np6f/4+Pj/////////////////e29u/87Jyf//////6Obl/xoGA70aBgM3AAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAaBgMaGgYDvX55ef+rq6v/v7+//9XV1f/p6en/+Pj4/////////////////3tvbv/Oycn//////+jm5f8aBgO9GgYDNwAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAGgYDGhoGA71+eXn/q6ur/7+/v//V1dX/6enp//j4+P////////////////97b27/zsnJ///////o5uX/GgYDvRoGAzcAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAABoGAxoaBgO9fnl5/1dMSv+/v7//1dXV/+np6f/4+Pj/////////////////e29u/87Jyf//////6Obl/xoGA70aBgM3AAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAaBgMaGgYDvX55ef+rq6v/v7+//2leXP/p6en/+Pj4/////////////////3tvbv/Oycn//////+jm5f8aBgO9GgYDNwAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAGgYDGhoGA71+eXn/q6ur/7+/v//V1dX/6enp/6ukov////////////////97b27/zsnJ///////o5uX/GgYDvRoGAzcAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAABoGAxoaBgO9fnl5/6urq/+/v7//1dXV/+np6f/4+Pj//////6+op//o5uX/VUZE/87Jyf//////6Obl/xoGA70aBgM3AAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAaBgMaGgYDvX55ef+rq6v/v7+//9XV1f/p6en/+Pj4////////////6Obl/1VGRP9VRkT/zsnJ/+jm5f8aBgO9GgYDNwAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAGgYDGhoGA71+eXn/q6ur/7+/v//V1dX/6enp//j4+P////////////////9VRkT/GgYDNxoGAzcaBgM3GgYDvRoGAzcAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAABoGAxoaBgO9fnl5/6urq/+/v7//1dXV/+np6f/4+Pj/////////////////VUZE/xoGAzcAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAaBgMaGgYDvX55ef+rq6v/v7+//9XV1f/p6en/+Pj4/////////////////1VGRP8aBgM3AAAAAAAA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'), move; 
   }
-  
 }
 
 #save-canvas {
@@ -324,7 +349,6 @@ canvas {
   button:focus {
     transform: translateY(3px);
   }
-
 }
 
 @keyframes begin-start {
@@ -337,7 +361,6 @@ canvas {
     opacity: 1;
     transform: translateX(10px)
   }
-
 }
 
 
@@ -359,7 +382,6 @@ canvas {
     left: 0;
     display: flex;
     justify-content: center;
-    // padding-left: 50px;
 
     div {
       width: $manila_tab_width;
@@ -371,12 +393,8 @@ canvas {
       background-color: $color-manila;
       box-shadow: 2px 5px 10px 1px rgba(0,0,0,0.5);
     }
-
   }  
 }
-
-
-
 
 .statusdisplay-voteforfake {
   position: absolute;
@@ -391,13 +409,11 @@ canvas {
   }  
 }
 
-
 .statusdisplay-voteforfake-opts {
   width: 100%;
   display: flex;
   justify-content: center;
 }
-
 
 .player-button {
   box-sizing: border-box;
@@ -416,8 +432,6 @@ canvas {
     transform: translateY(2px);
   }
 }
-
-
 
 .statusdisplay-fakeguess {
   position: absolute;
@@ -440,9 +454,7 @@ canvas {
     height: 1.5em;
     font-size: 25px;
   }  
-
 }
-
 
 .timer-display {
   position: absolute;
@@ -475,7 +487,6 @@ canvas {
   }
 }
 
-
 // #### MODAL RELATED
 
 .ReactModalPortal * {
@@ -490,50 +501,6 @@ canvas {
   bottom: 0;
   background-color: rgba(0,0,0,0.75);
 }
-
-.guessapprovalform {
-  background: mintcream;
-  position: absolute;
-  margin: auto;
-  top: calc(50% - 150px);
-  width: 600px;
-  left: calc(50% - 300px);
-  height: 300px;
-  text-align: center;
-  display: flex;
-  flex-direction: column;
-  border-radius: 10px;
-
-  h3 {
-    height: 30px;
-  }
-
-}
-
-.approval-guess-container {
-  height: 190px;
-}
-
-.approval-button-container {
-  height: 80px;
-  width: 100%;
-}
-
-.approval-button {
-  width: 50%;
-  height: 100%;
-  border: none;
-
-  &:nth-child(1) {
-    background-color: #73FF73;
-  }
-
-  &:nth-child(2) {
-    background-color: #FF7474;
-  }  
-}
-
-
 
 .modal-begin {
   position: absolute;
@@ -556,7 +523,6 @@ canvas {
     background-repeat: no-repeat;
     filter: blur(1px);
   }
-
 
   .modal-header {
     position: absolute;
@@ -616,7 +582,6 @@ canvas {
   .modal-secret {
     right: 25%;
   }
-
 }
 
 .modal-results {
@@ -664,7 +629,6 @@ canvas {
       font-size: 80px;
       padding: 20%;
     }
-
   }
 
   .bottom-half {
@@ -692,11 +656,6 @@ canvas {
 }
 
 
-@media screen and (min-width: 1350px) {
-
-
-
-}
 
 @media screen and (min-width: 1400px) {
 
@@ -707,11 +666,6 @@ canvas {
       }
     }
   }
-
-  // #room-container::after, #room-container::before {
-  //   top: 20%;
-  // }
-
 }
 
 @media screen and (min-width: 1600px) {
@@ -724,5 +678,4 @@ canvas {
       }
     }
   }
-
 }
