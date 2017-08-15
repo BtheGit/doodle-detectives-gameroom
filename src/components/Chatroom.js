@@ -20,7 +20,7 @@ class Chatroom extends Component {
     if (e.keyCode === 13) {
       e.preventDefault()
       //Don't send if it is empty or all whitespace
-      if(this.state.chatInputValue.length && this.state.trim()) {
+      if(this.state.chatInputValue.length && this.state.chatInputValue.trim()) {
         this.props.emitChatMessage(this.state.chatInputValue);
       }
       this.setState({chatInputValue: ''});      
@@ -29,7 +29,7 @@ class Chatroom extends Component {
 
   handleSubmit = (e) =>  {
     e.preventDefault();
-    if(this.state.chatInputValue.length && this.state.trim()) {
+    if(this.state.chatInputValue.length && this.state.chatInputValue.trim()) {
       this.props.emitChatMessage(this.state.chatInputValue);
     }
     this.setState({chatInputValue: ''});
