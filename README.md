@@ -5,3 +5,5 @@ A turn based online multiplayer drawing game about bluffing your way to victory.
 ![Logo](dd-bg.jpg)
 
 ![Screenshot1](Waiting.png)
+
+![Screenshot2](drawing.png)
