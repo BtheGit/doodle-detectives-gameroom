@@ -33,6 +33,37 @@ const BG_GAME_NOTMYTURN = 'bg-gameactive',
 
 const TURNLENGTH = 15;
 
+const INITIAL_GAME_STATE = {
+  gameState: {
+    playerColors: {},
+    currentPhase: '', 
+    currentColor: '',
+    currentPlayer: '',
+    isMyTurn: false,
+    fakeIsMe: false,
+    secret: {
+      category: '',
+      secret: ''
+    }
+  },
+  fakeVote: {
+    hasVoted: false,
+    options: [],
+  },
+  fakeGuess: {
+    hasGuessed: false,
+  },
+  guessApproval: {
+    hasVoted: false,
+    guess: ''
+  },
+  finalResults: {
+    players: [],
+    isFakeFound: false,
+    isFakeWinner: false
+  }   
+}
+
 class App extends Component {
   constructor(props) {
     super(props);
@@ -41,78 +72,28 @@ class App extends Component {
     this.state = {
       isLoading: true,
       socketId: '',
-      myId: '', //TEMP until auth and persistent login (necessary for self-identifying in state updates)
+      myId: '', 
       myName: '',
       myColor: 'black',
-      //If coming from newroom route, no id will be provided, default to empty string
       sessionId: '', 
       score: 0,
-      chatMessages: [
-        // {name: "Brendan", content: "Hello"},
-        // {name: "Jim", content: "How are you doing today?"},
-        // {name: "Brendan", content: "This game is silly. Let's do something else"},
-        // {name: "Hypatia", content: "Hello"},
-        // {name: "Brendan", content: "How are you doing today?"},
-        // {name: "Jim", content: "This game is silly. Let's do something else"},
-        // {name: "Hypatia", content: "Hello"},
-        // {name: "Brendan", content: "How are you doing today?"},
-        // {name: "Jim", content: "This game is silly. Let's do something else"},
-        // {name: "Brendan", content: "Hello"},
-        // {name: "Hypatia", content: "How are you doing today?"},
-        // {name: "Brendan", content: "This game is silly. Let's do something else"},
-      ],
+      chatMessages: [],
       paths: [],
-      hasVotedToBegin: false, //Used for conditionally rendering status display after voting
+      hasVotedToBegin: false, 
       modal: {
         isModalActive: false,
         isAbleToClose: true,
         modalContent: ''
       },
       sessionState: {
-        players: [
-          // {name: 'Brendan', id: '1', color: 'blue', isFake: true},
-          // {name: 'Cody', id: '2', color: 'yellow', isFake: false},
-          // {name: 'MATUMIZURO1234', id: '3', color: 'red', isFake: false},
-          // {name: 'Dummy', id: '4', color: 'purple', isFake: false},
-          // {name: 'Brendan', id: '1', color: 'blue', isFake: true},
-          // {name: 'Cody', id: '2', color: 'yellow', isFake: false},
-          // {name: 'MATUMIZURO', id: '3', color: 'red', isFake: false},
-          // {name: 'Dummy', id: '4', color: 'purple', isFake: false},
-        ],
-        currentSessionStatus: '', //[WAITINGFORPLAYERS, WAITINGTOSTART, GAMEACTIVE]
-      },
-      gameState: {
-        playerColors: {
-          // 1: 'red', 2: 'purple', 3: 'green', 4: 'violet'
-        },
-        currentPhase: '', 
-        currentColor: '',
-        currentPlayer: '',
-        isMyTurn: false,
-        fakeIsMe: false,
-        secret: {
-          category: '',
-          secret: ''
-          // category: 'Animals',
-          // secret: 'Headless Horseman'
-        }
-      },
-      fakeVote: {
-        hasVoted: false,
-        options: [],
-      },
-      fakeGuess: {
-        hasGuessed: false,
-      },
-      guessApproval: {
-        hasVoted: false,
-        guess: ''
-      },
-      finalResults: {
         players: [],
-        isFakeFound: false,
-        isFakeWinner: false
+        currentSessionStatus: '', 
       },
+      gameState: INITIAL_GAME_STATE.gameState,
+      fakeVote: INITIAL_GAME_STATE.fakeVote,
+      fakeGuess: INITIAL_GAME_STATE.fakeGuess,
+      guessApproval: INITIAL_GAME_STATE.guessApproval,
+      finalResults: INITIAL_GAME_STATE.finalResults,
       timer: {
         isActive: false,
         length: 0,
@@ -123,65 +104,110 @@ class App extends Component {
     }
   }
 
-  //##########  TEMP - for Modal testing
+  //##########  TESTING FUNCTIONS
+  
+  testSetup(sessionStatus, gamePhase, active, fake) {
+    this.setState({
+      chatMessages: [
+        {name: "Brendan", content: "Hello"},
+        {name: "Jim", content: "How are you doing today?"},
+        {name: "Brendan", content: "This game is silly. Let's do something else"},
+        {name: "Hypatia", content: "Hello"},
+        {name: "Brendan", content: "How are you doing today?"},
+        {name: "Jim", content: "This game is silly. Let's do something else"},
+        {name: "Hypatia", content: "Hello"},
+        {name: "Brendan", content: "How are you doing today?"},
+        {name: "Jim", content: "This game is silly. Let's do something else"},
+        {name: "Brendan", content: "Hello"},
+        {name: "Hypatia", content: "How are you doing today?"},
+        {name: "Brendan", content: "This game is silly. Let's do something else"},
+      ],
+      sessionState: {
+        players: [
+          {name: 'Brendan', id: '1', color: 'blue', isFake: true},
+          {name: 'Cody', id: '2', color: 'yellow', isFake: false},
+          {name: 'MATUMIZURO1234', id: '3', color: 'red', isFake: false},
+          {name: 'Dummy', id: '4', color: 'purple', isFake: false},
+          {name: 'Brendan', id: '1', color: 'blue', isFake: true},
+          {name: 'Cody', id: '2', color: 'yellow', isFake: false},
+          {name: 'MATUMIZURO', id: '3', color: 'red', isFake: false},
+          {name: 'Dummy', id: '4', color: 'purple', isFake: false},
+        ],
+        currentSessionStatus: sessionStatus
+      },
+      gameState: {
+        playerColors: {
+          1: 'red', 2: 'purple', 3: 'green', 4: 'violet'
+        },
+        currentPhase: gamePhase,
+        isMyTurn: active,
+        fakeIsMe: fake,
+        secret: {
+          secret: 'Headless Horseman',
+          category: 'Halloween'
+        }
+      }
+    })
+  }
 
 
-  testModal() {
-    const modalContent = (
-        <BeginModal 
-          secret={'Monkey'}
-          category={'Animal'}
-          isFake={false}
+  testModal(modalType) {
+    if(modalType === 'BEGIN') {
+      const modalContent = (
+          <BeginModal 
+            secret={'Monkey'}
+            category={'Animal'}
+            isFake={false}
+          />
+        )
+
+      this.setState({
+        modal: {
+          isModalActive: true,
+          isAbleToClose: false,
+          modalContent
+        }
+      })  
+    }
+    else if (modalType === 'RESULTS') {
+      const fakeWins = false;
+      const fakeFound = true;
+      const players = this.state.sessionState.players;
+      const modalContent = (
+          <ResultsModal
+            fakeWins={fakeWins}
+            fakeFound={fakeFound}
+            players={players}
+          />
+        )
+
+      this.setState({
+        modal: {
+          isModalActive: true,
+          isAbleToClose: true,
+          modalContent
+        }
+      });  
+    }
+    else if (modalType === 'GUESSAPPROVAL') {
+      const modalContent = (
+        <GuessApprovalModal
+          secret={this.state.gameState.secret.secret}
+          guess={'Poop sandwich'}
+          submitGuessApproval={this.emitVoteForGuessApproval}
         />
       )
 
-    this.setState({
-      modal: {
-        isModalActive: true,
-        isAbleToClose: true,
-        modalContent
-      }
-    })  
+      this.setState({
+        modal: {
+          isModalActive: true,
+          isAbleToClose: false,
+          modalContent
+        }
+      })     
+    }
   }
 
-  // testModal() {
-  //   const fakeWins = false;
-  //   const fakeFound = true;
-  //   const players = this.state.sessionState.players;
-  //   const modalContent = (
-  //       <ResultsModal
-  //         fakeWins={fakeWins}
-  //         fakeFound={fakeFound}
-  //         players={players}
-  //       />
-  //     )
-
-  //   this.setState({
-  //     modal: {
-  //       isModalActive: true,
-  //       isAbleToClose: true,
-  //       modalContent
-  //     }
-  //   });  
-  // };
-
-  // testModal() {
-  //   const modalContent = (
-  //     <GuessApprovalModal
-  //       secret={this.state.gameState.secret.secret}
-  //       guess={'Poop sandwich'}
-  //       submitGuessApproval={this.emitVoteForGuessApproval}
-  //     />
-  //   )
-
-  //   this.setState({
-  //     modal: {
-  //       isModalActive: true,
-  //       isAbleToClose: false,
-  //       modalContent
-  //     }
-  //   })
-  // };
 
   //################ SOCKET HELPERS #####################
 
@@ -245,6 +271,7 @@ class App extends Component {
 
   //############### SOCKET HANDLERS #################
   handleGameWillStart = () => {
+    this.resetGameState(INITIAL_GAME_STATE);
     this.clearPaths();
     this.drawingboard.refresh();
   }
@@ -257,7 +284,8 @@ class App extends Component {
         currentPhase: GAMEOVER
       },
       finalResults: payload,
-      hasVotedToBegin: false
+      hasVotedToBegin: false,
+
     });
     //Trigger Modal
     const modalContent = (
@@ -337,21 +365,22 @@ class App extends Component {
   }
 
   handleNextTurn = turn => {
-      const newState = {
-        currentColor: turn.color,
-        currentPlayer: turn.name,
-        isMyTurn: turn.active,
-        currentPhase: DRAWING
+    if(this.state.modal.isModalActive) this.closeModal(); //Temp fix for clearing out modal 
+    const newState = {
+      currentColor: turn.color,
+      currentPlayer: turn.name,
+      isMyTurn: turn.active,
+      currentPhase: DRAWING
+    }
+    this.setState({
+      gameState: {
+        ...this.state.gameState, 
+        ...newState
       }
-      this.setState({
-        gameState: {
-          ...this.state.gameState, 
-          ...newState
-        }
-      })
-      if(turn.active) {
-        this.startCountdown(TURNLENGTH, null, this.handleEndOfTurn)       
-      }
+    })
+    if(turn.active) {
+      this.startCountdown(TURNLENGTH, null, this.handleEndOfTurn)       
+    }
   }
 
   handleEndOfTurn = () => {
@@ -386,7 +415,7 @@ class App extends Component {
     this.setState({
       modal: {
         isModalActive: true,
-        isAbleToClose: false,
+        isAbleToClose: true,
         modalContent
       }
     })
@@ -418,6 +447,12 @@ class App extends Component {
   }
 
   //########## HELPERS ###################
+  
+  resetGameState = initial => {
+    Object.keys(initial).forEach(key => {
+      this.setState({[key]: initial[key]})
+    })
+  }
 
   savePath = path => {
     this.setState({paths: [...this.state.paths, path]})
@@ -552,7 +587,8 @@ class App extends Component {
   componentDidMount = () => {
     this.setupSocket();
     this.setState({isLoading: false});
-    // this.testModal();  //For Testing only
+    // this.testSetup(GAMEACTIVE, DRAWING, true, true) //For Testing Only
+    // this.testModal('BEGIN');  //For Testing only
   }
 
   componentWillUnmount = () => {
