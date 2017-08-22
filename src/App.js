@@ -104,12 +104,13 @@ class App extends Component {
     }
   }
 
-  //##########  TESTING FUNCTIONS
+  //##########  TESTING/MOCKING FUNCTIONS
   
   testSetup(sessionStatus, gamePhase, active, fake) {
     this.setState({
       chatMessages: [
         {name: "Brendan", content: "Hello"},
+        {content: "BRENDAN has voted to begin"},
         {name: "Jim", content: "How are you doing today?"},
         {name: "Brendan", content: "This game is silly. Let's do something else"},
         {name: "Hypatia", content: "Hello"},
@@ -587,7 +588,7 @@ class App extends Component {
   componentDidMount = () => {
     this.setupSocket();
     this.setState({isLoading: false});
-    // this.testSetup(GAMEACTIVE, DRAWING, true, true) //For Testing Only
+    this.testSetup(GAMEACTIVE, DRAWING, true, true) //For Testing Only
     // this.testModal('BEGIN');  //For Testing only
   }
 

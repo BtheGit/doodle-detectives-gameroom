@@ -22,16 +22,21 @@ class ChatOutput extends React.Component {
     }
   }
 
+  renderMessage(message, index) {
+    const isSysMessage = !message.hasOwnProperty('name');
+    return (
+      <div className={`chat-message ${isSysMessage ? 'sys-message' : ''}`} key={index}>
+        <div className='chat-message-name'>{message.name}</div> 
+        <div className='chat-message-content'>{message.content}</div>
+      </div>
+    )
+  }
+
   render() {
     return (
       <div className="chat-display" id="chat-display">
         {this.props.messages.map((message, index) => {
-          return (
-            <div className='chat-message' key={index}>
-              <div className='chat-message-name'>{message.name}</div> 
-              <div className='chat-message-content'>{message.content}</div>
-            </div>
-          )
+          return this.renderMessage(message, index)
         })}
       </div>    
     );
