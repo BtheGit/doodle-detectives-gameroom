@@ -35,6 +35,7 @@ const TURNLENGTH = 15;
 
 const INITIAL_GAME_STATE = {
   gameState: {
+    hasVotedToReset: false,
     playerColors: {},
     currentPhase: '', 
     currentColor: '',
@@ -64,6 +65,19 @@ const INITIAL_GAME_STATE = {
   }   
 }
 
+const INITIAL_MODAL_STATE = {
+  isModalActive: false,
+  isAbleToClose: true,
+  modalContent: ''       
+}
+
+const INITIAL_TIMER_STATE = {
+  isActive: false,
+  length: 0,
+  tickCB: null,
+  endCB: null
+}
+
 class App extends Component {
   constructor(props) {
     super(props);
@@ -80,11 +94,7 @@ class App extends Component {
       chatMessages: [],
       paths: [],
       hasVotedToBegin: false, 
-      modal: {
-        isModalActive: false,
-        isAbleToClose: true,
-        modalContent: ''
-      },
+      modal: INITIAL_MODAL_STATE,
       sessionState: {
         players: [],
         currentSessionStatus: '', 
@@ -94,12 +104,7 @@ class App extends Component {
       fakeGuess: INITIAL_GAME_STATE.fakeGuess,
       guessApproval: INITIAL_GAME_STATE.guessApproval,
       finalResults: INITIAL_GAME_STATE.finalResults,
-      timer: {
-        isActive: false,
-        length: 0,
-        tickCB: null,
-        endCB: null
-      },
+      timer: INITIAL_TIMER_STATE,
       statusMessage: ''
     }
   }
@@ -250,6 +255,9 @@ class App extends Component {
     else if(packet.type === 'session_state_update') {
       this.handleSessionStateUpdate(packet.sessionState);
     }
+    else if(packet.type === 'hard_reset') {
+      this.handleHardReset();
+    }
     else if(packet.type === 'display_secret_phase') {
       this.handleDisplaySecretPhase(packet.payload);
     }
@@ -276,9 +284,15 @@ class App extends Component {
     this.clearPaths();
     this.drawingboard.refresh();
   }
+
+  handleHardReset = () => {
+    this.setState({hasVotedToBegin: false});
+    this.resetGameState(INITIAL_GAME_STATE);
+    this.clearTimer();
+    this.closeModal();
+  }
   
   handleGameOver = payload => {
-    console.log('Game Over. Receiving final results', payload)
     this.setState({
       gameState: {
         ...this.state.gameState,
@@ -465,24 +479,19 @@ class App extends Component {
 
   closeModal = () => {
     this.setState({
-      modal: {
-        isModalActive: false,
-        isAbleToClose: true,
-        modalContent: ''       
-      }
+      modal: INITIAL_MODAL_STATE
+    })
+  }
+
+  clearTimer = () => {
+    this.setState({
+      timer: INITIAL_TIMER_STATE
     })
   }
 
   startFirstTurn = () => {
     this.closeModal();
-    this.setState({
-      timer: {
-        isActive: false,
-        length: 0,
-        tickCB: null,
-        endCB: null,
-      }
-    });
+    this.clearTimer();
   }
 
   startCountdown = (length, tickCB, endCB, isActive = true) => {
@@ -522,9 +531,24 @@ class App extends Component {
   emitVoteToBegin = () => {
     this.setState({hasVotedToBegin: true});
     const packet = {
-      type: 'vote_to_begin',
+      type: 'vote_to_begin'
     }
     this.socket.emit('packet', packet);
+  }
+
+  emitVoteToReset = () => {
+    if(this.state.sessionState.currentSessionStatus === GAMEACTIVE) {
+      this.setState({
+        gameState: {
+          ...this.state.gameState,
+          hasVotedToReset: !this.state.gameState.hasVotedToReset
+        }
+      })
+      const packet = {
+        type: 'vote_to_reset'
+      }
+      this.socket.emit('packet', packet);
+    }
   }
 
   emitEndOfTurn = () => {
@@ -588,7 +612,7 @@ class App extends Component {
   componentDidMount = () => {
     this.setupSocket();
     this.setState({isLoading: false});
-    this.testSetup(GAMEACTIVE, DRAWING, true, true) //For Testing Only
+    // this.testSetup(GAMEACTIVE, DRAWING, true, true) //For Testing Only
     // this.testModal('BEGIN');  //For Testing only
   }
 
@@ -608,6 +632,7 @@ class App extends Component {
         isGameActive  = {this.state.sessionState.currentSessionStatus === GAMEACTIVE}
         isMyTurn      = {this.state.gameState.isMyTurn}
         paths         = {this.state.paths}
+        resetHandler  = {this.emitVoteToReset}
       />
     )
   }

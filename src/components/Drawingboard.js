@@ -165,7 +165,17 @@ class Drawingboard extends Component {
 				<div className="paper"></div>
 				<canvas ref={(ref) => {this.bgRef = ref}} id="bgCanvas" />
 				<canvas ref={(ref) => {this.ref = ref}} id="drawingCanvas" />
-				<a id="save-canvas" onClick={this.saveImage} download="doodle.png"></a>
+				<div className="tab-container">
+					<div className="tab-select">
+						<a id="save-canvas" onClick={this.saveImage} download="doodle.png"></a>
+					</div>
+					<div 
+						className={`tab-select ${this.props.isGameActive ? '' : 'hidden'}`} 
+						onClick={this.props.resetHandler}
+					>
+						&#xf05e;
+					</div>
+				</div>
 			</div>
 		)
 	}

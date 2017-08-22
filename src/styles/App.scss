@@ -3,7 +3,7 @@
 #preload {
   height: 0;
   width: 0;
-  display: inline;
+  display: inline-block;
   transform: translate(-9999px, -9999px);
   background-image: url('../images/splash_frame_color.png');
   background-image: url('../images/detectivei.png');
@@ -42,8 +42,6 @@
 
   &.bg-gameactive {
     background: radial-gradient(#627675 30%,#3C4D4B);
-    // background: radial-gradient(#FFC5C5 30%,#F37E7E);
-    // background: radial-gradient(#C75252 30%,#DB0000);
   }
 
   &.bg-gameactive-myturn {
@@ -67,98 +65,97 @@
       padding-left: 50px;
       padding-top: 80px;
       
-      #canvas-container {
-        z-index: 20;
-        position: relative;
-        height: $canvas_height;
-        width: $canvas_width;
-        display: flex;
-        justify-content: center;
-        align-items: center;
-
-        .manila-folder {
-          position:absolute;
-          top: -20px;
-          left: -20px;
-          height: $canvas_height + 40px;
-          width: $canvas_width + 40px;
-          background-color: $color-manila;
-          pointer-events: none;
-          box-shadow: 0px 5px 20px -5px black;
-        }
-
-        .paper {
-          position:absolute;
-          height: 100%;
-          width: 100%;
-          background-color: white;
-          box-shadow: 0px -2px 5px -1px rgba(0,0,0,0.3);
-          transform-origin: top left;
-          pointer-events: none;
-          user-select: none;
-        }
-
-        .paper:nth-of-type(1) {
-          transform: rotate(-0.5deg) translate(-8px, -6px);
-        }
-
-        .paper:nth-of-type(2) {
-          transform: rotate(-0.4deg) translate(-6px, -4px);
-        }
-
-        .paper:nth-of-type(3) {
-          transform: rotate(-0.2deg) translate(-4px, -2px);
-        }
-
-        .paper:nth-of-type(3)::before {
-          position: absolute;
-          top: -15px;
-          left: -20px;
-          transform: rotate(200deg);
-          font-family: FontAwesome;
-          content: '\f0c6';
-          font-size: 60px;
-        }
-      }
-
-      .statusmessage {
-        position: absolute;
-        z-index: 10;
-        bottom: 10px;
-        right: 10px;
-        width: 20em;
-        height: 2em;
-        line-height: 2em;
-        padding-left: 15px;
-        vertical-align: middle;
-        background-color: rgba(41,101,110,1);
-        border-radius: 10px;
-        color: white;
-        box-shadow: 0px 3px 5px -1px rgba(0,0,0,0.6);
-
-        &.hidden {
-          display: none;
-        }
-      } 
-    }
-
-    .lower-right {
-      position: relative;
-      height: 100%;
-      width: 40%;
-
-      #sidebar-container {
-        height: 100%;
-        width: 100%;
-        display: flex;
-        justify-content: center;
-        align-items: center;
-      }
     }
   }
 }
 
+.lower-right {
+  position: relative;
+  height: 100%;
+  width: 40%;
 
+  #sidebar-container {
+    height: 100%;
+    width: 100%;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+  }
+}
+
+.statusmessage {
+  position: absolute;
+  z-index: 10;
+  bottom: 10px;
+  right: 10px;
+  width: 20em;
+  height: 2em;
+  line-height: 2em;
+  padding-left: 15px;
+  vertical-align: middle;
+  background-color: rgba(41,101,110,1);
+  border-radius: 10px;
+  color: white;
+  box-shadow: 0px 3px 5px -1px rgba(0,0,0,0.6);
+
+  &.hidden {
+    display: none;
+  }
+} 
+
+#canvas-container {
+  z-index: 20;
+  position: relative;
+  height: $canvas_height;
+  width: $canvas_width;
+  display: flex;
+  justify-content: center;
+  align-items: center;
+
+  .manila-folder {
+    position:absolute;
+    top: -20px;
+    left: -20px;
+    height: $canvas_height + 40px;
+    width: $canvas_width + 40px;
+    background-color: $color-manila;
+    pointer-events: none;
+    box-shadow: 0px 5px 20px -5px black;
+  }
+
+  .paper {
+    position:absolute;
+    height: 100%;
+    width: 100%;
+    background-color: white;
+    box-shadow: 0px -2px 5px -1px rgba(0,0,0,0.3);
+    transform-origin: top left;
+    pointer-events: none;
+    user-select: none;
+  }
+
+  .paper:nth-of-type(1) {
+    transform: rotate(-0.5deg) translate(-8px, -6px);
+  }
+
+  .paper:nth-of-type(2) {
+    transform: rotate(-0.4deg) translate(-6px, -4px);
+  }
+
+  .paper:nth-of-type(3) {
+    transform: rotate(-0.2deg) translate(-4px, -2px);
+  }
+
+  .paper:nth-of-type(3)::before {
+    position: absolute;
+    top: -15px;
+    left: -20px;
+    transform: rotate(200deg);
+    font-family: FontAwesome;
+    content: '\f0c6';
+    font-size: 60px;
+  }
+}
 
 canvas {
   user-select: none;
@@ -193,41 +190,68 @@ canvas {
   }
 }
 
-#save-canvas {
+.tab-container {
   position: absolute;
-  right: -50px;
-  top: 25px;
-  height: 40px;
+  height: $canvas_height - 40px;
   width: 100px;
-  font-size: 28px;
-  background-color: #79005E;
-  text-decoration: none;
+  top: 40px;
+  right: -50px;
+  display: flex;
+  flex-direction: column;
+  justify-content: flex-start;
+  font-family: FontAwesome;
   color: white;
-  text-align: right;
-  line-height: 40px;
-  vertical-align: middle;
-  box-shadow: 0px 1px 5px rgba(0,0,0,0.3);
-  transition: all 200ms ease-in-out;
+  font-size: 28px;
+}
 
-  &:hover {
-    background-color: #A100A3;
-    transform: translateX(15px);
-  }
-
-  &::before {
-    font-family: FontAwesome;
-    content: '\f0c7';
-    padding-right: 10px;
-  }  
+.tab-container * {
+  cursor: default;
+  user-select: none;
 }
 
 
+.tab-select {
+  width: 100%;
+  height: 40px;
+  margin: 5px 0;
+  padding-right: 10px;
+  text-align: right;
+  line-height: 40px;
+  vertical-align: middle;
+  background-color: rgb(255,153,0);
+  box-shadow: 0px 1px 5px rgba(0,0,0,0.4);
+  transition: all 200ms ease-in-out;
+
+  &:hover {
+    filter: brightness(1.3);
+    transform: translateX(15px);
+  }
+
+  a {
+    text-decoration: none;
+  }
+
+  &.hidden {
+    display:none;
+  }
+}
+
+.tab-select:nth-of-type(1) {
+  background-color: #79005E;
+
+  &::before {
+    content: '\f0c7';
+  }  
+}
+
+.tab-select:nth-of-type(2) {
+  background-color: #D70000;
+}
 
 #sidebar-container {
   height: 100%;
   width: 30%;
 }
-
 
 .statusdisplay-container {
   color: #FDFFD8;
