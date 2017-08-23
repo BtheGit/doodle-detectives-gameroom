@@ -56,7 +56,6 @@ const StatusDisplay = props => {
       if (phase === DRAWING || phase === DISPLAYSECRET) {
         return (
           <StatusPanel 
-            currentColor = {props.currentColor}
             currentPlayer = {props.currentPlayer}
             secret = {props.secret}
           />

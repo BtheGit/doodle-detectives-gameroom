@@ -38,7 +38,6 @@ const INITIAL_GAME_STATE = {
     hasVotedToReset: false,
     playerColors: {},
     currentPhase: '', 
-    currentColor: '',
     currentPlayer: '',
     isMyTurn: false,
     fakeIsMe: false,
@@ -379,10 +378,10 @@ class App extends Component {
     })
   }
 
+
   handleNextTurn = turn => {
     if(this.state.modal.isModalActive) this.closeModal(); //Temp fix for clearing out modal 
     const newState = {
-      currentColor: turn.color,
       currentPlayer: turn.name,
       isMyTurn: turn.active,
       currentPhase: DRAWING
@@ -394,11 +393,12 @@ class App extends Component {
       }
     })
     if(turn.active) {
-      this.startCountdown(TURNLENGTH, null, this.handleEndOfTurn)       
+      this.startCountdown(TURNLENGTH, null, () => this.handleEndOfTurn(turn.turnId))       
     }
+
   }
 
-  handleEndOfTurn = () => {
+  handleEndOfTurn = turnId => {
     this.setState({
       timer: {
         isActive: false,
@@ -407,7 +407,7 @@ class App extends Component {
         endCB: null,
       }
     });
-    this.emitEndOfTurn();
+    this.emitEndOfTurn(turnId);
   }
 
   handleDisplaySecretPhase = payload => {
@@ -551,17 +551,16 @@ class App extends Component {
     }
   }
 
-  emitEndOfTurn = () => {
-    console.log('Turn finished')
+  emitEndOfTurn = turnId => {
     // At the end set active state back to false
     const newState = {
       isMyTurn: false, 
-      currentColor: ''
     }
     this.setState({gameState: {...this.state.gameState, ...newState}})
     // Send message back to server socket to trigger next turn action
     const packet = {
-      type: 'end_of_turn'
+      type: 'end_of_turn',
+      turnId
     }    
     this.socket.emit('packet', packet)
   }
@@ -678,7 +677,6 @@ class App extends Component {
       <StatusDisplay
         currentState              ={this.state.sessionState.currentSessionStatus}
         currentPhase              ={this.state.gameState.currentPhase}
-        currentColor              ={this.state.gameState.currentColor}
         currentPlayer             ={this.state.gameState.currentPlayer}
         secret                    ={this.state.gameState.secret}
         fakeIsMe                  ={this.state.gameState.fakeIsMe}

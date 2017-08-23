@@ -1,9 +1,6 @@
 import React from 'react';
 
 const StatusPanel = (props) => {
-	const playerStyle = {
-		color: props.currentColor
-	}
   return (
     <div className="turndisplay-container">
       <div className="turndisplay-secret">
