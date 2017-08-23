@@ -1,5 +1,7 @@
 import React, { Component } from 'react';
 import PropTypes from 'prop-types';
+import ColorPicker from './ColorPicker';
+
 
 class Drawingboard extends Component {
 	constructor(props) {
@@ -166,14 +168,24 @@ class Drawingboard extends Component {
 				<canvas ref={(ref) => {this.bgRef = ref}} id="bgCanvas" />
 				<canvas ref={(ref) => {this.ref = ref}} id="drawingCanvas" />
 				<div className="tab-container">
-					<div className="tab-select">
+					<div className="tab-select tab-save">
 						<a id="save-canvas" onClick={this.saveImage} download="doodle.png"></a>
 					</div>
 					<div 
-						className={`tab-select ${this.props.isGameActive ? '' : 'hidden'}`} 
+						className={`tab-select tab-reset ${this.props.isGameActive ? '' : 'hidden'}`} 
 						onClick={this.props.resetHandler}
 					>
 						&#xf05e;
+					</div>
+					<div 
+						style={{background: `${this.props.clientColor}`}}
+						className={`tab-select tab-colorpicker ${this.props.isGameActive ? 'hidden' : ''}`}
+					
+					>
+						<ColorPicker 
+							color 		= {this.props.clientColor}
+							setColor 	= {this.props.setColor}
+						/>
 					</div>
 				</div>
 			</div>

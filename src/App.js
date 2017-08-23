@@ -1,16 +1,16 @@
 import React, { Component } from 'react';
 import './styles/App.css';
-import io from 'socket.io-client';
 import Modal from 'react-modal';
-import Timer from './components/Timer.js'
-import Spinner from './components/Spinner.js'
-import Chatroom from './components/Chatroom.js';
-import Drawingboard from './components/Drawingboard.js';
-import StatusDisplay from './components/StatusDisplay.js';
-import GuessApprovalModal from './components/GuessApprovalModal.js';
-import BeginModal from './components/BeginModal.js';
-import ResultsModal from './components/ResultsModal.js';
-import ActivePlayerScreen from './components/ActivePlayerScreen.js';
+import io from 'socket.io-client';
+import Timer from './components/Timer'
+import Spinner from './components/Spinner'
+import Chatroom from './components/Chatroom';
+import BeginModal from './components/BeginModal';
+import Drawingboard from './components/Drawingboard';
+import ResultsModal from './components/ResultsModal';
+import StatusDisplay from './components/StatusDisplay';
+import GuessApprovalModal from './components/GuessApprovalModal';
+import ActivePlayerScreen from './components/ActivePlayerScreen';
 
 
 //Game State Toggles
@@ -500,6 +500,20 @@ class App extends Component {
     });
   }
 
+  /**
+   * Players will be allowed to change their color at will outside of an active game.
+   * SetColor will be passed down through the DrawingBoard to the ColorPicker component to allow 
+   * it to access the top level state
+   * 
+   * @param  {String} color [A color string sent from ColorPicker]
+   * 
+   */
+  setColor = color => {
+    if(this.state.sessionState.currentSessionStatus !== GAMEACTIVE) {
+      this.setState({myColor: color.hex})
+    }
+  }
+
   generateRandomId = (len = 8) => {
     const chars = 'abcdefghijklmnopqrstuvwxyzABCDEFGHIJKLMNOPQRSTUVWXYZ0123456789';
     let length = len;
@@ -637,6 +651,7 @@ class App extends Component {
         isMyTurn      = {this.state.gameState.isMyTurn}
         paths         = {this.state.paths}
         resetHandler  = {this.emitVoteToReset}
+        setColor      = {this.setColor}
       />
     )
   }

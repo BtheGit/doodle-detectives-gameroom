@@ -211,6 +211,7 @@ canvas {
 
 
 .tab-select {
+  position: relative;
   width: 100%;
   height: 40px;
   margin: 5px 0;
@@ -236,7 +237,7 @@ canvas {
   }
 }
 
-.tab-select:nth-of-type(1) {
+.tab-select.tab-save {
   background-color: #79005E;
 
   &::before {
@@ -244,9 +245,35 @@ canvas {
   }  
 }
 
-.tab-select:nth-of-type(2) {
+.tab-select.tab-reset {
   background-color: #D70000;
 }
+
+.tab-select.tab-colorpicker {
+  background-color: #23D700;
+  padding-right: 0px;
+}
+
+.color-picker-container {
+  position: relative;
+  width: 100%;
+  height: 100%;
+}
+
+.color-picker-select {
+  width: 100%;
+  height: 100%;
+  padding-right: 10px;
+}
+
+.color-picker-popout {
+  position: absolute;
+  top: -5px;
+  left: 100px;
+  border: 3px solid black;
+  filter: drop-shadow(0px 0px 25px black);
+}
+
 
 #sidebar-container {
   height: 100%;
