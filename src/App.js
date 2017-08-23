@@ -380,7 +380,8 @@ class App extends Component {
 
 
   handleNextTurn = turn => {
-    if(this.state.modal.isModalActive) this.closeModal(); //Temp fix for clearing out modal 
+    if(this.state.modal.isModalActive) this.closeModal();
+    this.clearTimer();
     const newState = {
       currentPlayer: turn.name,
       isMyTurn: turn.active,
@@ -399,14 +400,7 @@ class App extends Component {
   }
 
   handleEndOfTurn = turnId => {
-    this.setState({
-      timer: {
-        isActive: false,
-        length: 0,
-        tickCB: null,
-        endCB: null,
-      }
-    });
+    this.clearTimer();
     this.emitEndOfTurn(turnId);
   }
 
@@ -500,9 +494,20 @@ class App extends Component {
         isActive,
         length,
         tickCB,
-        endCB
+        endCB,
+        timerId: this.generateRandomId()
       }
     });
+  }
+
+  generateRandomId = (len = 8) => {
+    const chars = 'abcdefghijklmnopqrstuvwxyzABCDEFGHIJKLMNOPQRSTUVWXYZ0123456789';
+    let length = len;
+    let id = '';
+    while(length--) {
+      id += chars[Math.random() * chars.length | 0]
+    }
+    return id;
   }
 
   //########### SOCKET EMITTERS ##############

@@ -10,26 +10,29 @@ class Timer extends Component {
       endTime: Date.now() + (this.props.length * this.INTERVAL),
       then: Date.now(),
       timeRemaining: this.props.length,
-      animationFrameId: null
+      animationFrameId: null,
+      timerId: this.props.timerId
     }
   }
 
   frame = () => {
     cancelAnimationFrame(this.state.animationFrameId)
-    if(this.state.timeRemaining) {
-      const animationFrameId = requestAnimationFrame(this.frame);
-      let now = Date.now();
-      let delta = now - this.state.then;
-      this.setState({animationFrameId})
+    if(this.state.timerId === this.props.timerId) {
+      if(this.state.timeRemaining) {
+        const animationFrameId = requestAnimationFrame(this.frame);
+        let now = Date.now();
+        let delta = now - this.state.then;
+        this.setState({animationFrameId})
 
-      if (delta > this.state.INTERVAL) {
-        const then = now - (delta % this.state.INTERVAL);
-        const timeRemaining = this.state.timeRemaining - 1;
-        this.setState({then, timeRemaining}, this.tick)
+        if (delta > this.state.INTERVAL) {
+          const then = now - (delta % this.state.INTERVAL);
+          const timeRemaining = this.state.timeRemaining - 1;
+          this.setState({then, timeRemaining}, this.tick)
+        }
       }
-    }
-    else {
-      this.setState({timeRemaining: 0}, this.timerFinished)
+      else {
+        this.setState({timeRemaining: 0}, this.timerFinished)
+      }
     }
   }
 
