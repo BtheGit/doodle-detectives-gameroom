@@ -172,13 +172,18 @@ class Drawingboard extends Component {
 						<a id="save-canvas" onClick={this.saveImage} download="doodle.png"></a>
 					</div>
 					<div 
-						className={`tab-select tab-reset ${this.props.isGameActive ? '' : 'hidden'}`} 
+						className={`
+							tab-select 
+							tab-reset 
+							${this.props.isGameActive ? '' : 'hidden'}
+							${this.props.wantsReset ? 'reset' : 'no-reset'}
+						`} 
 						onClick={this.props.resetHandler}
 					>
-						&#xf05e;
+						{this.props.wantsReset ? <div>&#xf0e2;</div> : <div>&#xf05e;</div>}
 					</div>
 					<div 
-						style={{background: `${this.props.clientColor}`}}
+						style={{color: `${this.props.clientColor}`}}
 						className={`tab-select tab-colorpicker ${this.props.isGameActive ? 'hidden' : ''}`}
 					
 					>

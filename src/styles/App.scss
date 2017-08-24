@@ -223,11 +223,6 @@ canvas {
   box-shadow: 0px 1px 5px rgba(0,0,0,0.4);
   transition: all 200ms ease-in-out;
 
-  &:hover {
-    filter: brightness(1.3);
-    transform: translateX(15px);
-  }
-
   a {
     text-decoration: none;
   }
@@ -235,23 +230,83 @@ canvas {
   &.hidden {
     display:none;
   }
+
+  &::after {
+    position: absolute;
+    top: 0;
+    left: 100%;
+    height: 40px;
+    line-height: 45px;
+    vertical-align: middle;
+    text-align: center;
+    width: 200px;
+    font-family: 'Special Elite';
+    font-size: 19px;
+    transform: rotateY(90deg);
+    transform-origin: left;
+    transition: all 350ms ease-in-out;
+    opacity: 0;   
+    box-shadow: 0px 1px 5px rgba(0,0,0,0.4);
+    border-left: 2px solid black;
+  }
+
+  &:hover {
+    filter: brightness(1.3);
+    transform: translateX(15px);
+    
+    &::after {
+      transform: rotateY(0);
+      opacity: 1;
+    }
+  }
 }
 
-.tab-select.tab-save {
+.tab-save {
   background-color: #79005E;
-
   &::before {
     content: '\f0c7';
-  }  
+  }
+
+  &::after {
+    background: #79005E;
+    content:'SAVE IMAGE TO DISK';
+  }
+
+  a {
+    position: absolute;
+    top: 0;
+    left: 0;
+    height: 100%;
+    width: 100%;
+  }
 }
 
-.tab-select.tab-reset {
+.tab-reset.no-reset {
   background-color: #D70000;
+  &::after {
+    background: #D70000;
+    content:'VOTE TO END GAME';
+  }
 }
 
-.tab-select.tab-colorpicker {
-  background-color: #23D700;
+.tab-reset.reset {
+  background-color: #048E17;
+  &::after {
+    background: #048E17;
+    content:'UNDO VOTE';
+  }
+}
+
+.tab-colorpicker {
+  background-color: #0047D7;
   padding-right: 0px;
+  text-shadow: 0px 0px 1px black;
+
+  &::after {
+    background: #0047D7;
+    color: white;
+    content:'COLOR PICKER';
+  }
 }
 
 .color-picker-container {
@@ -268,6 +323,7 @@ canvas {
 
 .color-picker-popout {
   position: absolute;
+  z-index: 50;
   top: -5px;
   left: 100px;
   border: 3px solid black;

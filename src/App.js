@@ -655,7 +655,7 @@ class App extends Component {
   componentDidMount = () => {
     this.setupSocket();
     this.setState({isLoading: false});
-    this.testSetup(GAMEACTIVE, FAKEVOTE, true, true) //For Testing Only
+    // this.testSetup(GAMEACTIVE, DRAWING, true, true) //For Testing Only
     // this.testModal('BEGIN');  //For Testing only
   }
 
@@ -677,6 +677,7 @@ class App extends Component {
         paths         = {this.state.paths}
         resetHandler  = {this.emitVoteToReset}
         setColor      = {this.setColor}
+        wantsReset    = {this.state.gameState.hasVotedToReset}
       />
     )
   }
