@@ -778,7 +778,6 @@ class App extends Component {
 
       return (
         <div id="room-container" className={setBGColor()}>
-          <div id="preload"></div>
           <div className="upper-container">
             {this.renderActivePlayerScreen()}
           </div>

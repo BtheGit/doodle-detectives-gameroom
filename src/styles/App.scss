@@ -1,19 +1,5 @@
 @import "resources/variables.scss";
 
-#preload {
-  height: 0;
-  width: 0;
-  display: inline-block;
-  transform: translate(-9999px, -9999px);
-  background-image: url('../images/splash_frame_color.png');
-  background-image: url('../images/detectivei.png');
-  background-image: url('../images/fakei.png');
-  background-image: url('../images/splatter.png');
-  background-image: url('../images/detectives_win.jpg');
-  background-image: url('../images/fake_wins_found.jpg');
-  background-image: url('../images/fake_wins_notfound.jpg');
-}
-
 @font-face {
   font-family: "Mugshot";
   src: url('../fonts/mugshot/mugshot.eot'); /* IE9 Compat Modes */
