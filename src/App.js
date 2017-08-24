@@ -3,7 +3,6 @@ import './styles/App.css';
 import Modal from 'react-modal';
 import io from 'socket.io-client';
 import Timer from './components/Timer'
-import Spinner from './components/Spinner'
 import Chatroom from './components/Chatroom';
 import BeginModal from './components/BeginModal';
 import Drawingboard from './components/Drawingboard';
@@ -83,7 +82,6 @@ class App extends Component {
     this.socket = null;
     this.background = document.getElementById('canvas-container');
     this.state = {
-      isLoading: true,
       socketId: '',
       myId: '', 
       myName: '',
@@ -654,7 +652,6 @@ class App extends Component {
   //############### LIFECYCLE AND RENDER METHODS ####################
   componentDidMount = () => {
     this.setupSocket();
-    this.setState({isLoading: false});
     // this.testSetup(GAMEACTIVE, DRAWING, true, true) //For Testing Only
     // this.testModal('BEGIN');  //For Testing only
   }
@@ -758,47 +755,42 @@ class App extends Component {
   }
 
   render() {
-    if(this.state.isLoading) {
-      return <Spinner />
-    }
-    else {
-      const setBGColor = () => {
-        if(this.state.sessionState.currentSessionStatus === GAMEACTIVE) {
-          if(this.state.gameState.isMyTurn) {
-            return BG_GAME_MYTURN;
-          }
-          else {
-            return BG_GAME_NOTMYTURN;
-          }
+    const setBGColor = () => {
+      if(this.state.sessionState.currentSessionStatus === GAMEACTIVE) {
+        if(this.state.gameState.isMyTurn) {
+          return BG_GAME_MYTURN;
         }
         else {
-          return BG_NOGAME;
+          return BG_GAME_NOTMYTURN;
         }
       }
-
-      return (
-        <div id="room-container" className={setBGColor()}>
-          <div className="upper-container">
-            {this.renderActivePlayerScreen()}
-          </div>
-          <div className="lower-container">
-            <div className="lower-left">
-              <div id="canvas-container">
-                {this.renderDrawingboard()}
-                {this.renderStatusDisplay()}
-                {this.renderTimer()}
-              </div>
-            </div>
-            <div className="lower-right">
-              <div id="sidebar-container">
-                {this.renderChatroom()}
-              </div>        
-            </div>
-          </div>
-          {this.renderModal()}
-        </div>
-      );      
+      else {
+        return BG_NOGAME;
+      }
     }
+
+    return (
+      <div id="room-container" className={setBGColor()}>
+        <div className="upper-container">
+          {this.renderActivePlayerScreen()}
+        </div>
+        <div className="lower-container">
+          <div className="lower-left">
+            <div id="canvas-container">
+              {this.renderDrawingboard()}
+              {this.renderStatusDisplay()}
+              {this.renderTimer()}
+            </div>
+          </div>
+          <div className="lower-right">
+            <div id="sidebar-container">
+              {this.renderChatroom()}
+            </div>        
+          </div>
+        </div>
+        {this.renderModal()}
+      </div>
+    );      
   }
 }
 

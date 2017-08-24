@@ -21,6 +21,7 @@
   display: flex;
   flex-direction: column;
   overflow: hidden;
+  background: black;
 
   &.bg-nogame {
     background: radial-gradient(#465453 30%,#232D2C);
@@ -207,7 +208,7 @@ canvas {
   vertical-align: middle;
   background-color: rgb(255,153,0);
   box-shadow: 0px 1px 5px rgba(0,0,0,0.4);
-  transition: all 200ms ease-in-out;
+  transition: all 150ms ease-in-out;
 
   a {
     text-decoration: none;
@@ -228,9 +229,9 @@ canvas {
     width: 200px;
     font-family: 'Special Elite';
     font-size: 19px;
-    transform: rotateY(90deg);
+    transform: rotateY(-90deg) perspective(100);
     transform-origin: left;
-    transition: all 350ms ease-in-out;
+    transition: all 220ms ease-in-out;
     opacity: 0;   
     box-shadow: 0px 1px 5px rgba(0,0,0,0.4);
     border-left: 2px solid black;
