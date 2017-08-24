@@ -245,6 +245,9 @@ class App extends Component {
     else if(packet.type === 'update_player_colors') {
       this.handleUpdatePlayerColors(packet.playerColors);
     }
+    else if(packet.type === 'reconnect_player') {
+      this.handleReconnect(packet.payload);
+    }
     else if(packet.type ==='chat_message') {
       this.handleChatMessage(packet.payload);
     }
@@ -289,6 +292,28 @@ class App extends Component {
     this.resetGameState(INITIAL_GAME_STATE);
     this.clearTimer();
     this.closeModal();
+  }
+
+  handleReconnect = newState => {
+    this.setState({
+      gameState: {
+        ...this.state.gameState,
+        currentPhase: newState.currentPhase,
+        fakeIsMe: newState.isFake,
+        secret: newState.secret
+      }
+    }) 
+
+    //Extra State to update based on phase
+    if(newState.currentPhase === DRAWING) {
+      this.setState({
+        gameState: {
+          ...this.state.gameState,
+          isMyTurn: newState.isMyTurn,
+          currentPlayer: newState.currentPlayerName
+        }
+      })       
+    }
   }
   
   handleGameOver = payload => {
@@ -413,7 +438,7 @@ class App extends Component {
         currentPhase: DISPLAYSECRET
       }
     })
-    this.startCountdown(payload.displayLength, null, this.startFirstTurn)
+    // this.startCountdown(payload.displayLength, null, this.startFirstTurn)
     const modalContent = (
         <BeginModal 
           secret={payload.secret.secret}
@@ -483,10 +508,10 @@ class App extends Component {
     })
   }
 
-  startFirstTurn = () => {
-    this.closeModal();
-    this.clearTimer();
-  }
+  // startFirstTurn = () => {
+  //   this.closeModal();
+  //   this.clearTimer();
+  // }
 
   startCountdown = (length, tickCB, endCB, isActive = true) => {
     this.setState({
