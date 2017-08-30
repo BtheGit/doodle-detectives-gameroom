@@ -4,6 +4,7 @@ import Modal from 'react-modal';
 import io from 'socket.io-client';
 import Timer from './components/Timer'
 import Chatroom from './components/Chatroom';
+import HelpModal from './components/HelpModal';
 import BeginModal from './components/BeginModal';
 import Drawingboard from './components/Drawingboard';
 import ResultsModal from './components/ResultsModal';
@@ -146,7 +147,7 @@ class App extends Component {
         isMyTurn: active,
         fakeIsMe: fake,
         secret: {
-          secret: 'Headless Horseman',
+          secret: '---',
           category: 'Halloween'
         }
       }
@@ -158,9 +159,8 @@ class App extends Component {
     if(modalType === 'BEGIN') {
       const modalContent = (
           <BeginModal 
-            secret={'Monkey'}
-            category={'Animal'}
-            isFake={false}
+            secret={'Halloween'}
+            category={'Headless Horseman'}
           />
         )
 
@@ -436,7 +436,6 @@ class App extends Component {
         currentPhase: DISPLAYSECRET
       }
     })
-    // this.startCountdown(payload.displayLength, null, this.startFirstTurn)
     const modalContent = (
         <BeginModal 
           secret={payload.secret.secret}
@@ -506,10 +505,16 @@ class App extends Component {
     })
   }
 
-  // startFirstTurn = () => {
-  //   this.closeModal();
-  //   this.clearTimer();
-  // }
+  displayHelp = () => {
+    this.setState({
+      modal: {
+        isModalActive: true,
+        isAbleToClose: true,
+        modalContent: <HelpModal />
+      }
+    })
+  }
+
 
   startCountdown = (length, tickCB, endCB, isActive = true) => {
     this.setState({
@@ -675,6 +680,7 @@ class App extends Component {
         resetHandler  = {this.emitVoteToReset}
         setColor      = {this.setColor}
         wantsReset    = {this.state.gameState.hasVotedToReset}
+        displayHelp   = {this.displayHelp}
       />
     )
   }

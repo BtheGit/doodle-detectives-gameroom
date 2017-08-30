@@ -1,81 +1,112 @@
+@import "resources/variables.scss";
+
 .modal-begin {
   position: absolute;
-  width: 100%;
-  height: 100%;
   text-align: center;
   font-family: 'Special Elite';
+  top: calc(50% - 250px);
+  left: calc(50% - 400px);
+  width: 800px;
+  height: 500px;
+  // background: url('../images/splash_frame_color.png');
+  background-color: $color-manila;
+  background-position: center;
+  background-size: contain;
+  background-repeat: no-repeat;
 
-  &:before {
-    z-index: -1;
+  .modal-image-container {
+    position: relative;
+    height: 300px;
+    width: 270px;
+    left: -20px;
+    background: white;
+    transform: rotate(-4deg);
+    box-shadow: 0px 0px 10px -2px black;
+
+    .modal-image {
+      position: absolute;
+      height: 78%;
+      width: 94%;
+      top: 3%;
+      left: 3%;
+      background-color: black;      
+      background-image: url('../images/detectivei.png');
+      background-size: contain;
+      background-position: center;
+      background-repeat: no-repeat;
+      box-shadow: 0px 0px 10px -3px black inset;
+
+      &::before {
+        position: absolute;
+        top: -35px;
+        left: 10px;
+        transform: rotate(200deg);
+        color: #4C4646;
+        font-family: FontAwesome;
+        content: '\f0c6';
+        font-size: 60px;
+      }
+
+      &.fake {
+        background-image: url('../images/fakei.png');
+      }
+    }
+  }
+
+  .modal-role {
     position: absolute;
-    content: '';
-    top: 0;
-    left: 0;
-    width: 100%;
-    height: 100%;
-    background: url('../images/splash_frame_color.png');
-    background-position: center;
-    background-size: contain;
-    background-repeat: no-repeat;
-    filter: blur(1px);
-  }
+    top: 35px;
+    left: 270px;
+    width: 500px;
+    font-size: 70px;
+    color: black;
+    background-color: yellow;
 
-  .modal-header {
-    position: absolute;
-    top: 28%;
-    left: 35%;
-    font-size: 50px;
-    color: white;
-    font-weight: bolder;
-  }
-
-  .modal-image {
-    height: 24%;
-    width: 24%;
-    margin: 20% auto;
-    background: url('../images/detectivei.png');
-    background-position: center;
-    background-size: contain;
-    background-repeat: no-repeat;
-  }
-
-  .modal-image.fake {
-    background: url('../images/fakei.png');
-    background-size: contain;
-    background-position: center;
-    background-repeat: no-repeat;
+    &::before{
+      content: 'You are a ';
+      font-size: 30px;
+      background-color: none;
+    }
   }
 
   .modal-category, .modal-secret {
     position: absolute;
-    height: 300px;
-    width: 300px;
-    bottom: 10%;
     font-size: 25px;
-    padding-bottom: 15px;
-    background-image: url('../images/splatter.png');
-    background-size: contain;
-    background-position: center;
-    background-repeat: no-repeat;
-    color: white;
-    display: flex;
-    flex-direction: column;
-    justify-content: center;
-    align-items: center;
-    line-height: 35px;
+    color: red;
 
     span {
-      display: block;
-      color: #FFE400;
+      color: black;
       font-weight: bold;
     }
   }
 
   .modal-category {
-    left: 25%;
+    top: 135px;
+    left: 310px;
   }
 
   .modal-secret {
-    right: 25%;
+    top: 175px;
+    left: 310px;
+  }
+
+  .modal-objective {
+    position: absolute;
+    background-color: white;
+    width: 500px;
+    height: 250px;
+    top: 230px;
+    right: 20px;
+    box-shadow: 0px 2px 25px -10px black;
+    font-size: 20px;
+    padding: 7px 0;
+    display: flex;
+    align-items: center;
+    line-height: 1.2em;
+
+    p {
+      padding: 10px;
+      text-align: left;
+    }
   }
 }

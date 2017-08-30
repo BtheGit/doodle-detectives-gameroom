@@ -248,6 +248,26 @@ canvas {
   }
 }
 
+.tab-help {
+  background-color: #e06f00;
+  &::before {
+    content: '\f29c';
+  }
+
+  &::after {
+    background: #e06f00;
+    content:'HOW TO PLAY';
+  }
+
+  a {
+    position: absolute;
+    top: 0;
+    left: 0;
+    height: 100%;
+    width: 100%;
+  }
+}
+
 .tab-save {
   background-color: #79005E;
   &::before {
@@ -419,10 +439,14 @@ canvas {
       height: 70px;
       text-align: center;
       border-radius: 6px;
-      padding-top: 10px;
+      padding-top: 15px;
       transform: translateY(-100%);
       background-color: $color-manila;
       box-shadow: 2px 5px 10px 1px rgba(0,0,0,0.5);
+
+      span {
+        color: #D20000;
+      }
     }
   }  
 }

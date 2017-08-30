@@ -168,6 +168,12 @@ class Drawingboard extends Component {
 				<canvas ref={(ref) => {this.bgRef = ref}} id="bgCanvas" />
 				<canvas ref={(ref) => {this.ref = ref}} id="drawingCanvas" />
 				<div className="tab-container">
+					<div 
+						className="tab-select tab-help"
+						onClick={this.props.displayHelp}
+					>
+
+					</div>
 					<div className="tab-select tab-save">
 						<a id="save-canvas" onClick={this.saveImage} download="doodle.png"></a>
 					</div>

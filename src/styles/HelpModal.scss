@@ -1,0 +1,26 @@
+@import "resources/variables.scss";
+
+.modal-help {
+  background-color: $color-manila;
+  font-size: 24px;
+  padding: 10px;
+  position: absolute;
+  width: 800px;
+  height: 550px;
+  top: calc(50% - 275px);
+  left: calc(50% - 400px);
+  text-align: center;
+  box-sizing: border-box;
+  display: flex;
+  flex-direction: column;
+  justify-content: space-around;
+  font-family: 'Special Elite';
+
+  h1 {
+    padding: 5px;
+  }
+
+  p {
+    padding: 5px;
+  }
+}
