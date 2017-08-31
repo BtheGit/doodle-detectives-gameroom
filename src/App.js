@@ -147,7 +147,7 @@ class App extends Component {
         isMyTurn: active,
         fakeIsMe: fake,
         secret: {
-          secret: '---',
+          secret: 'Headless Horseman',
           category: 'Halloween'
         }
       }
@@ -678,7 +678,7 @@ class App extends Component {
   //############### LIFECYCLE AND RENDER METHODS ####################
   componentDidMount = () => {
     this.setupSocket();
-    // this.testSetup(GAMEACTIVE, DRAWING, true, true) //For Testing Only
+    this.testSetup(GAMEACTIVE, DRAWING, true, true) //For Testing Only
     // this.testModal('BEGIN');  //For Testing only
   }
 

@@ -56,8 +56,9 @@ const StatusDisplay = props => {
       if (phase === DRAWING || phase === DISPLAYSECRET) {
         return (
           <StatusPanel 
-            currentPlayer = {props.currentPlayer}
-            secret = {props.secret}
+            currentPlayer = { props.currentPlayer }
+            secret = { props.secret }
+            fakeIsMe = { props.fakeIsMe }
           />
         );       
       }

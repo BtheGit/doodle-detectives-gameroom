@@ -5,7 +5,7 @@ const StatusPanel = (props) => {
     <div className="turndisplay-container">
       <div className="turndisplay-secret">
         <div>CATEGORY: <span>{props.secret.category}</span></div>
-        <div>SECRET: <span>{props.secret.secret}</span></div>
+        {props.fakeIsMe ? null : <div>SECRET: <span>{props.secret.secret}</span></div>}
       </div>
     </div>    
   );
