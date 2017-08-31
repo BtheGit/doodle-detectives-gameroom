@@ -1,6 +1,6 @@
 import React, { Component } from 'react';
 import Spinner from './Spinner';
-import img1 from '../images/splash_frame_color.png';
+import img1 from '../images/splatter.png';
 import img2 from '../images/fake.png';
 import img3 from '../images/man.png';
 import img4 from '../images/detective.png';
@@ -9,9 +9,8 @@ import img6 from '../images/fake_wins_notfound.jpg';
 import img7 from '../images/detectives_win.jpg';
 import img8 from '../images/fakei.png';
 import img9 from '../images/detectivei.png';
-import img10 from '../images/splatter.png';
 
-let imageAssets = [img1, img2, img3, img4, img5, img6, img7, img8, img9, img10];
+let imageAssets = [img1, img2, img3, img4, img5, img6, img7, img8, img9];
 
 class AssetLoader extends Component {
   constructor(props) {

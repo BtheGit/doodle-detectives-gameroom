@@ -10,7 +10,7 @@ const fakeObj = (
 )
 const detObj = (
   <div className="modal-objective">
-    <p>Your goal is to locate the one player who wasn't given the secret and is faking it.</p>
+    <p>Your goal is to locate the one player who doesn't know the secret.</p>
     <p>Remember, you need to demonstrate to your fellow detectives that you aren't the fake through your drawing.</p>
     <p>Careful, if you're too obvious the fake will be able to guess the secret and escape detection!</p>
   </div>

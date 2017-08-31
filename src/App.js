@@ -298,8 +298,11 @@ class App extends Component {
         ...this.state.gameState,
         currentPhase: newState.currentPhase,
         fakeIsMe: newState.isFake,
-        secret: newState.secret
-      }
+        secret: newState.secret,
+      },
+      fakeVote: newState.fakeVote,
+      fakeGuess: newState.fakeGuess,
+      guessApproval: newState.guessApproval
     }) 
 
     //Extra State to update based on phase
@@ -311,6 +314,24 @@ class App extends Component {
           currentPlayer: newState.currentPlayerName
         }
       })       
+    }
+    else if (newState.currentPhase === GUESSAPPROVAL) {
+      if(!newState.isFake && !newState.guessApproval.hasGuessed) {
+        const modalContent = (
+          <GuessApprovalModal
+            secret={this.state.gameState.secret.secret}
+            guess={newState.guessApproval.guess}
+            submitGuessApproval={this.emitVoteForGuessApproval}
+          />
+        );
+        this.setState({
+          modal: {
+            isModalActive: true,
+            isAbleToClose: false,
+            modalContent
+          }
+        });       
+      }
     }
   }
   
@@ -732,7 +753,6 @@ class App extends Component {
         hasVotedToBegin           ={this.state.hasVotedToBegin}
         emitVoteToBegin           ={this.emitVoteToBegin}
         fakeVote                  ={this.state.fakeVote}
-        emitVoteForFake           ={this.emitVoteForFake}
         emitVoteForGuessApproval  ={this.emitVoteForGuessApproval}
         emitGuess                 ={this.emitGuess}
         hasGuessed                ={this.state.fakeGuess.hasGuessed}
