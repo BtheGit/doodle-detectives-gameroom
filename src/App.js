@@ -129,7 +129,7 @@ class App extends Component {
       sessionState: {
         players: [
           {name: 'Brendan', id: '1', color: 'blue', isFake: true},
-          {name: 'Cody', id: '2', color: 'yellow', isFake: false},
+          {name: 'Cody', id: '', color: '', isFake: false},
           {name: 'MATUMIZURO1234', id: '3', color: 'red', isFake: false},
           {name: 'Dummy', id: '4', color: 'purple', isFake: false},
           {name: 'Brendan', id: '1', color: 'blue', isFake: true},
@@ -678,8 +678,8 @@ class App extends Component {
   //############### LIFECYCLE AND RENDER METHODS ####################
   componentDidMount = () => {
     this.setupSocket();
-    this.testSetup(GAMEACTIVE, DRAWING, true, true) //For Testing Only
-    // this.testModal('BEGIN');  //For Testing only
+    this.testSetup(GAMEACTIVE, FAKEVOTE, true, true) //For Testing Only
+    // this.testModal('GUESSAPPROVAL');  //For Testing only
   }
 
   componentWillUnmount = () => {

@@ -164,7 +164,7 @@
     }
 
     .activeplayer-players {  
-      .playercard:hover {
+      .playercard.player:hover {
         box-shadow: 0px 5px 15px -2px black;
         transform: scale(1.2) !important;
       }

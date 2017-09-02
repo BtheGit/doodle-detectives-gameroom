@@ -40,7 +40,7 @@ class ActivePlayerScreen extends Component {
             }
             const nameStyle = {
               color: this.props.playerColors[player.id] || 'black'
-            }           
+            }
             return (
               <PlayerCard 
                 key={idx}
