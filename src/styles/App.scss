@@ -92,7 +92,7 @@
 
 #canvas-container {
   z-index: 20;
-  position: relative;
+  position: absolute;
   height: $canvas_height;
   width: $canvas_width;
   display: flex;

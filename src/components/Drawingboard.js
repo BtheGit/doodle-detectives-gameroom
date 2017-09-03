@@ -110,16 +110,17 @@ class Drawingboard extends Component {
 	}
 
 	setupListeners = canvas => {
-		canvas.addEventListener('mousedown', (event) => {
+		const mouseStartEvent = event => {
 			this.setState({
 				isDrawing: true,
 				startX: event.offsetX,
 				startY: event.offsetY
 			});
-		})
-		canvas.addEventListener('mouseup', () => this.setState({isDrawing: false}))
-		canvas.addEventListener('mouseout', () => this.setState({isDrawing: false}))
-		canvas.addEventListener('mousemove', (event) => {
+		}
+		const mouseStopEvent = event => {
+			this.setState({isDrawing: false})
+		}
+		const mouseMoveEvent = event => {
 			//Only Draw and Emit paths if a) the game is not in session or b) it's in the drawing phase and it's your turn
 			if(this.props.isGameActive && !this.props.isMyTurn) {
 				return;
@@ -130,7 +131,74 @@ class Drawingboard extends Component {
 					this.drawPath(this.ctx, path, true);
 				}
 			}
-		})
+		}
+		/**
+		 * This will take in a node element and return it's top left position relative to the body
+		 * @param  {Object} element [node]
+		 * @return {Object}         [top left x/y coordinates of element]
+		 */
+		const getElementPosition = element => {
+	    let xPosition = 0;
+	    let yPosition = 0;
+
+	    while(element) {
+	        xPosition += (element.offsetLeft - element.scrollLeft + element.clientLeft);
+	        yPosition += (element.offsetTop - element.scrollTop + element.clientTop);
+	        element = element.offsetParent;
+	    }
+	    return { x: xPosition, y: yPosition };
+		}
+
+		/**
+		 * Returns the coordinates of a touch event relative to the container element
+		 * @param  {Object} event [touchEvent]
+		 * @return {Object}       [relative x,y coordinates of touch event]
+		 */
+		const getTouchPosition = event => {
+			const touch = event.touches[0]
+			const offset = getElementPosition(event.target)
+			return {
+				x: touch.pageX - offset.x,
+				y: touch.pageY - offset.y
+			}
+		}
+
+
+		const touchStartEvent = event => {
+			event.preventDefault();
+			const pos = getTouchPosition(event)
+			this.setState({
+				isDrawing: true,
+				startX: pos.x ,
+				startY: pos.y 
+			});
+		}
+		const touchStopEvent = event => {
+			event.preventDefault();
+			this.setState({isDrawing: false})
+		}
+		const touchMoveEvent = event => {
+			event.preventDefault();
+			const pos = getTouchPosition(event)
+			//Only Draw and Emit paths if a) the game is not in session or b) it's in the drawing phase and it's your turn
+			if(this.props.isGameActive && !this.props.isMyTurn) {
+				return;
+			} else {
+				if(this.state.isDrawing) {
+					const path = this.buildPath(pos.x, pos.y)
+					this.sendPath(path)
+					this.drawPath(this.ctx, path, true);
+				}
+			}
+		}
+		canvas.addEventListener('mousedown', mouseStartEvent);
+		canvas.addEventListener('mouseup', mouseStopEvent);
+		canvas.addEventListener('mouseout', mouseStopEvent);
+		canvas.addEventListener('mousemove', mouseMoveEvent);
+		canvas.addEventListener('touchstart', touchStartEvent);
+		canvas.addEventListener('touchend', touchStopEvent);
+		canvas.addEventListener('touchcancel', touchStopEvent);
+		canvas.addEventListener('touchmove', touchMoveEvent);
 		// window.addEventListener("resize", this.handleWindowResize, false);		
 	}
 

@@ -225,6 +225,7 @@ class App extends Component {
 
   //############### SOCKET SWITCH ##################
   handleSocketMessages = packet => {
+    console.log(packet) //******************************************************
     if(packet.type === 'setup_client') {
       //The color here is only for the waiting period. In game a new color will be assigned.
       this.setState({
@@ -678,7 +679,7 @@ class App extends Component {
   //############### LIFECYCLE AND RENDER METHODS ####################
   componentDidMount = () => {
     this.setupSocket();
-    this.testSetup(GAMEACTIVE, FAKEVOTE, true, true) //For Testing Only
+    // this.testSetup(GAMEACTIVE, DRAWING, true, true) //For Testing Only
     // this.testModal('GUESSAPPROVAL');  //For Testing only
   }
 
@@ -795,6 +796,9 @@ class App extends Component {
       }
     }
 
+    //Currently unused feature
+    const iAmDrawing = this.state.gameState.isMyTurn && this.state.gameState.currentPhase === DRAWING;
+
     return (
       <div id="room-container" className={setBGColor()}>
         <div className="upper-container">
@@ -802,7 +806,7 @@ class App extends Component {
         </div>
         <div className="lower-container">
           <div className="lower-left">
-            <div id="canvas-container">
+            <div id="canvas-container" className={`${iAmDrawing ? 'drawing' : ''}`}>
               {this.renderDrawingboard()}
               {this.renderStatusDisplay()}
               {this.renderTimer()}
